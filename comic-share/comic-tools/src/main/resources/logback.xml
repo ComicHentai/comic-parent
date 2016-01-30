@@ -18,7 +18,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder><!-- 必须指定，否则不会往文件输出内容 -->
-            <pattern>%msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
         <append>true</append>
         <prudent>false</prudent>
