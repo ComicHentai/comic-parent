@@ -11,5 +11,21 @@
 
     <artifactId>comic-service-impl</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.comichentai</groupId>
+            <artifactId>comic-share</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comichentai</groupId>
+            <artifactId>comic-dal</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comichentai</groupId>
+            <artifactId>comic-service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 </project>
