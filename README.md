@@ -12,17 +12,9 @@ RPC Service Provider/Client and RESTFul API Of ComicHentai
 
 	provide fast/stable RESTFul API. Base on Spring-Boot
 
-####comic-service-api  
-
-	provide java rcp service api
-
 ####comic-service-impl  
 	
 	implement java service api
-
-####comic-share  
-
-	common class module , such as classes,entry,domain...
 
 ####comic-web  
 
@@ -36,3 +28,20 @@ RPC Service Provider/Client and RESTFul API Of ComicHentai
 
     the monitor of rpc service (such as qps...)
  
+####comic-share  
+
+	common class module , such as classes,tools,entry,domain...etc
+	
+#####comic-dal
+	
+	base database data object operation , such as crud elements.
+
+#####comic-service
+	
+	data transform object and base service overriding daos' methods and logic operation.but not explose the service.
+	In Business Object .Services has assembly as a component.return by ResultSupport Class.
+	Then explose to the rpc or restful client
+
+#####comic-tools
+	
+	Commons tools such like serialize,encoding ,page,exception,object convert...
