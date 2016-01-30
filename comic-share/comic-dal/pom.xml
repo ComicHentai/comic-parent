@@ -3,13 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>comic-parent</artifactId>
+        <artifactId>comic-share</artifactId>
         <groupId>com.comichentai</groupId>
         <version>0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>comic-dependencies</artifactId>
+    <artifactId>comic-dal</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.comichentai</groupId>
+            <artifactId>comic-tools</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

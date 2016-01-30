@@ -11,5 +11,12 @@
 
     <artifactId>comic-rest-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.comichentai</groupId>
+            <artifactId>comic-share</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

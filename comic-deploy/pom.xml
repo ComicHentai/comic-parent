@@ -11,6 +11,20 @@
 
     <artifactId>comic-deploy</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.comichentai</groupId>
+            <artifactId>comic-service-api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comichentai</groupId>
+            <artifactId>comic-service-impl</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
+
+
     <build>
         <plugins>
             <plugin>

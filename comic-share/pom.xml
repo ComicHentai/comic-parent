@@ -10,6 +10,23 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>comic-share</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>comic-dal</module>
+        <module>comic-tools</module>
+        <module>comic-service</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+    </dependencies>
 
 
 </project>
