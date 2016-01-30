@@ -28,4 +28,11 @@ RPC Service Provider/Client and RESTFul API Of ComicHentai
 
 	web module (if need)
 
+####comic-deploy
+
+    packaging/deploy rpc service module
+    
+####comic-service-monitor
+
+    the monitor of rpc service (such as qps...)
  
