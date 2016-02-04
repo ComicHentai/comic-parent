@@ -6,7 +6,7 @@ import com.comichentai.page.PageDto;
 /**
  * Created by hope6537 on 16/1/30.
  */
-public class BaseDto extends PageDto {
+public class BasicDto extends PageDto {
 
     private Integer id;
 
@@ -23,13 +23,13 @@ public class BaseDto extends PageDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BaseDto baseDto = (BaseDto) o;
+        BasicDto basicDto = (BasicDto) o;
 
-        if (id != null ? !id.equals(baseDto.id) : baseDto.id != null) return false;
-        if (created != null ? !created.equals(baseDto.created) : baseDto.created != null) return false;
-        if (updated != null ? !updated.equals(baseDto.updated) : baseDto.updated != null) return false;
-        if (status != null ? !status.equals(baseDto.status) : baseDto.status != null) return false;
-        return isDeleted == baseDto.isDeleted;
+        if (id != null ? !id.equals(basicDto.id) : basicDto.id != null) return false;
+        if (created != null ? !created.equals(basicDto.created) : basicDto.created != null) return false;
+        if (updated != null ? !updated.equals(basicDto.updated) : basicDto.updated != null) return false;
+        if (status != null ? !status.equals(basicDto.status) : basicDto.status != null) return false;
+        return isDeleted == basicDto.isDeleted;
 
     }
 

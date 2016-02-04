@@ -8,4 +8,13 @@
         <class-b>com.comichentai.page.PageDto</class-b>
     </mapping>
 
+    <mapping>
+        <class-a>com.comichentai.dataobject.BasicDo</class-a>
+        <class-b>com.comichentai.dto.BasicDto</class-b>
+        <field custom-converter="com.comichentai.convert.EnumCodeAndNumberConverter">
+            <a>isDeleted</a>
+            <b>isDeleted</b>
+        </field>
+    </mapping>
+
 </mappings>

@@ -14,7 +14,7 @@
         <foreach collection="idList" item="id" separator=",">
             ${id}
         </foreach>
-        )LIMIT ${limit};
+        )LIMIT ${idList.size};
     </select>
 
 

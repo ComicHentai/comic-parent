@@ -9,12 +9,6 @@ import javax.sql.DataSource;
 
 public abstract class SpringTestHelper extends AbstractTransactionalJUnit4SpringContextTests {
 
-    protected final Logger logger = LoggerFactory.getLogger(SpringTestHelper.class);
-
-    public Logger getLogger() {
-        return logger;
-    }
-
     public DataSource getDataSource() {
         return dataSource;
     }

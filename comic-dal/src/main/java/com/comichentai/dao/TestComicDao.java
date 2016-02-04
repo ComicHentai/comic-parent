@@ -2,6 +2,7 @@ package com.comichentai.dao;
 
 import com.comichentai.annotation.MybatisRepository;
 import com.comichentai.dataobject.TestComicDo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,8 +12,8 @@ import java.util.List;
 @MybatisRepository
 public interface TestComicDao {
 
-    TestComicDo selectComicById(Integer id);
+    TestComicDo selectComicById(@Param("id") Integer id);
 
-    List<TestComicDo> selectComicListByIds(List<Integer> idList);
+    List<TestComicDo> selectComicListByIds(@Param("idList") List<Integer> idList);
 
 }

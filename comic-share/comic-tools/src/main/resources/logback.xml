@@ -23,14 +23,21 @@
         <append>true</append>
         <prudent>false</prudent>
     </appender>
+
     <logger name="slf4j" level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
+
     <logger name="slf4j2" level="ERROR"/>
+
     <logger name="BaseLog" level="INFO" additivity="false">
         <appender-ref ref="BaseLog"/>
     </logger>
+    <!--如需显示sql，将下面调整成debug即可-->
+    <logger name="org.hope6537" level="debug"/>
+    <logger name="com.comichentai" level="debug"/>
+
     <root>
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
