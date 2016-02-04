@@ -4,12 +4,12 @@
 
     <select id="selectComicById" resultType="com.comichentai.dataobject.TestComicDo">
         SELECT *
-        FROM TEST_COMIC
+        FROM Test_Comic
         WHERE ID = ${id}
         LIMIT 1;
     </select>
     <select id="selectComicListByIds" resultType="com.comichentai.dataobject.TestComicDo">
-        SELECT * FROM TEST_COMIC WHERE ID IN
+        SELECT * FROM Test_Comic WHERE ID IN
         (
         <foreach collection="idList" item="id" separator=",">
             ${id}
