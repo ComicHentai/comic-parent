@@ -1,5 +1,6 @@
 import com.comichentai.helper.SpringTestHelper;
 import com.comichentai.service.TestComicService;
+import com.oracle.tools.packager.Log;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class TestComicServiceImplTest extends SpringTestHelper {
 
     @Test
     public void test1() {
-
+        logger.error("123123123");
     }
 
 }
