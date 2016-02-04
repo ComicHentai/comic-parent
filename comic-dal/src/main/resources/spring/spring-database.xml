@@ -70,7 +70,7 @@
         <!-- 显式指定Mapper文件位置 -->
         <property name="mapperLocations">
             <list>
-                <value>classpath*:mapper/*.xml</value>
+                <value>classpath*:datamapper/*.xml</value>
             </list>
         </property>
         <property name="configurationProperties">

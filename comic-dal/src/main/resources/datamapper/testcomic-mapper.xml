@@ -8,7 +8,7 @@
         WHERE ID = ${id}
         LIMIT 1;
     </select>
-    <select id="selectComicById" resultType="com.comichentai.dataobject.TestComicDo">
+    <select id="selectComicListByIds" resultType="com.comichentai.dataobject.TestComicDo">
         SELECT * FROM TEST_COMIC WHERE ID IN
         (
         <foreach collection="idList" item="id" separator=",">
