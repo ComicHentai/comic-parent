@@ -1,6 +1,6 @@
 package com.comichentai.controller;
 
-import com.comichentai.dto.ComicDto;
+import com.comichentai.dto.TestComicDto;
 import com.comichentai.entity.Response;
 import com.google.common.collect.Lists;
 import org.springframework.boot.SpringApplication;
@@ -28,13 +28,13 @@ public class SimpleController {
     @ResponseBody
     public Response getComicByQuery(@PathVariable String query) {
         Random random = new Random(System.currentTimeMillis());
-        List<ComicDto> comicList = Lists.newArrayList();
+        List<TestComicDto> comicList = Lists.newArrayList();
         for (int i = 0; i < random.nextInt(); i++) {
-            ComicDto comicDto = new ComicDto();
-            comicDto.setId(random.nextInt());
-            comicDto.setTitle(query + "[漫画名]");
-            comicDto.setImgTitle("/p1/v1/xxxx" + random.nextInt(10000) + ".img");
-            comicList.add(comicDto);
+            TestComicDto testComicDto = new TestComicDto();
+            testComicDto.setId(random.nextInt());
+            testComicDto.setTitle(query + "[漫画名]");
+            testComicDto.setImgTitle("/p1/v1/xxxx" + random.nextInt(10000) + ".img");
+            comicList.add(testComicDto);
         }
         Response data = Response.getInstance(true).addAttribute("data", comicList);
         data.setTotalCount(comicList.size());
@@ -45,13 +45,13 @@ public class SimpleController {
     @ResponseBody
     public Response getComic() {
         Random random = new Random(System.currentTimeMillis());
-        List<ComicDto> comicList = Lists.newArrayList();
+        List<TestComicDto> comicList = Lists.newArrayList();
         for (int i = 0; i < random.nextInt(); i++) {
-            ComicDto comicDto = new ComicDto();
-            comicDto.setId(random.nextInt());
-            comicDto.setTitle("[漫画名" + random.nextInt() + "]");
-            comicDto.setImgTitle("/p1/v1/xxxx" + random.nextInt(10000) + ".img");
-            comicList.add(comicDto);
+            TestComicDto testComicDto = new TestComicDto();
+            testComicDto.setId(random.nextInt());
+            testComicDto.setTitle("[漫画名" + random.nextInt() + "]");
+            testComicDto.setImgTitle("/p1/v1/xxxx" + random.nextInt(10000) + ".img");
+            comicList.add(testComicDto);
         }
         Response data = Response.getInstance(true).addAttribute("data", comicList);
         data.setTotalCount(comicList.size());

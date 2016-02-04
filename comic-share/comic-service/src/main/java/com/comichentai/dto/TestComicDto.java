@@ -3,13 +3,13 @@ package com.comichentai.dto;
 /**
  * Created by hope6537 on 16/1/30.
  */
-public class ComicDto extends BaseDto{
+public class TestComicDto extends BaseDto{
 
     private String title;
 
     private String imgTitle;
 
-    public ComicDto() {
+    public TestComicDto() {
 
     }
     @Override
@@ -18,10 +18,10 @@ public class ComicDto extends BaseDto{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        ComicDto comicDto = (ComicDto) o;
+        TestComicDto testComicDto = (TestComicDto) o;
 
-        if (title != null ? !title.equals(comicDto.title) : comicDto.title != null) return false;
-        return imgTitle != null ? imgTitle.equals(comicDto.imgTitle) : comicDto.imgTitle == null;
+        if (title != null ? !title.equals(testComicDto.title) : testComicDto.title != null) return false;
+        return imgTitle != null ? imgTitle.equals(testComicDto.imgTitle) : testComicDto.imgTitle == null;
 
     }
 
@@ -33,7 +33,7 @@ public class ComicDto extends BaseDto{
         return result;
     }
 
-    public ComicDto(String title, String imgTitle) {
+    public TestComicDto(String title, String imgTitle) {
         this.title = title;
         this.imgTitle = imgTitle;
     }

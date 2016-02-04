@@ -7,7 +7,7 @@
     </appender>
 
     <appender name="BaseLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>tpg-biz.log</file>
+        <file>comic-app-log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>log/comic-app-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>

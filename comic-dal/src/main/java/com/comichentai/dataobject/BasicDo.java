@@ -1,7 +1,6 @@
 package com.comichentai.dataobject;
 
 import com.comichentai.page.PageDo;
-import sun.print.PageableDoc;
 
 /**
  * Created by hope6537 on 16/1/30.

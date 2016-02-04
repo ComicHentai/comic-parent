@@ -12,7 +12,7 @@ public class PageDo implements Serializable {
     /**
      * 结果行数
      */
-    private Integer limit;
+    private Integer limit = 100;
     /**
      * 起始行 从0开始
      */

@@ -12,7 +12,6 @@
     <artifactId>comic-share</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>comic-dal</module>
         <module>comic-tools</module>
         <module>comic-service</module>
     </modules>

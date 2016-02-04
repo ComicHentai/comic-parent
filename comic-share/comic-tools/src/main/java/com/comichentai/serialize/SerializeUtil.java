@@ -11,7 +11,7 @@ import org.apache.commons.codec.binary.Base64;
 import java.io.*;
 
 /**
- * @author luqing.zz
+ * @author wuyang.zp
  */
 public abstract class SerializeUtil {
 
