@@ -36,7 +36,7 @@ public class TestComicServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testGetComicListByIdList() {
-        logger.debug("asdasdqwaaqw啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊");
+        logger.debug("Debuging");
         String comicList = JSON.toJSONString(testComicService.getComicListByIdList(Lists.newArrayList(1, 2, 3, 4)));
         logger.error(comicList);
     }
