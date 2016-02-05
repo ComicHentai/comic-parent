@@ -11,7 +11,6 @@
     <modules>
         <module>comic-dal</module>
         <module>comic-dependencies</module>
-        <module>comic-rest-api</module>
         <module>comic-share</module>
         <module>comic-service-impl</module>
         <module>comic-web</module>
@@ -67,6 +66,11 @@
         <junit_version>4.10</junit_version>
         <jmockit_version>0.999.8</jmockit_version>
         <easymock_version>3.0</easymock_version>
+
+        <!-- spring boot -->
+        <spring-boot.version>1.3.1.RELEASE</spring-boot.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <mockito.version>1.9.5</mockito.version>
 
         <!-- 部署打包参数 -->
         <!--<argline>-server -Xms64m -Xmx64m -XX:PermSize=64m -XX:MaxPermSize=64m</argline>-->
@@ -231,9 +235,19 @@
                 <version>${mybatis_spring_vesrion}</version>
             </dependency>
             <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-library</artifactId>
+                <version>${hamcrest.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
-                <version>1.3.1.RELEASE</version>
+                <version>${spring-boot.version}</version>
                 <exclusions>
                     <!-- 去掉多余的logback -->
                     <exclusion>
