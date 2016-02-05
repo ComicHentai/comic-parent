@@ -47,7 +47,7 @@
         <thrift_version>0.8.0</thrift_version>
         <jfreechart_version>1.0.13</jfreechart_version>
         <hessian_version>4.0.7</hessian_version>
-        <servlet_version>2.5</servlet_version>
+        <servlet_version>3.1</servlet_version>
         <jetty_version>6.1.26</jetty_version>
         <validation_version>1.0.0.GA</validation_version>
         <hibernate_validator_version>4.2.0.Final</hibernate_validator_version>
@@ -202,14 +202,12 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>3.0.1</version>
-                <scope>provided</scope>
+                <version>${servlet_version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.servlet.jsp</groupId>
                 <artifactId>javax.servlet.jsp-api</artifactId>
                 <version>2.2.1</version>
-                <scope>provided</scope>
             </dependency>
             <!-- servlet - api 结束 -->
             <dependency>
@@ -436,11 +434,6 @@
                 <groupId>com.caucho</groupId>
                 <artifactId>hessian</artifactId>
                 <version>${hessian_version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
-                <version>${servlet_version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mortbay.jetty</groupId>

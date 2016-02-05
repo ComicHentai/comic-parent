@@ -2,26 +2,40 @@ package com.comichentai.controller;
 
 import com.comichentai.dto.TestComicDto;
 import com.comichentai.entity.Response;
+import com.comichentai.service.TestComicService;
 import com.google.common.collect.Lists;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Random;
 
 @Controller
+@ImportResource("classpath*:/META-INF/spring/spring-dubbo-service-cli.xml")
 @EnableAutoConfiguration
 public class SimpleController {
+
+    @Resource(name = "testComicService")
+    public TestComicService testComicService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
     public String hello() {
         return "ComicHentai";
+    }
+
+    @RequestMapping(value = "/testComic", method = RequestMethod.GET)
+    @ResponseBody
+    public List<TestComicDto> getTestComic() {
+        return testComicService.getComicListByIdList(Lists.newArrayList(1, 2, 3, 4));
     }
 
     @RequestMapping(value = "/getComic/{query}", method = RequestMethod.GET)
@@ -58,6 +72,9 @@ public class SimpleController {
         return data;
     }
 
+    public void setTestComicService(TestComicService testComicService) {
+        this.testComicService = testComicService;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(SimpleController.class, args);

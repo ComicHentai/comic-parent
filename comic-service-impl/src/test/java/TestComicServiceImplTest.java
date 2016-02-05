@@ -7,7 +7,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
+
+import java.io.IOException;
 
 /**
  * Created by hope6537 on 16/2/4.
@@ -38,5 +41,15 @@ public class TestComicServiceImplTest extends SpringTestHelper {
         logger.error(comicList);
     }
 
+    @Test
+    public void testDubbo() throws IOException {
+        pro();
+    }
+
+    static void pro() throws IOException {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/META-INF/spring/spring-dubbo-service-impl.xml");
+        context.start();
+        System.in.read();
+    }
 
 }
