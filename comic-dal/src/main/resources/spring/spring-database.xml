@@ -12,9 +12,9 @@
     <context:property-placeholder location="classpath:config/db_config.properties"/>
 
     <bean name="dataSource" class="com.comichentai.datasource.ComicHentaiDataSource" init-method="init" destroy-method="close">
-        <property name="url" value="${jdbc_url}"/>
-        <property name="username" value="${jdbc_username}"/>
-        <property name="password" value="${jdbc_password}"/>
+        <property name="url" value="${master_url}"/>
+        <property name="username" value="${master_username}"/>
+        <property name="password" value="${master_password}"/>
         <!-- 初始化连接大小 -->
         <property name="initialSize" value="0"/>
         <!-- 连接池最大使用连接数量 -->
