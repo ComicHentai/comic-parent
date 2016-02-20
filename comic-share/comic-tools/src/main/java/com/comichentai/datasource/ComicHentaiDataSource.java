@@ -13,14 +13,14 @@ public class ComicHentaiDataSource extends DruidDataSource {
     Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
+    public String getPassword() {
+        return super.getPassword();
+    }
+
+    @Override
     public void setPassword(String password) {
         logger.debug("decrypted [" + password + "]");
         password = AESLocker.decrypt(password);
         super.setPassword(password);
-    }
-
-    @Override
-    public String getPassword() {
-        return super.getPassword();
     }
 }

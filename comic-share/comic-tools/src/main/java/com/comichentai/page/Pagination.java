@@ -28,6 +28,9 @@ public class Pagination<T> {
         return this.pageCount;
     }
 
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
 
     public int getStartRow() {
         return (this.pageNo - 1) * this.pageSize + START_ROW.intValue();
@@ -63,10 +66,6 @@ public class Pagination<T> {
 
     public void setDatas(List<T> datas) {
         this.datas = datas;
-    }
-
-    public void setPageCount(int pageCount) {
-        this.pageCount = pageCount;
     }
 
     public int getRecordCount() {

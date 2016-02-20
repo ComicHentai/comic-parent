@@ -11,7 +11,8 @@
     <!-- SessionFactory使用自定义数据源 必须使用自定义的数据源 在这里dataSource定义了之后就没有必要使用Hibernate的配置文件定义了 -->
     <context:property-placeholder location="classpath:config/db_config.properties"/>
 
-    <bean name="dataSource" class="com.comichentai.datasource.ComicHentaiDataSource" init-method="init" destroy-method="close">
+    <bean name="dataSource" class="com.comichentai.datasource.ComicHentaiDataSource" init-method="init"
+          destroy-method="close">
         <property name="url" value="${master_url}"/>
         <property name="username" value="${master_username}"/>
         <property name="password" value="${master_password}"/>

@@ -16,17 +16,12 @@ import java.util.Map;
  */
 public class Response implements Serializable {
 
-    private Logger LOGGER = LoggerFactory.getLogger(Response.class);
-
-    private boolean success;
-
-    private Integer totalCount;
-
-    private String returnMsg;
-
     private static final String SUCCESS_MSG = "%E6%93%8D%E4%BD%9C%E6%88%90%E5%8A%9F";
     private static final String ERROR_MSG = "%E6%93%8D%E4%BD%9C%E5%A4%B1%E8%B4%A5";
-
+    private Logger LOGGER = LoggerFactory.getLogger(Response.class);
+    private boolean success;
+    private Integer totalCount;
+    private String returnMsg;
     private Map<String, Object> data;
 
     private Response(boolean result) {
@@ -56,6 +51,11 @@ public class Response implements Serializable {
         return returnMsg;
     }
 
+    public Response setReturnMsg(String returnMsg) {
+        setReturnMsg(returnMsg, "UTF-8");
+        return this;
+    }
+
     public String getReturnMsg(String encode) {
         try {
             return URLDecoder.decode(returnMsg, encode);
@@ -63,11 +63,6 @@ public class Response implements Serializable {
             LOGGER.error(e.getMessage() + " cause:" + e.getCause(), e);
         }
         return null;
-    }
-
-    public Response setReturnMsg(String returnMsg) {
-        setReturnMsg(returnMsg, "UTF-8");
-        return this;
     }
 
     public Response setReturnMsg(String returnMsg, String encode) {

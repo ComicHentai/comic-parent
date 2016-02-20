@@ -10,10 +10,6 @@ public enum IsDeleted {
 
     NO(0, "未删除"), YES(1, "已删除");
 
-    private Integer code;
-
-    private String value;
-
     private static Map<Integer, IsDeleted> codeToEnum;
 
     static {
@@ -23,9 +19,25 @@ public enum IsDeleted {
         }
     }
 
+    private Integer code;
+    private String value;
+
     IsDeleted(Integer code, String value) {
         this.code = code;
         this.value = value;
+    }
+
+    public static IsDeleted parseCode(int code) {
+        for (IsDeleted isDeleted : IsDeleted.values()) {
+            if (isDeleted.getCode() == code) {
+                return isDeleted;
+            }
+        }
+        return null;
+    }
+
+    public static IsDeleted getInstance(int code) {
+        return codeToEnum.get(code);
     }
 
     public Integer getCode() {
@@ -42,20 +54,6 @@ public enum IsDeleted {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public static IsDeleted parseCode(int code) {
-        for (IsDeleted isDeleted : IsDeleted.values()) {
-            if (isDeleted.getCode() == code) {
-                return isDeleted;
-            }
-        }
-        return null;
-    }
-
-
-    public static IsDeleted getInstance(int code) {
-        return codeToEnum.get(code);
     }
 
 }

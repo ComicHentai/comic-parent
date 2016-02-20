@@ -7,6 +7,14 @@ public class TestUserDo extends BasicDo {
 
     private String name;
 
+    public TestUserDo() {
+        super();
+    }
+
+    public TestUserDo(Integer id, Long created, Long updated, Integer status, Integer isDeleted) {
+        super(id, created, updated, status, isDeleted);
+    }
+
     public String getName() {
         return name;
     }
@@ -20,17 +28,9 @@ public class TestUserDo extends BasicDo {
         return super.equals(o);
     }
 
-    public TestUserDo() {
-        super();
-    }
-
     @Override
     public int hashCode() {
         return super.hashCode();
-    }
-
-    public TestUserDo(Integer id, Long created, Long updated, Integer status, Integer isDeleted) {
-        super(id, created, updated, status, isDeleted);
     }
 
     @Override

@@ -18,10 +18,15 @@ import java.io.IOException;
 @ContextConfiguration("classpath:spring/spring-service-impl-context.xml")
 public class TestComicServiceImplTest extends SpringTestHelper {
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private TestComicService testComicService;
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    static void pro() throws IOException {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/META-INF/spring/spring-dubbo-service-impl.xml");
+        context.start();
+        System.in.read();
+    }
 
     @Before
     public void init() {
@@ -44,12 +49,6 @@ public class TestComicServiceImplTest extends SpringTestHelper {
     @Test
     public void testDubbo() throws IOException {
         pro();
-    }
-
-    static void pro() throws IOException {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/META-INF/spring/spring-dubbo-service-impl.xml");
-        context.start();
-        System.in.read();
     }
 
 }

@@ -31,7 +31,7 @@ public class TestUserServiceImpl implements TestUserService {
             checkNotNull(id, "参数不能为空");
             TestUserDto testUserDto = mappingConverter.doMap(testUserDao.selectTestUserById(id), TestUserDto.class);
             checkNotNull(testUserDto, "无结果");
-            result = ResultSupport.getInstance(true,"查询成功",testUserDto);
+            result = ResultSupport.getInstance(true, "查询成功", testUserDto);
         } catch (Exception e) {
             result = ResultSupport.getInstance(e);
             e.printStackTrace();

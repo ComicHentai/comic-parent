@@ -2,20 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD iBatis Mapper 3.0 //EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.comichentai.dao.TestComicDao">
 
-<select id="selectComicById" resultType="com.comichentai.dataobject.TestComicDo">
-    SELECT *
-    FROM TestComic
-    WHERE ID = ${id}
-    LIMIT 1;
-</select>
-<select id="selectComicListByIds" resultType="com.comichentai.dataobject.TestComicDo">
-    SELECT * FROM TestComic WHERE ID IN
-    (
-    <foreach collection="idList" item="id" separator=",">
-        ${id}
-    </foreach>
-    )LIMIT ${idList.size};
-</select>
+    <select id="selectComicById" resultType="com.comichentai.dataobject.TestComicDo">
+        SELECT *
+        FROM TestComic
+        WHERE ID = ${id}
+        LIMIT 1;
+    </select>
+    <select id="selectComicListByIds" resultType="com.comichentai.dataobject.TestComicDo">
+        SELECT * FROM TestComic WHERE ID IN
+        (
+        <foreach collection="idList" item="id" separator=",">
+            ${id}
+        </foreach>
+        )LIMIT ${idList.size};
+    </select>
 
 
 </mapper>

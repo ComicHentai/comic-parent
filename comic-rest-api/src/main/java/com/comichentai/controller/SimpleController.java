@@ -8,7 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +24,10 @@ public class SimpleController {
 
     @Resource(name = "testComicService")
     public TestComicService testComicService;
+
+    public static void main(String[] args) {
+        SpringApplication.run(SimpleController.class, args);
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
@@ -74,9 +77,5 @@ public class SimpleController {
 
     public void setTestComicService(TestComicService testComicService) {
         this.testComicService = testComicService;
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(SimpleController.class, args);
     }
 }

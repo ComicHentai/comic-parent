@@ -39,6 +39,6 @@ public class TestComicServiceImpl implements TestComicService {
         checkNotNull(idList, "idList cannot be null");
         checkArgument(idList.size() > 0, "idList cannot be empty");
         List<TestComicDo> comicDo = testComicDao.selectComicListByIds(idList);
-        return comicDo.parallelStream().map(o -> mappingConverter.doMap(o,TestComicDto.class)).collect(Collectors.toList());
+        return comicDo.parallelStream().map(o -> mappingConverter.doMap(o, TestComicDto.class)).collect(Collectors.toList());
     }
 }

@@ -33,6 +33,51 @@ public class ResultSupport<T> {
      */
     private Exception exception;
 
+    public static <T> ResultSupport<T> getInstance(boolean expr, String resultCode, String msg, T module) {
+        ResultSupport<T> result = new ResultSupport<T>();
+        result.setSuccess(expr);
+        result.setRemark(msg);
+        result.setModule(module);
+        result.setResultCode(resultCode);
+        return result;
+    }
+
+    public static <T> ResultSupport<T> getInstance(boolean expr, String msg, T module) {
+        ResultSupport<T> result = new ResultSupport<T>();
+        result.setSuccess(expr);
+        result.setRemark(msg);
+        result.setModule(module);
+        if (expr) {
+            result.setResultCode("1001");
+        } else {
+            result.setResultCode("4004");
+        }
+
+        return result;
+    }
+
+    public static <T> ResultSupport<T> getInstance(boolean expr, String msg) {
+        ResultSupport<T> result = new ResultSupport<T>();
+        result.setSuccess(expr);
+        result.setRemark(msg);
+        if (expr) {
+            result.setResultCode("1001");
+        } else {
+            result.setResultCode("4004");
+        }
+
+        return result;
+    }
+
+    public static <T> ResultSupport<T> getInstance(Exception e) {
+        ResultSupport<T> result = new ResultSupport<T>();
+        result.setSuccess(false);
+        String msg = StringUtils.isBlank(e.getMessage()) ? "系统异常" : e.getMessage();
+        result.setRemark(msg);
+        result.setException(e);
+        return result;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -79,50 +124,5 @@ public class ResultSupport<T> {
 
     public void setException(Exception exception) {
         this.exception = exception;
-    }
-
-    public static <T> ResultSupport<T> getInstance(boolean expr, String resultCode, String msg, T module) {
-        ResultSupport<T> result = new ResultSupport<T>();
-        result.setSuccess(expr);
-        result.setRemark(msg);
-        result.setModule(module);
-        result.setResultCode(resultCode);
-        return result;
-    }
-
-    public static <T> ResultSupport<T> getInstance(boolean expr, String msg, T module) {
-        ResultSupport<T> result = new ResultSupport<T>();
-        result.setSuccess(expr);
-        result.setRemark(msg);
-        result.setModule(module);
-        if (expr) {
-            result.setResultCode("1001");
-        } else {
-            result.setResultCode("4004");
-        }
-
-        return result;
-    }
-
-    public static <T> ResultSupport<T> getInstance(boolean expr, String msg) {
-        ResultSupport<T> result = new ResultSupport<T>();
-        result.setSuccess(expr);
-        result.setRemark(msg);
-        if (expr) {
-            result.setResultCode("1001");
-        } else {
-            result.setResultCode("4004");
-        }
-
-        return result;
-    }
-
-    public static <T> ResultSupport<T> getInstance(Exception e) {
-        ResultSupport<T> result = new ResultSupport<T>();
-        result.setSuccess(false);
-        String msg = StringUtils.isBlank(e.getMessage())?"系统异常": e.getMessage();
-        result.setRemark(msg);
-        result.setException(e);
-        return result;
     }
 }

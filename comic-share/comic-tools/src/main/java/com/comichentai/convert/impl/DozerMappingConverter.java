@@ -16,23 +16,6 @@ public class DozerMappingConverter implements MappingConverter {
 
     private Mapper mapper;
 
-    @Override
-    public <T> T doMap(Object source, Class<T> destinationClass) {
-        if (source == null || destinationClass == null) {
-            return null;
-        }
-        T t;
-        try {
-            t = destinationClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-            return null;
-        }
-        getMapper().map(source, t);
-        pageConvert(source, destinationClass, t);
-        return t;
-    }
-
     /**
      * PageDo: offset = a  = PageDto : startRecord
      * PageDo: limit  = b = PageDto : pageSize
@@ -56,6 +39,23 @@ public class DozerMappingConverter implements MappingConverter {
                 pageDto.setPageSize(pageDo.getLimit());
             }
         }
+    }
+
+    @Override
+    public <T> T doMap(Object source, Class<T> destinationClass) {
+        if (source == null || destinationClass == null) {
+            return null;
+        }
+        T t;
+        try {
+            t = destinationClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+        getMapper().map(source, t);
+        pageConvert(source, destinationClass, t);
+        return t;
     }
 
     public Mapper getMapper() {

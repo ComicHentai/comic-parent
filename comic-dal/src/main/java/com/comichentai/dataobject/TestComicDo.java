@@ -3,7 +3,7 @@ package com.comichentai.dataobject;
 /**
  * Created by hope6537 on 16/1/30.
  */
-public class TestComicDo extends BasicDo{
+public class TestComicDo extends BasicDo {
 
     private String title;
 

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * PageDo: offset = a  = PageDto : startRecord
  * PageDo: limit  = b = PageDto : pageSize
  */
-public class PageDto implements Serializable{
+public class PageDto implements Serializable {
 
     private static final long serialVersionUID = -4299676786928364850L;
     private Integer pageSize;

@@ -12,6 +12,12 @@ public class TestComicDto extends BasicDto {
     public TestComicDto() {
 
     }
+
+    public TestComicDto(String title, String imgTitle) {
+        this.title = title;
+        this.imgTitle = imgTitle;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -31,11 +37,6 @@ public class TestComicDto extends BasicDto {
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (imgTitle != null ? imgTitle.hashCode() : 0);
         return result;
-    }
-
-    public TestComicDto(String title, String imgTitle) {
-        this.title = title;
-        this.imgTitle = imgTitle;
     }
 
     public String getTitle() {

@@ -21,6 +21,15 @@ public class BasicDo extends PageDo {
     public BasicDo() {
 
     }
+
+    public BasicDo(Integer id, Long created, Long updated, Integer status, Integer isDeleted) {
+        this.id = id;
+        this.created = created;
+        this.updated = updated;
+        this.status = status;
+        this.isDeleted = isDeleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,14 +53,6 @@ public class BasicDo extends PageDo {
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
         return result;
-    }
-
-    public BasicDo(Integer id, Long created, Long updated, Integer status, Integer isDeleted) {
-        this.id = id;
-        this.created = created;
-        this.updated = updated;
-        this.status = status;
-        this.isDeleted = isDeleted;
     }
 
     public Integer getId() {
