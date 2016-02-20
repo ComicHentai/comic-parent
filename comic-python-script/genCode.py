@@ -3,8 +3,8 @@ import os
 
 def initDao(objectName):
     text = 'package com.comichentai.dao;\n' \
-           'import com.comichentai.annotation.MybatisRepository;\n ' \
-           'import com.comichentai.dataobject.{L}Do;\n ' \
+           'import com.comichentai.annotation.MybatisRepository;\n' \
+           'import com.comichentai.dataobject.{L}Do;\n' \
            'import org.apache.ibatis.annotations.Param;\n' \
            'import java.util.List;\n' \
            '/*** Created by hope6537 on 16/2/15.*/\n' \
