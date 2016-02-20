@@ -1,5 +1,5 @@
+# encoding:UTF-8
 import os
-
 
 def initDao(objectName):
     text = 'package com.comichentai.dao;\n' \
