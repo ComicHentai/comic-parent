@@ -46,6 +46,7 @@ def init_web(only_url=0, page=1):
     while len(data):
         print('page ==> ' + str(page) + ' url ==> ' + url)
         parse_data(data, only_url)
+        page += 1
 
 
 # 得到主页列表
