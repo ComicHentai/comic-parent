@@ -1,6 +1,8 @@
 # encoding:UTF-8
 import cookielib
 import os
+import random
+import time
 import urllib
 import urllib2
 
@@ -41,12 +43,16 @@ def init_web(only_url=0, page=1):
     opener.addheaders = [('cookie', "xres=3")]
     urllib2.install_opener(opener)
     url = "http://lofi.e-hentai.org/?f_search=Chinese&f_apply=Search&page=%d" % page
-    data = pq(url=url)(".ig")
     print("----start processing---")
-    while len(data):
-        print('page ==> ' + str(page) + ' url ==> ' + url)
-        parse_data(data, only_url)
-        page += 1
+    if 50 > page >= 1:
+        data = pq(url=url)(".ig")
+        while len(data):
+            print('page ==> ' + str(page) + ' url ==> ' + url)
+            parse_data(data, only_url)
+            page += 1
+        print("finish")
+    else:
+        print("page illegal")
 
 
 # 得到主页列表
@@ -57,6 +63,9 @@ def parse_data(data, only_url):
     # 对于列表的每一个元素进行循环
     for i in data:
         # 得到当前本子的连接
+        sleep_seconds = random.random()
+        print("will sleep %d" % sleep_seconds)
+        time.sleep(sleep_seconds)
         doc = pq(i).find("a").attr("href")[-10:-1] + '/'
         print("doc is " + doc)
         try:
@@ -87,6 +96,9 @@ def copy_to_fs(index, doc, only_url):
     # 如果之前的连接和现在的连接相同，说明爬虫完毕，否则继续下载
     while pre_link != next_link:
         # 下一页的连接就是当前的图片href
+        sleep_seconds = random.random()
+        print("will sleep %d" % sleep_seconds)
+        time.sleep(sleep_seconds)
         next_link = pq(content_link).find("#sd").find("a").attr("href")
         to_next_link(content_link, doc, only_url)
         # 要进入到下一个页面了，将前一个页面的连接指向内容连接，将内容连接指向下一个连接，并继续抓取
