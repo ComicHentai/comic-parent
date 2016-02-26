@@ -21,7 +21,7 @@ def initDao(objectName):
     with open(fileName, 'w') as f:
         f.write(text)
 
-    return os.getcwd() + '/' + fileName;
+    return os.getcwd() + '/' + fileName
 
 
 print(initDao("Comic"))
