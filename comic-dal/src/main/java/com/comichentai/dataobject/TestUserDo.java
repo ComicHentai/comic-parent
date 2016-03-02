@@ -11,8 +11,8 @@ public class TestUserDo extends BasicDo {
         super();
     }
 
-    public TestUserDo(Integer id, Long created, Long updated, Integer status, Integer isDeleted) {
-        super(id, created, updated, status, isDeleted);
+    public TestUserDo(Long created, Long updated, Integer status, Integer isDeleted) {
+        super(created, updated, status, isDeleted);
     }
 
     public String getName() {

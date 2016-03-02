@@ -22,8 +22,7 @@ public class BasicDo extends PageDo {
 
     }
 
-    public BasicDo(Integer id, Long created, Long updated, Integer status, Integer isDeleted) {
-        this.id = id;
+    public BasicDo(Long created, Long updated, Integer status, Integer isDeleted) {
         this.created = created;
         this.updated = updated;
         this.status = status;

@@ -18,6 +18,16 @@ public class BasicDto extends PageDto {
 
     private IsDeleted isDeleted;
 
+    public BasicDto() {
+    }
+
+    public BasicDto(Long created, Long updated, Integer status, IsDeleted isDeleted) {
+        this.created = created;
+        this.updated = updated;
+        this.status = status;
+        this.isDeleted = isDeleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
