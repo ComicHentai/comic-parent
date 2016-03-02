@@ -3,11 +3,11 @@
 <mapper namespace="com.comichentai.dao.ComicDao">
 
     <select id="selectWelcomeComicListPage" resultType="com.comichentai.dataobject.ComicDo">
-        SELECT * FROM sys_comic
+        SELECT * FROM sys_comic where is_deleted = 0
     </select>
 
     <select id="selectComicById" resultType="com.comichentai.dataobject.ComicDo">
-        SELECT * FROM sys_comic WHERE id = ${id}
+        SELECT * FROM sys_comic WHERE id = ${id} and is_deleted = 0
     </select>
 
     <select id="selectComicClassifieds" resultType="java.lang.String">
@@ -16,15 +16,15 @@
     </select>
 
     <select id="selectComicByTitle" resultType="com.comichentai.dataobject.ComicDo">
-        SELECT * FROM sys_comic WHERE title  LIKE CONCAT('%',#{title},'%')
+        SELECT * FROM sys_comic WHERE title  LIKE CONCAT('%',#{title},'%') and is_deleted = 0
     </select>
 
     <select id="selectComicByAuthor" resultType="com.comichentai.dataobject.ComicDo">
-        SELECT * FROM sys_comic WHERE author  LIKE CONCAT('%',#{author},'%')
+        SELECT * FROM sys_comic WHERE author  LIKE CONCAT('%',#{author},'%') and is_deleted = 0
     </select>
 
     <select id="selectComicByUserId" resultType="com.comichentai.dataobject.ComicDo" >
-        SELECT b.* FROM sys_user_comic AS a, sys_comic AS b WHERE a.comic_id = b.id AND a.user_id = ${userId}
+        SELECT b.* FROM sys_user_comic AS a, sys_comic AS b WHERE a.comic_id = b.id AND a.user_id = ${userId} and b.is_deleted = 0
     </select>
 
     <insert id="insertComic" parameterType="com.comichentai.dataobject.ComicDo" useGeneratedKeys="true" keyProperty="id">

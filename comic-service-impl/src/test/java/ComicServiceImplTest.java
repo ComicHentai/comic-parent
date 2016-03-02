@@ -87,7 +87,7 @@ public class ComicServiceImplTest extends SpringTestHelper{
     }
 
     @Test
-    public void removeComicFromUser(){
+    public void removeComicFzromUser(){
         logger.debug("debugging");
         List<Integer> ids = new LinkedList<>();
         ids.add(1);
