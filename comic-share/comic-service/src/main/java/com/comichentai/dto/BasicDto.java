@@ -12,7 +12,15 @@ public class BasicDto extends PageDto {
 
     private Long created;
 
+    private Long createdBefore;
+
+    private Long createdAfter;
+
     private Long updated;
+
+    private Long updatedBefore;
+
+    private Long updatedAfter;
 
     private Integer status;
 
@@ -91,5 +99,37 @@ public class BasicDto extends PageDto {
 
     public void setIsDeleted(IsDeleted isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public Long getCreatedBefore() {
+        return createdBefore;
+    }
+
+    public void setCreatedBefore(Long createdBefore) {
+        this.createdBefore = createdBefore;
+    }
+
+    public Long getCreatedAfter() {
+        return createdAfter;
+    }
+
+    public void setCreatedAfter(Long createdAfter) {
+        this.createdAfter = createdAfter;
+    }
+
+    public Long getUpdatedBefore() {
+        return updatedBefore;
+    }
+
+    public void setUpdatedBefore(Long updatedBefore) {
+        this.updatedBefore = updatedBefore;
+    }
+
+    public Long getUpdatedAfter() {
+        return updatedAfter;
+    }
+
+    public void setUpdatedAfter(Long updatedAfter) {
+        this.updatedAfter = updatedAfter;
     }
 }
