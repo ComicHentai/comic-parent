@@ -59,13 +59,6 @@ public class ComicServiceImplTest extends SpringTestHelper{
     }
 
     @Test
-    public void testGetComicByTitleOrAuthor(){
-        logger.debug("debugging");
-        String comic = JSON.toJSONString(comicService.getComicByTitleOrAuthor("1"));
-        logger.error(comic);
-    }
-
-    @Test
     public void testGetComicByUserId(){
         logger.debug("debugging");
         String comic = JSON.toJSONString(comicService.getComicByUserId(1));
@@ -78,12 +71,6 @@ public class ComicServiceImplTest extends SpringTestHelper{
         ComicDto comicDto = new ComicDto(1L, 1L, 1, IsDeleted.NO, "1", "1", "1", "1", "1");
         comicDto.setId(1);
         comicService.modifyComic(comicDto);
-    }
-
-    @Test
-    public void testRemoveComicById(){
-        logger.debug("debugging");
-        comicService.removeComicById(1);
     }
 
     @Test
