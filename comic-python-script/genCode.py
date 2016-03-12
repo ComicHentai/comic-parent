@@ -7,14 +7,17 @@ def initDao(objectName):
            'import com.comichentai.dataobject.{L}Do;\n' \
            'import org.apache.ibatis.annotations.Param;\n' \
            'import java.util.List;\n' \
-           '/*** Created by hope6537 on 16/2/15.*/\n' \
            '@MybatisRepository \n' \
            'public ' \
            'interface ' \
            '{L}Dao \n' \
            '{\n ' \
            '{L}Do select{L}ById(@Param("id") Integer id);\n' \
-           'List<{L}Do> select{L}ListByIds(@Param("idList") Integer... idList);\n' \
+           'List<{L}Do> select{L}ListByIds(@Param("ids") Integer... idList);\n' \
+           'List<{L}Do> select{L}ByTitle(@Param("title") String title);\n' \
+           'void insert{L}({L}Do '+ objectName.lower() +'Do);\n' \
+           'void update{L}({L}Do '+ objectName.lower() +'Do);\n' \
+           'void delete{L}ByIds(@Param("ids") Integer... ids);' \
            '}'
     text = text.replace("{L}", objectName)
     fileName = objectName + "Dao.java"
@@ -24,4 +27,4 @@ def initDao(objectName):
     return os.getcwd() + '/' + fileName
 
 
-print(initDao("Comic"))
+print(initDao("User"))

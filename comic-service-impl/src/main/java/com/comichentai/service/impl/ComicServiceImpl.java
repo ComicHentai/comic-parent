@@ -1,14 +1,16 @@
 package com.comichentai.service.impl;
 
 import com.comichentai.convert.impl.DozerMappingConverter;
+import com.comichentai.dao.ClassifiedDao;
 import com.comichentai.dao.ComicDao;
+import com.comichentai.dao.RelationalDao;
 import com.comichentai.dataobject.ComicDo;
 import com.comichentai.dto.ComicDto;
 import com.comichentai.service.ComicService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +18,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by Dintama on 2016/2/29.
+ * Created by Dintama on 2016/3/12.
  */
 @Service("comicService")
 public class ComicServiceImpl implements ComicService {
@@ -24,72 +26,71 @@ public class ComicServiceImpl implements ComicService {
     @Resource(name = "comicDao")
     private ComicDao comicDao;
 
+    @Resource(name = "relationalDao")
+    private RelationalDao relationalDao;
+
+    @Resource(name = "classifiedDao")
+    private ClassifiedDao classifiedDao;
+
     @Resource(name = "mappingConverter")
     private DozerMappingConverter mappingConverter;
 
-
     @Override
     public List<ComicDto> getWelcomeComicListPage(Integer userId) {
-        List<ComicDo> comicDos = comicDao.selectWelcomeComicListPage();
-        return comicDos.parallelStream().map(o -> mappingConverter.doMap(o, ComicDto.class)).collect(Collectors.toList());
+        List<ComicDo> comicDo = comicDao.selectComicListPage();
+        return comicDo.parallelStream().map(o -> mappingConverter.doMap(o, ComicDto.class)).collect(Collectors.toList());
     }
 
     @Override
     public ComicDto getComicById(Integer userId, Integer comicId) {
         checkNotNull(comicId, "comicId cannot be null");
         ComicDo comicDo = comicDao.selectComicById(comicId);
-        List<String> classified = comicDao.selectComicClassifieds(comicId);
-        if(!classified.isEmpty())
-            comicDo.setClassifieds(classified);
-        return mappingConverter.doMap(comicDo, ComicDto.class);
+        List<Integer> ids = relationalDao.selectClassifiedIdsByComicId(comicId);
+        List<String> titles = classifiedDao.selectClassifiedListByIds((Integer[])ids.toArray());
+        comicDo.setClassifieds(titles);
+        ComicDto comicDto = mappingConverter.doMap(comicDo, ComicDto.class);
+        return comicDto;
     }
 
     @Override
-    public List<ComicDto> getComicByTitleOrAuthor(String titleOrAuthor) {
-        checkNotNull(titleOrAuthor, "title or author cannot be null");
-        List<ComicDo> comicDos = comicDao.selectComicByAuthor(titleOrAuthor);
-        comicDos.containsAll(comicDao.selectComicByTitle(titleOrAuthor));
-        return comicDos.parallelStream().map(o -> mappingConverter.doMap(o, ComicDto.class)).collect(Collectors.toList());
+    public List<ComicDto> getComicByTitle(String title) {
+        checkNotNull(title, "title cannot be null");
+        List<ComicDo> comicDo = comicDao.selectComicByTitle(title);
+        return comicDo.parallelStream().map(o -> mappingConverter.doMap(o, ComicDto.class)).collect(Collectors.toList());
     }
 
     @Override
     public List<ComicDto> getComicByUserId(Integer userId) {
-        checkNotNull(userId, "userId cannot be null");
-        List<ComicDo> comicDos = comicDao.selectComicByUserId(userId);
-        return comicDos.parallelStream().map(o -> mappingConverter.doMap(o, ComicDto.class)).collect(Collectors.toList());
+        return null;
     }
 
     @Override
     public void addComic(ComicDto comicDto) {
-        checkNotNull(comicDto, "comicDto cannot be null");
+        checkNotNull(comicDto, "comic cannot be null");
         ComicDo comicDo = mappingConverter.doMap(comicDto, ComicDo.class);
         comicDao.insertComic(comicDo);
     }
 
     @Override
     public void addComicFromUser(Integer userId, Integer comicId) {
-        checkNotNull(userId, "userId cannot be null");
-        checkNotNull(comicId, "comicId cannot be null");
-        comicDao.insertComicFromUser(userId, comicId);
+
     }
 
     @Override
     public void modifyComic(ComicDto comicDto) {
-        checkNotNull(comicDto, "comicDto cannot be null");
+        checkNotNull(comicDto, "comic cannot be null");
         ComicDo comicDo = mappingConverter.doMap(comicDto, ComicDo.class);
         comicDao.updateComic(comicDo);
     }
 
     @Override
-    public void removeComicById(Integer id) {
+    public void removeComicByIds(Integer... id) {
         checkNotNull(id, "id cannot be null");
-        comicDao.deleteComicById(id);
+        comicDao.deleteComicByIds(id);
     }
 
     @Override
     public void removeComicFromUser(Integer userId, List<Integer> comicIds) {
-        checkNotNull(userId, "userId cannot be null");
-        checkArgument(comicIds.size() > 0, "comicIds cannot be empty");
-        comicDao.deleteComicFromUser(userId, comicIds);
+
     }
 }

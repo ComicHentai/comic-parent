@@ -2,29 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD iBatis Mapper 3.0 //EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.comichentai.dao.ComicDao">
 
-    <select id="selectWelcomeComicListPage" resultType="com.comichentai.dataobject.ComicDo">
+    <select id="selectComicListPage" resultType="com.comichentai.dao.ComicDao">
         SELECT * FROM sys_comic where is_deleted = 0
     </select>
 
-    <select id="selectComicById" resultType="com.comichentai.dataobject.ComicDo">
+    <select id="selectComicByIds" resultType="com.comichentai.dao.ComicDao">
+        SELECT * FROM sys_comic WHERE is_deleted = 0 and id IN
+        (
+        <foreach collection="ids" item="id" separator=",">
+            ${id}
+        </foreach>
+        )LIMIT ${ids.size};
+    </select>
+
+    <select id="selectComicById" resultType="com.comichentai.dao.ComicDao">
         SELECT * FROM sys_comic WHERE id = ${id} and is_deleted = 0
     </select>
 
-    <select id="selectComicClassifieds" resultType="java.lang.String">
-        SELECT a.title FROM sys_classified AS a, sys_comic_classified AS b WHERE a.id = b.comic_id
-        AND b.comic_id = ${id}
-    </select>
-
-    <select id="selectComicByTitle" resultType="com.comichentai.dataobject.ComicDo">
-        SELECT * FROM sys_comic WHERE title  LIKE CONCAT('%',#{title},'%') and is_deleted = 0
-    </select>
-
-    <select id="selectComicByAuthor" resultType="com.comichentai.dataobject.ComicDo">
-        SELECT * FROM sys_comic WHERE author  LIKE CONCAT('%',#{author},'%') and is_deleted = 0
-    </select>
-
-    <select id="selectComicByUserId" resultType="com.comichentai.dataobject.ComicDo" >
-        SELECT b.* FROM sys_user_comic AS a, sys_comic AS b WHERE a.comic_id = b.id AND a.user_id = ${userId} and b.is_deleted = 0
+    <select id="selectComicByTitle" resultType="com.comichentai.dao.ComicDao">
+        SELECT * FROM sys_comic WHERE is_deleted = 0 AND title  LIKE CONCAT('%',${title},'%') or author  LIKE CONCAT('%',${title},'%')
     </select>
 
     <insert id="insertComic" parameterType="com.comichentai.dataobject.ComicDo" useGeneratedKeys="true" keyProperty="id">
@@ -32,27 +28,19 @@
         VALUES (${title}, ${coverTitle}, ${author}, ${introduction}, ${created}, ${updated}, ${contentTitle}, ${status}, ${isDeleted})
     </insert>
 
-    <insert id="insertComicFromUser" parameterType="java.lang.Integer">
-        INSERT INTO sys_user_comic(user_id, comic_id) VALUES(${userId}, ${comicId})
-    </insert>
-
     <update id="updateComic" parameterType="com.comichentai.dataobject.ComicDo">
         UPDATE sys_comic SET title = ${title}, cover_title = ${coverTitle}, author = ${author}, introduction = ${introduction}, created = ${created}, updated = ${updated}, content_title = ${contentTitle}, STATUS = ${status}, is_deleted = ${isDeleted}
         WHERE id = ${id}
     </update>
 
-    <update id="deleteComicById" parameterType="com.comichentai.dataobject.ComicDo">
-        UPDATE sys_comic SET is_deleted = 1 WHERE id = ${id}
+    <update id="deleteComicByIds" parameterType="com.comichentai.dataobject.ComicDo">
+         UPDATE sys_comic SET is_deleted = 1 WHERE id IN
+         (
+         <foreach collection="ids" item="id" separator=",">
+             ${id}
+         </foreach>
+         )LIMIT ${ids.size};
     </update>
-
-    <delete id="deleteComicFromUser" parameterType="java.lang.Integer">
-        DELETE FROM sys_user_comic WHERE user_id = ${userId} AND comic_id IN
-        (
-        <foreach collection="comicIds" item="comicId" separator=",">
-            ${comicId}
-        </foreach>
-        )LIMIT ${comicIds.size};
-    </delete>
 
 
 </mapper>

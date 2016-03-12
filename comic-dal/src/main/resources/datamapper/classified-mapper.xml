@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD iBatis Mapper 3.0 //EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comichentai.dao.ClassifiedDao">
+    <select id="selectClassifiedByIds" resultType="com.comichentai.dao.ClassifiedDao">
+        SELECT title FROM sys_classified WHERE is_deleted = 0 AND id IN
+        (
+        <foreach collection="ids" item="id" separator=",">
+            ${id}
+        </foreach>
+        ) LIMIT ${ids.size}
+    </select>
+    <select id="selectClassifiedById" resultType="com.comichentai.dao.ClassifiedDao">
+        SELECT * FROM sys_classified WHERE is_deleted = 0 AND id = ${id}
+    </select>
+    <select id="selectClassifiedByTitle" resultType="com.comichentai.dao.ClassifiedDao">
+        SELECT * FROM sys_classified WHERE is_deleted = 0 AND title  LIKE CONCAT('%',${title},'%')
+    </select>
+    <insert id="insertClassified" parameterType="com.comichentai.dataobject.ClassifiedDo" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO sys_classified(title, is_deleted) VALUES (${title}, 0)
+    </insert>
+    <update id="updateClassified" parameterType="com.comichentai.dataobject.ClassifiedDo">
+        UPDATE sys_classified SET title = ${title} WHERE id = ${id}
+    </update>
+    <update id="deleteClassifiedByIds" parameterType="com.comichentai.dataobject.ClassifiedDo">
+        UPDATE sys_classified SET is_deleted = 1 WHERE id IN
+        (
+        <foreach collection="ids" item="id" separator=",">
+            ${id}
+        </foreach>
+        )LIMIT ${ids.size}
+    </update>
+</mapper>

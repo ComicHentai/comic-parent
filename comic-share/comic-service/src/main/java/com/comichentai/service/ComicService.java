@@ -17,7 +17,7 @@ public interface ComicService {
     ComicDto getComicById(Integer userId, Integer comicId);
 
     /* 通过漫画名称或作者名获取漫画信息 */
-    List<ComicDto> getComicByTitleOrAuthor(String titleOrAuthor);
+    List<ComicDto> getComicByTitle(String title);
 
     /* 通过用户ID获取漫画信息 */
     List<ComicDto> getComicByUserId(Integer userId);
@@ -33,7 +33,7 @@ public interface ComicService {
     void modifyComic(ComicDto comicDto);
 
     /* 删除漫画 */
-    void removeComicById(Integer id);
+    void removeComicByIds(Integer... ids);
 
     /* 用户删除收藏漫画 */
     void removeComicFromUser(Integer userId, List<Integer> comicIds);

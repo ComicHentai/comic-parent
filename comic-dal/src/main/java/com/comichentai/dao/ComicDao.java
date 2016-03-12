@@ -12,27 +12,19 @@ import java.util.List;
 @MybatisRepository
 public interface ComicDao {
 
-    List<ComicDo> selectWelcomeComicListPage();     //首页漫画搜索
+    List<ComicDo> selectComicListPage();
 
-    ComicDo selectComicById(@Param("id") int id);
+    ComicDo selectComicByIds(@Param("ids")Integer... ids);
 
-    List<String> selectComicClassifieds(@Param("id")int id);
+    ComicDo selectComicById(@Param("id")Integer id);
 
-    List<ComicDo> selectComicByTitle(@Param("title")String title);
-
-    List<ComicDo> selectComicByAuthor(@Param("author")String author);
-
-    List<ComicDo> selectComicByUserId(@Param("userId")int userId);
+    List<ComicDo> selectComicByTitle(@Param("title") String title);
 
     void insertComic(ComicDo comicDo);
 
-    void insertComicFromUser(@Param("userId")Integer userId, @Param("comicId")Integer comicId);
-
     void updateComic(ComicDo comicDo);
 
-    void deleteComicById(@Param("id")int id);
-
-    void deleteComicFromUser(@Param("userId")Integer userId, @Param("comicIds")List<Integer> comicIds);
+    void deleteComicByIds(@Param("ids") Integer... ids);
 
 
 
