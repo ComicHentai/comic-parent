@@ -7,7 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * Created by hope6537 on 16/1/30.
+ * 实体数据访问接口
+ * Created by hope6537 by Code Generator
  */
 @MybatisRepository
 public interface TestComicDao {

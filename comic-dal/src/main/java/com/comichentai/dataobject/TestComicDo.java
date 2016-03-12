@@ -1,7 +1,8 @@
 package com.comichentai.dataobject;
 
 /**
- * Created by hope6537 on 16/1/30.
+ * 实体DO
+ * Created by hope6537 by Code Generator
  */
 public class TestComicDo extends BasicDo {
 

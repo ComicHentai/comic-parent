@@ -77,7 +77,6 @@ def client_handler(client_socket):
 
 # 创建服务端循环和子函数,对命令行shell的创建和命令的执行进行处理
 def server_loop():
-
     global target
     global port
     if not len(target):

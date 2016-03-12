@@ -6,7 +6,8 @@ import com.comichentai.entity.ResultSupport;
 import java.util.List;
 
 /**
- * Created by hope6537 on 16/1/30.
+ * 实体服务接口
+ * Created by hope6537 by Code Generator
  */
 public interface TestComicService {
 
@@ -77,7 +78,7 @@ public interface TestComicService {
     /**
      * 标准模板生成-根据Query对象查询符合条件的数据
      *
-     * @param testComicDto 数据查询对象
+     * @param query 数据查询对象
      * @return ResultSupport.getData = 多条符合条件的数据
      */
     ResultSupport<List<TestComicDto>> getTestComicListByQuery(TestComicDto query);

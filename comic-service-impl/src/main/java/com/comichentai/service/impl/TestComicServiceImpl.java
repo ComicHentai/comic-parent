@@ -23,7 +23,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * 基础服务实现类
+ * 实体服务实现类
+ * Created by hope6537 by Code Generator
  */
 @Service(value = "testComicService")
 public class TestComicServiceImpl implements TestComicService {
