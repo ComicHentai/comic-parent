@@ -54,4 +54,6 @@ public class TestComicDto extends BasicDto {
     public void setImgTitle(String imgTitle) {
         this.imgTitle = imgTitle;
     }
+
+
 }

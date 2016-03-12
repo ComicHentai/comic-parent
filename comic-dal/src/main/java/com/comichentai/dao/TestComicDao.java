@@ -12,8 +12,22 @@ import java.util.List;
 @MybatisRepository
 public interface TestComicDao {
 
-    TestComicDo selectComicById(@Param("id") Integer id);
+    int insertTestComic(TestComicDo testComicDo);
 
-    List<TestComicDo> selectComicListByIds(@Param("idList") List<Integer> idList);
+    int updateTestComic(TestComicDo testComicDo);
+
+    int batchUpdateTestComic(@Param("data") TestComicDo testComicDo, @Param("idList") List<Integer> idList);
+
+    int deleteTestComic(@Param("id") Integer id);
+
+    int batchDeleteTestComic(@Param("idList") List<Integer> idList);
+
+    TestComicDo selectTestComicById(@Param("id") Integer id);
+
+    List<TestComicDo> selectTestComicListByIds(@Param("idList") List<Integer> idList);
+
+    List<TestComicDo> selectTestComicListByQuery(TestComicDo query);
+
+    int selectTestComicCountByQuery(TestComicDo query);
 
 }

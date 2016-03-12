@@ -11,6 +11,7 @@ import java.io.Serializable;
  */
 public class PageDto implements Serializable {
 
+    public static final int DEFAULT_PAGESIZE = 20;
     private static final long serialVersionUID = -4299676786928364850L;
     private Integer pageSize;
     private Integer startRecord;
@@ -43,6 +44,9 @@ public class PageDto implements Serializable {
     }
 
     public void setCurrentPage(Integer currentPage) {
+        if (currentPage == 0) {
+            currentPage = 1;
+        }
         this.currentPageNo = currentPage;
     }
 }

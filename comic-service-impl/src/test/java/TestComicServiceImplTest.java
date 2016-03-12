@@ -1,4 +1,6 @@
 import com.alibaba.fastjson.JSON;
+import com.comichentai.dto.TestComicDto;
+import com.comichentai.entity.ResultSupport;
 import com.comichentai.helper.SpringTestHelper;
 import com.comichentai.service.TestComicService;
 import com.google.common.collect.Lists;
@@ -11,6 +13,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.io.IOException;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by hope6537 on 16/2/4.
@@ -34,16 +39,66 @@ public class TestComicServiceImplTest extends SpringTestHelper {
     }
 
     @Test
+    public void testAddTestComic() {
+        ResultSupport<Integer> integerResultSupport = testComicService.addTestComic("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis());
+        logger.info(JSON.toJSONString(integerResultSupport));
+        assertTrue(integerResultSupport.getModule() > 0);
+    }
+
+    @Test
+    public void testModifyTestComic() {
+        ResultSupport<Integer> resultSupport = testComicService.addTestComic("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis());
+        Integer id = resultSupport.getModule();
+        TestComicDto dto = new TestComicDto("title_modify_single", "imgTitle_modify_single");
+        dto.setId(id);
+        ResultSupport<Integer> modifyResultSupport = testComicService.modifyTestComic(dto);
+        logger.info(JSON.toJSONString(modifyResultSupport));
+        assertTrue(modifyResultSupport.getModule() == 1);
+        ResultSupport<Integer> batchModifyResultSupport = testComicService.batchModifyTestComic(dto, Lists.newArrayList(1, 2, 3));
+        logger.info(JSON.toJSONString(batchModifyResultSupport));
+        assertTrue(batchModifyResultSupport.getModule() == 3);
+        logger.info(JSON.toJSONString(testComicService.getTestComicListByIdList(Lists.newArrayList(1, 2, 3))));
+    }
+
+    @Test
+    public void testRemoveTestComic() {
+        ResultSupport<Integer> resultSupport = testComicService.addTestComic("wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis());
+        Integer id = resultSupport.getModule();
+        ResultSupport<Integer> modifyResultSupport = testComicService.removeTestComic(id);
+        logger.info(JSON.toJSONString(modifyResultSupport));
+        assertTrue(modifyResultSupport.getModule() == 1);
+        ResultSupport<Integer> batchModifyResultSupport = testComicService.batchRemoveTestComic(Lists.newArrayList(1, 2, 3));
+        logger.info(JSON.toJSONString(batchModifyResultSupport));
+        assertTrue(batchModifyResultSupport.getModule() == 3);
+        logger.info(JSON.toJSONString(testComicService.getTestComicListByIdList(Lists.newArrayList(1, 2, 3))));
+    }
+
+
+    @Test
     public void testGetComicById() {
-        String comic = JSON.toJSONString(testComicService.getComicById(1));
-        logger.error(comic);
+        String comic = JSON.toJSONString(testComicService.getTestComicById(1));
+        logger.info(comic);
     }
 
     @Test
     public void testGetComicListByIdList() {
-        logger.debug("Debuging");
-        String comicList = JSON.toJSONString(testComicService.getComicListByIdList(Lists.newArrayList(1, 2, 3, 4)));
-        logger.error(comicList);
+        String comicList = JSON.toJSONString(testComicService.getTestComicListByIdList(Lists.newArrayList(1, 2, 3, 4)));
+        logger.info(comicList);
+    }
+
+    @Test
+    public void testGetComicListByQuery() {
+        TestComicDto dto = new TestComicDto();
+        dto.setPageSize(2);
+        dto.setCurrentPage(1);
+        ResultSupport<List<TestComicDto>> testComicListByQuery = testComicService.getTestComicListByQuery(dto);
+        logger.info(JSON.toJSONString(testComicListByQuery));
+        dto.setCurrentPage(2);
+        testComicListByQuery = testComicService.getTestComicListByQuery(dto);
+        logger.info(JSON.toJSONString(testComicListByQuery));
+        dto.setCurrentPage(3);
+        testComicListByQuery = testComicService.getTestComicListByQuery(dto);
+        logger.info(JSON.toJSONString(testComicListByQuery));
     }
 
     @Test

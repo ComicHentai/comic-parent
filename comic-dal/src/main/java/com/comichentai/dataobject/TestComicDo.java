@@ -24,4 +24,5 @@ public class TestComicDo extends BasicDo {
     public void setImgTitle(String imgTitle) {
         this.imgTitle = imgTitle;
     }
+
 }
