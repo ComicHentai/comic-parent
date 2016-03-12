@@ -2,6 +2,8 @@
 import os
 
 
+# 代码自动生成 do-dao-mapper-dto-service-serviceImpl-test一站式服务 我好强啊
+# TODO:增加链接数据库读取阶段
 # 查询表中所有字段
 # select column_name from information_schema.columns where table_name = [tableName] order by table_schema,table_name
 def initDao(objectName):
