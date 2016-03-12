@@ -10,7 +10,6 @@ import com.comichentai.enums.IsDeleted;
 import com.comichentai.page.PageDto;
 import com.comichentai.service.TestComicService;
 import com.google.common.collect.Lists;
-import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -59,7 +58,7 @@ public class TestComicServiceImpl implements TestComicService {
     }
 
     @Override
-    public ResultSupport<Integer> addTestComic(@NotNull String title, String imgTitle) {
+    public ResultSupport<Integer> addTestComic(String title, String imgTitle) {
         try {
             checkNotNull(title, "[添加失败][当前插入数据字段(title)为空]");
         } catch (Exception e) {

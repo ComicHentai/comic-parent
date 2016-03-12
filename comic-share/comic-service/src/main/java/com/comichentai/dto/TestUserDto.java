@@ -1,17 +1,44 @@
+
 package com.comichentai.dto;
 
 /**
- * Created by hope6537 on 16/2/15.
+ * 实体DTO
+ * Created by hope6537 by Code Generator
  */
 public class TestUserDto extends BasicDto {
 
-    private String name;
+    /** */
+    private String username;
 
-    public String getName() {
-        return name;
+    /** */
+    private String password;
+
+    public TestUserDto() {
+
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public TestUserDto(String username, String password) {
+
+        this.username = username;
+        this.password = password;
+
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }
+    
