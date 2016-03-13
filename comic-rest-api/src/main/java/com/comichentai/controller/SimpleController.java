@@ -2,6 +2,7 @@ package com.comichentai.controller;
 
 import com.comichentai.dto.TestComicDto;
 import com.comichentai.entity.Response;
+import com.comichentai.entity.ResultSupport;
 import com.comichentai.service.TestComicService;
 import com.google.common.collect.Lists;
 import org.springframework.boot.SpringApplication;
@@ -37,8 +38,8 @@ public class SimpleController {
 
     @RequestMapping(value = "/testComic", method = RequestMethod.GET)
     @ResponseBody
-    public List<TestComicDto> getTestComic() {
-        return testComicService.getComicListByIdList(Lists.newArrayList(1, 2, 3, 4));
+    public ResultSupport<List<TestComicDto>> getTestComic() {
+        return testComicService.getTestComicListByIdList(Lists.newArrayList(1, 2, 3, 4));
     }
 
     @RequestMapping(value = "/getComic/{query}", method = RequestMethod.GET)
