@@ -17,6 +17,14 @@
     <dubbo:protocol name="dubbo" port="20880"/>
 
     <!-- 声明需要暴露的服务接口 -->
-    <dubbo:service interface="com.comichentai.service.TestComicService" ref="testComicService"/>
+    <dubbo:service ref="testComicService" interface="com.comichentai.service.TestComicService"/>
+    <dubbo:service ref="testUserService" interface="com.comichentai.service.TestUserService"/>
+    <dubbo:service ref="categoryService" interface="com.comichentai.service.CategoryService"/>
+    <dubbo:service ref="classifiedService" interface="com.comichentai.service.ClassifiedService"/>
+    <dubbo:service ref="comicService" interface="com.comichentai.service.ComicService"/>
+    <dubbo:service ref="favoriteService" interface="com.comichentai.service.FavoriteService"/>
+    <dubbo:service ref="jumpService" interface="com.comichentai.service.JumpService"/>
+    <dubbo:service ref="specialService" interface="com.comichentai.service.SpecialService"/>
+    <dubbo:service ref="userInfoService" interface="com.comichentai.service.UserInfoService"/>
 
 </beans>

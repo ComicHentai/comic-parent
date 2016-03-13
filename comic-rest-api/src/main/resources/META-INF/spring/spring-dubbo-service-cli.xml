@@ -11,6 +11,14 @@
     <context:component-scan base-package="com.comichentai.*"/>
 
     <dubbo:reference id="testComicService" interface="com.comichentai.service.TestComicService"/>
+    <dubbo:reference id="testUserService" interface="com.comichentai.service.TestUserService"/>
+    <dubbo:reference id="categoryService" interface="com.comichentai.service.CategoryService"/>
+    <dubbo:reference id="classifiedService" interface="com.comichentai.service.ClassifiedService"/>
+    <dubbo:reference id="comicService" interface="com.comichentai.service.ComicService"/>
+    <dubbo:reference id="favoriteService" interface="com.comichentai.service.FavoriteService"/>
+    <dubbo:reference id="jumpService" interface="com.comichentai.service.JumpService"/>
+    <dubbo:reference id="specialService" interface="com.comichentai.service.SpecialService"/>
+    <dubbo:reference id="userInfoService" interface="com.comichentai.service.UserInfoService"/>
 
     <dubbo:application name="comic-rest-api"/>
 

@@ -38,8 +38,8 @@ public class SimpleController {
 
     @RequestMapping(value = "/testComic", method = RequestMethod.GET)
     @ResponseBody
-    public ResultSupport<List<TestComicDto>> getTestComic() {
-        return testComicService.getTestComicListByIdList(Lists.newArrayList(1, 2, 3, 4));
+    public TestComicService getTestComic() {
+        return testComicService;
     }
 
     @RequestMapping(value = "/getComic/{query}", method = RequestMethod.GET)
