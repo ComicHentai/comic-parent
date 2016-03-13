@@ -1,11 +1,15 @@
 # encoding:UTF-8
+# coding=utf8
 import os
+
+import MySQLdb
 
 
 # 代码自动生成 do-dao-mapper-dto-service-serviceImpl-test一站式服务 我好强啊
 # TODO:增加链接数据库读取阶段
 # 查询表中所有字段
-# select column_name from information_schema.columns where table_name = [tableName] order by table_schema,table_name
+# select column_name,column_comment,is_nullable from information_schema.columns where table_name = 'TestUser' order by table_schema,table_name
+# select distinct table_name from information_schema.columns where table_schema = 'ComicHentai' order by table_schema,table_name
 def initDao(objectName):
     text = """
     package com.comichentai.dao;
@@ -749,14 +753,37 @@ public class {ObjectName}ServiceImplTest extends SpringTestHelper {
 
 
 # print(initDao("User"))
-def initAll(objectName):
-    print(initDo(objectName, ["username", "password"]))
-    print(initDto(objectName, ["username", "password"]))
+def initAll(objectName, columns):
+    print(initDo(objectName, columns))
+    print(initDto(objectName, columns))
     print(initDao(objectName))
-    print(initMapper(objectName, ["username", "password"]))
-    print(initService(objectName, ["username", "password"]))
-    print(initServiceImpl(objectName, ["username", "password"]))
-    print(initTest(objectName, ["username", "password"]))
+    print(initMapper(objectName, columns))
+    print(initService(objectName, columns))
+    print(initServiceImpl(objectName, columns))
+    print(initTest(objectName, columns))
 
 
-initAll("TestUser")
+def mysql_connect():
+    conn = MySQLdb.connect(user='root', passwd='gintama123', host='www.hope6537.com', db='ComicHentai')
+    cursor = conn.cursor()
+    # 得到当前数据库中的所有表
+    cursor.execute(
+            "select distinct table_name from information_schema.columns where table_schema = 'ComicHentai' order by table_schema,table_name")
+    tables = cursor.fetchall()
+    print(tables)
+    for table in tables:
+        table = table[0]
+        cursor.execute(
+                "select column_name,column_comment,is_nullable from information_schema.columns where table_name = '" + table + "' order by table_schema,table_name", )
+        values = cursor.fetchall()
+        columns = []
+        for column in values:
+            columns.append(column[0])
+        print(columns)
+        initAll(table, columns)
+    cursor.close()
+    conn.close()
+
+
+mysql_connect()
+# initAll("TestUser")
