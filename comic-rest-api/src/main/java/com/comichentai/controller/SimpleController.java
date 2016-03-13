@@ -1,7 +1,10 @@
 package com.comichentai.controller;
 
+import com.comichentai.dto.ComicDto;
 import com.comichentai.dto.TestComicDto;
 import com.comichentai.entity.Response;
+import com.comichentai.entity.ResultSupport;
+import com.comichentai.service.ComicService;
 import com.comichentai.service.TestComicService;
 import com.google.common.collect.Lists;
 import org.springframework.boot.SpringApplication;
@@ -25,6 +28,9 @@ public class SimpleController {
     @Resource(name = "testComicService")
     public TestComicService testComicService;
 
+    @Resource(name = "comicService")
+    public ComicService comicService;
+
     public static void main(String[] args) {
         SpringApplication.run(SimpleController.class, args);
     }
@@ -41,6 +47,18 @@ public class SimpleController {
         return testComicService.getTestComicListByIdList(Lists.newArrayList(1, 2, 3, 4)).getModule();
     }
 
+    @RequestMapping(value = "/resultSupport", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultSupport<List<TestComicDto>> getTestComicResult() {
+        return testComicService.getTestComicListByIdList(Lists.newArrayList(1, 2, 3, 4));
+    }
+
+    @RequestMapping(value = "/getComic" , method = RequestMethod.GET)
+    @ResponseBody
+    public ResultSupport<List<ComicDto>> getComic(){
+        return comicService.getComicListByQuery(new ComicDto());
+    }
+
     @RequestMapping(value = "/getComic/{query}", method = RequestMethod.GET)
     @ResponseBody
     public Response getComicByQuery(@PathVariable String query) {
@@ -50,23 +68,6 @@ public class SimpleController {
             TestComicDto testComicDto = new TestComicDto();
             testComicDto.setId(random.nextInt());
             testComicDto.setTitle(query + "[漫画名]");
-            testComicDto.setImgTitle("/p1/v1/xxxx" + random.nextInt(10000) + ".img");
-            comicList.add(testComicDto);
-        }
-        Response data = Response.getInstance(true).addAttribute("data", comicList);
-        data.setTotalCount(comicList.size());
-        return data;
-    }
-
-    @RequestMapping(value = "/getComic", method = RequestMethod.GET)
-    @ResponseBody
-    public Response getComic() {
-        Random random = new Random(System.currentTimeMillis());
-        List<TestComicDto> comicList = Lists.newArrayList();
-        for (int i = 0; i < random.nextInt(); i++) {
-            TestComicDto testComicDto = new TestComicDto();
-            testComicDto.setId(random.nextInt());
-            testComicDto.setTitle("[漫画名" + random.nextInt() + "]");
             testComicDto.setImgTitle("/p1/v1/xxxx" + random.nextInt(10000) + ".img");
             comicList.add(testComicDto);
         }
