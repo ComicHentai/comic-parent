@@ -24,7 +24,7 @@
         <spring.version>4.2.4.RELEASE</spring.version>
         <aspectj_version>1.7.3</aspectj_version>
         <dubbo.version>2.5.3</dubbo.version>
-        <javassist_version>3.15.0-GA</javassist_version>
+        <javassist_version>3.20.0-GA</javassist_version>
         <netty_version>3.2.5.Final</netty_version>
         <mina_version>1.1.7</mina_version>
         <grizzly_version>2.1.4</grizzly_version>
