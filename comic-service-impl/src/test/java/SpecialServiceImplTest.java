@@ -1,5 +1,4 @@
-
-    import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSON;
 import com.comichentai.dto.SpecialDto;
 import com.comichentai.entity.ResultSupport;
 import com.comichentai.helper.SpringTestHelper;
@@ -42,16 +41,16 @@ public class SpecialServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testAddSpecial() {
-        ResultSupport<Integer> integerResultSupport = specialService.addSpecial("test0"+System.currentTimeMillis(),91);
+        ResultSupport<Integer> integerResultSupport = specialService.addSpecial("test0" + System.currentTimeMillis(), 91);
         logger.info(JSON.toJSONString(integerResultSupport));
         assertTrue(integerResultSupport.getModule() > 0);
     }
 
     @Test
     public void testModifySpecial() {
-        ResultSupport<Integer> resultSupport = specialService.addSpecial("test0"+System.currentTimeMillis(),91);
+        ResultSupport<Integer> resultSupport = specialService.addSpecial("test0" + System.currentTimeMillis(), 91);
         Integer id = resultSupport.getModule();
-        SpecialDto dto = new SpecialDto("modify0"+System.currentTimeMillis(),81);
+        SpecialDto dto = new SpecialDto("modify0" + System.currentTimeMillis(), 81);
         dto.setId(id);
         ResultSupport<Integer> modifyResultSupport = specialService.modifySpecial(dto);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -64,7 +63,7 @@ public class SpecialServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testRemoveSpecial() {
-        ResultSupport<Integer> resultSupport = specialService.addSpecial("wait_delete0"+System.currentTimeMillis(),71);
+        ResultSupport<Integer> resultSupport = specialService.addSpecial("wait_delete0" + System.currentTimeMillis(), 71);
         Integer id = resultSupport.getModule();
         ResultSupport<Integer> modifyResultSupport = specialService.removeSpecial(id);
         logger.info(JSON.toJSONString(modifyResultSupport));

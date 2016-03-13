@@ -1,5 +1,4 @@
-
-    import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSON;
 import com.comichentai.dto.CategoryDto;
 import com.comichentai.entity.ResultSupport;
 import com.comichentai.helper.SpringTestHelper;
@@ -42,16 +41,16 @@ public class CategoryServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testAddCategory() {
-        ResultSupport<Integer> integerResultSupport = categoryService.addCategory(90,91,92);
+        ResultSupport<Integer> integerResultSupport = categoryService.addCategory(90, 91, 92);
         logger.info(JSON.toJSONString(integerResultSupport));
         assertTrue(integerResultSupport.getModule() > 0);
     }
 
     @Test
     public void testModifyCategory() {
-        ResultSupport<Integer> resultSupport = categoryService.addCategory(90,91,92);
+        ResultSupport<Integer> resultSupport = categoryService.addCategory(90, 91, 92);
         Integer id = resultSupport.getModule();
-        CategoryDto dto = new CategoryDto(80,81,82);
+        CategoryDto dto = new CategoryDto(80, 81, 82);
         dto.setId(id);
         ResultSupport<Integer> modifyResultSupport = categoryService.modifyCategory(dto);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -64,7 +63,7 @@ public class CategoryServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testRemoveCategory() {
-        ResultSupport<Integer> resultSupport = categoryService.addCategory(70,71,72);
+        ResultSupport<Integer> resultSupport = categoryService.addCategory(70, 71, 72);
         Integer id = resultSupport.getModule();
         ResultSupport<Integer> modifyResultSupport = categoryService.removeCategory(id);
         logger.info(JSON.toJSONString(modifyResultSupport));

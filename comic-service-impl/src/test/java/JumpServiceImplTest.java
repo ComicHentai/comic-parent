@@ -1,5 +1,4 @@
-
-    import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSON;
 import com.comichentai.dto.JumpDto;
 import com.comichentai.entity.ResultSupport;
 import com.comichentai.helper.SpringTestHelper;
@@ -42,16 +41,16 @@ public class JumpServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testAddJump() {
-        ResultSupport<Integer> integerResultSupport = jumpService.addJump(90,91);
+        ResultSupport<Integer> integerResultSupport = jumpService.addJump(90, 91);
         logger.info(JSON.toJSONString(integerResultSupport));
         assertTrue(integerResultSupport.getModule() > 0);
     }
 
     @Test
     public void testModifyJump() {
-        ResultSupport<Integer> resultSupport = jumpService.addJump(90,91);
+        ResultSupport<Integer> resultSupport = jumpService.addJump(90, 91);
         Integer id = resultSupport.getModule();
-        JumpDto dto = new JumpDto(80,81);
+        JumpDto dto = new JumpDto(80, 81);
         dto.setId(id);
         ResultSupport<Integer> modifyResultSupport = jumpService.modifyJump(dto);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -64,7 +63,7 @@ public class JumpServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testRemoveJump() {
-        ResultSupport<Integer> resultSupport = jumpService.addJump(70,71);
+        ResultSupport<Integer> resultSupport = jumpService.addJump(70, 71);
         Integer id = resultSupport.getModule();
         ResultSupport<Integer> modifyResultSupport = jumpService.removeJump(id);
         logger.info(JSON.toJSONString(modifyResultSupport));

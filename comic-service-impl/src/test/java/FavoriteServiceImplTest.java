@@ -1,5 +1,4 @@
-
-    import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSON;
 import com.comichentai.dto.FavoriteDto;
 import com.comichentai.entity.ResultSupport;
 import com.comichentai.helper.SpringTestHelper;
@@ -42,16 +41,16 @@ public class FavoriteServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testAddFavorite() {
-        ResultSupport<Integer> integerResultSupport = favoriteService.addFavorite(90,91,92);
+        ResultSupport<Integer> integerResultSupport = favoriteService.addFavorite(90, 91, 92);
         logger.info(JSON.toJSONString(integerResultSupport));
         assertTrue(integerResultSupport.getModule() > 0);
     }
 
     @Test
     public void testModifyFavorite() {
-        ResultSupport<Integer> resultSupport = favoriteService.addFavorite(90,91,92);
+        ResultSupport<Integer> resultSupport = favoriteService.addFavorite(90, 91, 92);
         Integer id = resultSupport.getModule();
-        FavoriteDto dto = new FavoriteDto(80,81,82);
+        FavoriteDto dto = new FavoriteDto(80, 81, 82);
         dto.setId(id);
         ResultSupport<Integer> modifyResultSupport = favoriteService.modifyFavorite(dto);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -64,7 +63,7 @@ public class FavoriteServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testRemoveFavorite() {
-        ResultSupport<Integer> resultSupport = favoriteService.addFavorite(70,71,72);
+        ResultSupport<Integer> resultSupport = favoriteService.addFavorite(70, 71, 72);
         Integer id = resultSupport.getModule();
         ResultSupport<Integer> modifyResultSupport = favoriteService.removeFavorite(id);
         logger.info(JSON.toJSONString(modifyResultSupport));
