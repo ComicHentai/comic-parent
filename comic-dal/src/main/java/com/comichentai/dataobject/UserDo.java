@@ -11,7 +11,8 @@ public class UserDo extends BasicDo {
     private String sexy;
     private String email;
 
-    public UserDo(){}
+    public UserDo() {
+    }
 
     public UserDo(String username, String password, String nickname, String sexy, String email) {
         this.username = username;

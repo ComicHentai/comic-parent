@@ -6,17 +6,21 @@ package com.comichentai.dataobject;
  */
 public class JumpDo extends BasicDo {
 
-    /** */
-    private String specialId;
+    /**
+     * 专辑ID
+     */
+    private Integer specialId;
 
-    /** */
-    private String comicId;
+    /**
+     * 漫画ID
+     */
+    private Integer comicId;
 
     public JumpDo() {
 
     }
 
-    public JumpDo(String specialId, String comicId) {
+    public JumpDo(Integer specialId, Integer comicId) {
 
         this.specialId = specialId;
         this.comicId = comicId;
@@ -24,19 +28,19 @@ public class JumpDo extends BasicDo {
 
     }
 
-    public String getSpecialId() {
+    public Integer getSpecialId() {
         return specialId;
     }
 
-    public void setSpecialId(String specialId) {
+    public void setSpecialId(Integer specialId) {
         this.specialId = specialId;
     }
 
-    public String getComicId() {
+    public Integer getComicId() {
         return comicId;
     }
 
-    public void setComicId(String comicId) {
+    public void setComicId(Integer comicId) {
         this.comicId = comicId;
     }
 

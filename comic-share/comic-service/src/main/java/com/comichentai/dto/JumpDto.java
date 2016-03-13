@@ -6,17 +6,21 @@ package com.comichentai.dto;
  */
 public class JumpDto extends BasicDto {
 
-    /** */
-    private String specialId;
+    /**
+     * 专辑ID
+     */
+    private Integer specialId;
 
-    /** */
-    private String comicId;
+    /**
+     * 漫画ID
+     */
+    private Integer comicId;
 
     public JumpDto() {
 
     }
 
-    public JumpDto(String specialId, String comicId) {
+    public JumpDto(Integer specialId, Integer comicId) {
 
         this.specialId = specialId;
         this.comicId = comicId;
@@ -24,19 +28,19 @@ public class JumpDto extends BasicDto {
 
     }
 
-    public String getSpecialId() {
+    public Integer getSpecialId() {
         return specialId;
     }
 
-    public void setSpecialId(String specialId) {
+    public void setSpecialId(Integer specialId) {
         this.specialId = specialId;
     }
 
-    public String getComicId() {
+    public Integer getComicId() {
         return comicId;
     }
 
-    public void setComicId(String comicId) {
+    public void setComicId(Integer comicId) {
         this.comicId = comicId;
     }
 

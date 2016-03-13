@@ -58,7 +58,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public ResultSupport<Integer> addFavorite(String userId, String targetId, String targetType) {
+    public ResultSupport<Integer> addFavorite(Integer userId, Integer targetId, Integer targetType) {
         try {
             checkNotNull(userId, "[添加失败][当前插入数据字段(userId)为空]");
             checkNotNull(targetId, "[添加失败][当前插入数据字段(targetId)为空]");

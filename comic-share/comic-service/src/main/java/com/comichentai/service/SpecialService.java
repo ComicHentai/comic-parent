@@ -25,7 +25,7 @@ public interface SpecialService {
      * @param 数据字段集合
      * @return ResultSupport.getData = 更新行数
      */
-    ResultSupport<Integer> addSpecial(String title, String userId);
+    ResultSupport<Integer> addSpecial(String title, Integer userId);
 
     /**
      * 标准模板生成-向数据库更新单行记录

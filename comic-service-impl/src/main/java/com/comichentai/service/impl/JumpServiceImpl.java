@@ -58,7 +58,7 @@ public class JumpServiceImpl implements JumpService {
     }
 
     @Override
-    public ResultSupport<Integer> addJump(String specialId, String comicId) {
+    public ResultSupport<Integer> addJump(Integer specialId, Integer comicId) {
         try {
             checkNotNull(specialId, "[添加失败][当前插入数据字段(specialId)为空]");
             checkNotNull(comicId, "[添加失败][当前插入数据字段(comicId)为空]");

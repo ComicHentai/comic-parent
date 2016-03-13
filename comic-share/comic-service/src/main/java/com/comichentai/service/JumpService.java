@@ -25,7 +25,7 @@ public interface JumpService {
      * @param 数据字段集合
      * @return ResultSupport.getData = 更新行数
      */
-    ResultSupport<Integer> addJump(String specialId, String comicId);
+    ResultSupport<Integer> addJump(Integer specialId, Integer comicId);
 
     /**
      * 标准模板生成-向数据库更新单行记录

@@ -25,7 +25,7 @@ public interface CategoryService {
      * @param 数据字段集合
      * @return ResultSupport.getData = 更新行数
      */
-    ResultSupport<Integer> addCategory(String classifiedId, String targetId, String targetType);
+    ResultSupport<Integer> addCategory(Integer classifiedId, Integer targetId, Integer targetType);
 
     /**
      * 标准模板生成-向数据库更新单行记录

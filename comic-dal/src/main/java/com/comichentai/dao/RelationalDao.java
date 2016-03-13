@@ -11,8 +11,8 @@ import java.util.List;
 @MybatisRepository
 public interface RelationalDao {
 
-    List<Integer> selectComicIdsByClassifiedId(@Param("id")Integer id);
+    List<Integer> selectComicIdsByClassifiedId(@Param("id") Integer id);
 
-    List<Integer> selectClassifiedIdsByComicId(@Param("id")Integer id);
+    List<Integer> selectClassifiedIdsByComicId(@Param("id") Integer id);
 
 }

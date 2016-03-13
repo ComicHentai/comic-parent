@@ -6,20 +6,26 @@ package com.comichentai.dto;
  */
 public class CategoryDto extends BasicDto {
 
-    /** */
-    private String classifiedId;
+    /**
+     * 漫画ID
+     */
+    private Integer classifiedId;
 
-    /** */
-    private String targetId;
+    /**
+     * 目标ID
+     */
+    private Integer targetId;
 
-    /** */
-    private String targetType;
+    /**
+     * 目标类型 0-漫画 1-专辑
+     */
+    private Integer targetType;
 
     public CategoryDto() {
 
     }
 
-    public CategoryDto(String classifiedId, String targetId, String targetType) {
+    public CategoryDto(Integer classifiedId, Integer targetId, Integer targetType) {
 
         this.classifiedId = classifiedId;
         this.targetId = targetId;
@@ -28,27 +34,27 @@ public class CategoryDto extends BasicDto {
 
     }
 
-    public String getClassifiedId() {
+    public Integer getClassifiedId() {
         return classifiedId;
     }
 
-    public void setClassifiedId(String classifiedId) {
+    public void setClassifiedId(Integer classifiedId) {
         this.classifiedId = classifiedId;
     }
 
-    public String getTargetId() {
+    public Integer getTargetId() {
         return targetId;
     }
 
-    public void setTargetId(String targetId) {
+    public void setTargetId(Integer targetId) {
         this.targetId = targetId;
     }
 
-    public String getTargetType() {
+    public Integer getTargetType() {
         return targetType;
     }
 
-    public void setTargetType(String targetType) {
+    public void setTargetType(Integer targetType) {
         this.targetType = targetType;
     }
 

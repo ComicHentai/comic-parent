@@ -4,6 +4,24 @@ import os
 
 import MySQLdb
 
+def initDir():
+    if not os.path.exists("./dao"):
+        os.mkdir("./dao")
+    if not os.path.exists("./dataobject"):
+        os.mkdir("./dataobject")
+    if not os.path.exists("./datamapper"):
+        os.mkdir("./datamapper")
+    if not os.path.exists("./dto"):
+        os.mkdir("./dto")
+    if not os.path.exists("./impl"):
+        os.mkdir("./impl")
+    if not os.path.exists("./service"):
+        os.mkdir("./service")
+    if not os.path.exists("./impl"):
+        os.mkdir("./impl")
+    if not os.path.exists("./test"):
+        os.mkdir("./test")
+
 
 # 代码自动生成 do-dao-mapper-dto-service-serviceImpl-test一站式服务 我好强啊
 # TODO:增加链接数据库读取阶段
@@ -686,9 +704,9 @@ def initTest(objectName, testColumn):
             modify_param += ('"modify' + str(i) + '"+System.currentTimeMillis(),')
             delete_param += ('"wait_delete' + str(i) + '"+System.currentTimeMillis(),')
         if c[1] == 'int':
-            param += ("9" + str(i) + '+System.currentTimeMillis(),')
-            modify_param += ("8" + str(i) + '+System.currentTimeMillis(),')
-            delete_param += ("7" + str(i) + '+System.currentTimeMillis(),')
+            param += ("9" + str(i) + ',')
+            modify_param += ("8" + str(i) + ',')
+            delete_param += ("7" + str(i) + ',')
         i += 1
     param = param[0:-1]
     modify_param = modify_param[0:-1]
@@ -818,6 +836,7 @@ public class {ObjectName}ServiceImplTest extends SpringTestHelper {
 
 # print(initDao("User"))
 def initAll(objectName, columns):
+    initDir()
     print(initDo(objectName, columns))
     print(initDto(objectName, columns))
     print(initDao(objectName))

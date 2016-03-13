@@ -21,6 +21,7 @@ public interface TestComicService {
 
     /**
      * 标准模板生成-向数据库添加单行记录 参数集合
+     *
      * @param 数据字段集合
      * @return ResultSupport.getData = 更新行数
      */

@@ -6,17 +6,21 @@ package com.comichentai.dataobject;
  */
 public class SpecialDo extends BasicDo {
 
-    /** */
+    /**
+     * 专辑名称
+     */
     private String title;
 
-    /** */
-    private String userId;
+    /**
+     * 创建用户
+     */
+    private Integer userId;
 
     public SpecialDo() {
 
     }
 
-    public SpecialDo(String title, String userId) {
+    public SpecialDo(String title, Integer userId) {
 
         this.title = title;
         this.userId = userId;
@@ -32,11 +36,11 @@ public class SpecialDo extends BasicDo {
         this.title = title;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

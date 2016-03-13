@@ -6,19 +6,29 @@ package com.comichentai.dataobject;
  */
 public class UserInfoDo extends BasicDo {
 
-    /** */
+    /**
+     * 用户名
+     */
     private String username;
 
-    /** */
+    /**
+     * 密码
+     */
     private String password;
 
-    /** */
+    /**
+     * 昵称
+     */
     private String nickname;
 
-    /** */
+    /**
+     * 性别
+     */
     private String sexy;
 
-    /** */
+    /**
+     * 邮件地址
+     */
     private String email;
 
     public UserInfoDo() {

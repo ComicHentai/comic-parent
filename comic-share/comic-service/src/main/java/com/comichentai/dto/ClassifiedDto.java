@@ -6,7 +6,9 @@ package com.comichentai.dto;
  */
 public class ClassifiedDto extends BasicDto {
 
-    /** */
+    /**
+     * 分类名称
+     */
     private String title;
 
     public ClassifiedDto() {

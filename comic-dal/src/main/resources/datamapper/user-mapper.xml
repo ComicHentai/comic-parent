@@ -13,14 +13,15 @@
         select * from sys_user where is_deleted = 0 AND id = ${id}
     </select>
     <select id="selectUserByNickname" resultType="com.comichentai.dao.UserDao">
-        SELECT * FROM sys_user WHERE is_deleted = 0 AND  nickname  LIKE CONCAT('%',${nickname},'%')
+        SELECT * FROM sys_user WHERE is_deleted = 0 AND nickname LIKE CONCAT('%',${nickname},'%')
     </select>
     <insert id="insertUser" parameterType="com.comichentai.dataobject.UserDo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO sys_user(username, PASSWORD, nickname, sexy, email, is_deleted) VALUES
         (${username}, ${password}, ${nickname}, ${sexy}, ${email}, 0)
     </insert>
     <update id="updateUser" parameterType="com.comichentai.dataobject.UserDo">
-        UPDATE sys_user SET username = ${username}, PASSWORD = ${password}, nickname = ${nickname}, sexy = ${sexy}, email = ${email}
+        UPDATE sys_user SET username = ${username}, PASSWORD = ${password}, nickname = ${nickname}, sexy = ${sexy},
+        email = ${email}
         WHERE id = ${id}
     </update>
     <update id="deleteUserByIds" parameterType="com.comichentai.dataobject.UserDo">

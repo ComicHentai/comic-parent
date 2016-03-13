@@ -6,7 +6,9 @@ package com.comichentai.dataobject;
  */
 public class ClassifiedDo extends BasicDo {
 
-    /** */
+    /**
+     * 分类名称
+     */
     private String title;
 
     public ClassifiedDo() {

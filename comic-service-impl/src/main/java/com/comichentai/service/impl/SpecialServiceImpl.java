@@ -58,7 +58,7 @@ public class SpecialServiceImpl implements SpecialService {
     }
 
     @Override
-    public ResultSupport<Integer> addSpecial(String title, String userId) {
+    public ResultSupport<Integer> addSpecial(String title, Integer userId) {
         try {
             checkNotNull(title, "[添加失败][当前插入数据字段(title)为空]");
             checkNotNull(userId, "[添加失败][当前插入数据字段(userId)为空]");

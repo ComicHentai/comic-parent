@@ -58,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResultSupport<Integer> addCategory(String classifiedId, String targetId, String targetType) {
+    public ResultSupport<Integer> addCategory(Integer classifiedId, Integer targetId, Integer targetType) {
         try {
             checkNotNull(classifiedId, "[添加失败][当前插入数据字段(classifiedId)为空]");
             checkNotNull(targetId, "[添加失败][当前插入数据字段(targetId)为空]");

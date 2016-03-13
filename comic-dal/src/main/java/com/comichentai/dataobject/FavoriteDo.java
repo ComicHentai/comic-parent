@@ -6,20 +6,26 @@ package com.comichentai.dataobject;
  */
 public class FavoriteDo extends BasicDo {
 
-    /** */
-    private String userId;
+    /**
+     * 用户ID
+     */
+    private Integer userId;
 
-    /** */
-    private String targetId;
+    /**
+     * 目标ID
+     */
+    private Integer targetId;
 
-    /** */
-    private String targetType;
+    /**
+     * 目标类型 0-漫画 1-专辑
+     */
+    private Integer targetType;
 
     public FavoriteDo() {
 
     }
 
-    public FavoriteDo(String userId, String targetId, String targetType) {
+    public FavoriteDo(Integer userId, Integer targetId, Integer targetType) {
 
         this.userId = userId;
         this.targetId = targetId;
@@ -28,27 +34,27 @@ public class FavoriteDo extends BasicDo {
 
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public String getTargetId() {
+    public Integer getTargetId() {
         return targetId;
     }
 
-    public void setTargetId(String targetId) {
+    public void setTargetId(Integer targetId) {
         this.targetId = targetId;
     }
 
-    public String getTargetType() {
+    public Integer getTargetType() {
         return targetType;
     }
 
-    public void setTargetType(String targetType) {
+    public void setTargetType(Integer targetType) {
         this.targetType = targetType;
     }
 
