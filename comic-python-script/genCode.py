@@ -51,11 +51,11 @@ def initDao(objectName):
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = objectName + "Dao.java"
+    fileName = "./dao/" + objectName + "Dao.java"
     with open(fileName, 'w') as f:
         f.write(text)
 
-    return os.getcwd() + '/' + fileName
+    return os.getcwd() + '/Dao/' + fileName
 
 
 def initDo(objectName, columns):
@@ -69,11 +69,16 @@ def initDo(objectName, columns):
     public class {ObjectName}Do extends BasicDo {
     """
     for c in columns:
-        # TODO: 加上注释
-        text += """
-            /** */
-            private String """ + c + """;
-        """
+        if c[1] == 'varchar':
+            text += """
+            /**""" + c[3] + """ */
+            private String """ + c[0] + """;
+            """
+        if c[1] == 'int':
+            text += """
+            /**""" + c[3] + """ */
+            private Integer """ + c[0] + """;
+            """
     text += """
     public {ObjectName}Do() {
 
@@ -82,8 +87,12 @@ def initDo(objectName, columns):
     params = ""
     body = ""
     for c in columns:
-        params += "String " + c + ","
-        body += "this." + c + " = " + c + ";\n"
+        if c[1] == 'varchar':
+            params += "String " + c[0] + ","
+            body += "this." + c[0] + " = " + c[0] + ";\n"
+        if c[1] == 'int':
+            params += "Integer " + c[0] + ","
+            body += "this." + c[0] + " = " + c[0] + ";\n"
 
     text += """
         public {ObjectName}Do(""" + params[0:-1] + """) {
@@ -93,22 +102,32 @@ def initDo(objectName, columns):
         }
         """
     for c in columns:
-        firstCharUpper = c[0].upper() + c[1:]
-        text += """
-            public String get""" + firstCharUpper + """() {
-                return """ + c + """;
-            }
-            public void set""" + firstCharUpper + """(String """ + c + """) {
-                this.""" + c + """ = """ + c + """;
-            }
-        """
+        firstCharUpper = c[0][0].upper() + c[0][1:]
+        if c[1] == 'varchar':
+            text += """
+                public String get""" + firstCharUpper + """() {
+                    return """ + c[0] + """;
+                }
+                public void set""" + firstCharUpper + """(String """ + c[0] + """) {
+                    this.""" + c[0] + """ = """ + c[0] + """;
+                }
+            """
+        if c[1] == 'int':
+            text += """
+                public Integer get""" + firstCharUpper + """() {
+                    return """ + c[0] + """;
+                }
+                public void set""" + firstCharUpper + """(Integer """ + c[0] + """) {
+                    this.""" + c[0] + """ = """ + c[0] + """;
+                }
+            """
     text += """
     }
     """
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = objectName + "Do.java"
+    fileName = "./dataobject/"+objectName + "Do.java"
     with open(fileName, 'w') as f:
         f.write(text)
 
@@ -126,11 +145,16 @@ def initDto(objectName, columns):
     public class {ObjectName}Dto extends BasicDto {
     """
     for c in columns:
-        # TODO: 加上注释
-        text += """
-            /** */
-            private String """ + c + """;
-        """
+        if c[1] == 'varchar':
+            text += """
+            /**""" + c[3] + """ */
+            private String """ + c[0] + """;
+            """
+        if c[1] == 'int':
+            text += """
+            /**""" + c[3] + """ */
+            private Integer """ + c[0] + """;
+            """
     text += """
     public {ObjectName}Dto() {
 
@@ -139,8 +163,12 @@ def initDto(objectName, columns):
     params = ""
     body = ""
     for c in columns:
-        params += "String " + c + ","
-        body += "this." + c + " = " + c + ";\n"
+        if c[1] == 'varchar':
+            params += "String " + c[0] + ","
+            body += "this." + c[0] + " = " + c[0] + ";\n"
+        if c[1] == 'int':
+            params += "Integer " + c[0] + ","
+            body += "this." + c[0] + " = " + c[0] + ";\n"
 
     text += """
         public {ObjectName}Dto(""" + params[0:-1] + """) {
@@ -150,22 +178,32 @@ def initDto(objectName, columns):
         }
         """
     for c in columns:
-        firstCharUpper = c[0].upper() + c[1:]
-        text += """
-            public String get""" + firstCharUpper + """() {
-                return """ + c + """;
-            }
-            public void set""" + firstCharUpper + """(String """ + c + """) {
-                this.""" + c + """ = """ + c + """;
-            }
-        """
+        firstCharUpper = c[0][0].upper() + c[0][1:]
+        if c[1] == 'varchar':
+            text += """
+                public String get""" + firstCharUpper + """() {
+                    return """ + c[0] + """;
+                }
+                public void set""" + firstCharUpper + """(String """ + c[0] + """) {
+                    this.""" + c[0] + """ = """ + c[0] + """;
+                }
+            """
+        if c[1] == 'int':
+            text += """
+                public Integer get""" + firstCharUpper + """() {
+                    return """ + c[0] + """;
+                }
+                public void set""" + firstCharUpper + """(Integer """ + c[0] + """) {
+                    this.""" + c[0] + """ = """ + c[0] + """;
+                }
+            """
     text += """
     }
     """
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = objectName + "Dto.java"
+    fileName = "./dto/"+objectName + "Dto.java"
     with open(fileName, 'w') as f:
         f.write(text)
 
@@ -179,11 +217,14 @@ def initMapper(objectName, columns):
     batchUpdateColumns = ""
     whereColumns = ""
     for c in columns:
-        insertColumns += "`" + c + "`,"
-        insertDynamic += "#{" + c + "},"
-        updateColumns += '<if test="' + c + '!=null and ' + c + '!=\'\'"> `' + c + '` = #{' + c + '}, </if>\n\t\t\t'
-        batchUpdateColumns += '<if test="data.' + c + '!=null and data.' + c + '!=\'\'"> `' + c + '` = #{data.' + c + '}, </if>\n\t\t\t'
-        whereColumns += '<if test="' + c + '!=null and ' + c + '!=\'\'"> AND `' + c + '` = #{' + c + '} </if>\n\t\t\t'
+        insertColumns += "`" + c[0] + "`,"
+        insertDynamic += "#{" + c[0] + "},"
+        updateColumns += '<if test="' + c[0] + '!=null and ' + c[0] + '!=\'\'"> `' + c[0] + '` = #{' + c[
+            0] + '}, </if>\n\t\t\t'
+        batchUpdateColumns += '<if test="data.' + c[0] + '!=null and data.' + c[0] + '!=\'\'"> `' + c[
+            0] + '` = #{data.' + c[0] + '}, </if>\n\t\t\t'
+        whereColumns += '<if test="' + c[0] + '!=null and ' + c[0] + '!=\'\'"> AND `' + c[0] + '` = #{' + c[
+            0] + '} </if>\n\t\t\t'
     text = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD iBatis Mapper 3.0 //EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.comichentai.dao.{ObjectName}Dao">
@@ -268,7 +309,7 @@ def initMapper(objectName, columns):
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = objectName.lower() + "-mapper.xml"
+    fileName = "./datamapper/"+objectName.lower() + "-mapper.xml"
     with open(fileName, 'w') as f:
         f.write(text)
 
@@ -278,7 +319,10 @@ def initMapper(objectName, columns):
 def initService(objectName, columns):
     params = ""
     for c in columns:
-        params += "String " + c + ","
+        if c[1] == 'varchar':
+            params += "String " + c[0] + ","
+        if c[1] == 'int':
+            params += "Integer " + c[0] + ","
     params = params[0:-1]
     text = """
 package com.comichentai.service;
@@ -370,7 +414,7 @@ public interface {ObjectName}Service {
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = objectName + "Service.java"
+    fileName = "./service/"+objectName + "Service.java"
     with open(fileName, 'w') as f:
         f.write(text)
 
@@ -382,9 +426,12 @@ def initServiceImpl(objectName, columns):
     validation = ''
     nextStep = ""
     for c in columns:
-        params += "String " + c + ","
-        validation += 'checkNotNull(' + c + ', "[添加失败][当前插入数据字段(' + c + ')为空]");\n'
-        nextStep += c + ','
+        if c[1] == 'varchar':
+            params += "String " + c[0] + ","
+        if c[1] == 'int':
+            params += "Integer " + c[0] + ","
+        validation += 'checkNotNull(' + c[0] + ', "[添加失败][当前插入数据字段(' + c[0] + ')为空]");\n'
+        nextStep += c[0] + ','
 
     params = params[0:-1]
     nextStep = nextStep[0:-1]
@@ -621,7 +668,7 @@ public class {ObjectName}ServiceImpl implements {ObjectName}Service {
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = objectName + "ServiceImpl.java"
+    fileName = "./impl/"+objectName + "ServiceImpl.java"
     with open(fileName, 'w') as f:
         f.write(text)
 
@@ -629,6 +676,23 @@ public class {ObjectName}ServiceImpl implements {ObjectName}Service {
 
 
 def initTest(objectName, testColumn):
+    param = ''
+    modify_param = ''
+    delete_param = ''
+    i = 0
+    for c in testColumn:
+        if c[1] == 'varchar':
+            param += ('"test' + str(i) + '"+System.currentTimeMillis(),')
+            modify_param += ('"modify' + str(i) + '"+System.currentTimeMillis(),')
+            delete_param += ('"wait_delete' + str(i) + '"+System.currentTimeMillis(),')
+        if c[1] == 'int':
+            param += ("9" + str(i) + '+System.currentTimeMillis(),')
+            modify_param += ("8" + str(i) + '+System.currentTimeMillis(),')
+            delete_param += ("7" + str(i) + '+System.currentTimeMillis(),')
+        i += 1
+    param = param[0:-1]
+    modify_param = modify_param[0:-1]
+    delete_param = delete_param[0:-1]
     text = """
     import com.alibaba.fastjson.JSON;
 import com.comichentai.dto.{ObjectName}Dto;
@@ -673,16 +737,16 @@ public class {ObjectName}ServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testAdd{ObjectName}() {
-        ResultSupport<Integer> integerResultSupport = {objectName}Service.add{ObjectName}("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis());
+        ResultSupport<Integer> integerResultSupport = {objectName}Service.add{ObjectName}(""" + param + """);
         logger.info(JSON.toJSONString(integerResultSupport));
         assertTrue(integerResultSupport.getModule() > 0);
     }
 
     @Test
     public void testModify{ObjectName}() {
-        ResultSupport<Integer> resultSupport = {objectName}Service.add{ObjectName}("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = {objectName}Service.add{ObjectName}(""" + param + """);
         Integer id = resultSupport.getModule();
-        {ObjectName}Dto dto = new {ObjectName}Dto("title_modify_single", "imgTitle_modify_single");
+        {ObjectName}Dto dto = new {ObjectName}Dto(""" + modify_param + """);
         dto.setId(id);
         ResultSupport<Integer> modifyResultSupport = {objectName}Service.modify{ObjectName}(dto);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -695,7 +759,7 @@ public class {ObjectName}ServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testRemove{ObjectName}() {
-        ResultSupport<Integer> resultSupport = {objectName}Service.add{ObjectName}("wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = {objectName}Service.add{ObjectName}(""" + delete_param + """);
         Integer id = resultSupport.getModule();
         ResultSupport<Integer> modifyResultSupport = {objectName}Service.remove{ObjectName}(id);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -745,7 +809,7 @@ public class {ObjectName}ServiceImplTest extends SpringTestHelper {
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = objectName + "ServiceImplTest.java"
+    fileName = "./test/"+objectName + "ServiceImplTest.java"
     with open(fileName, 'w') as f:
         f.write(text)
 
@@ -776,13 +840,13 @@ def mysql_connect():
         if table == 'TestComic' or table == "TestUser":
             continue
         cursor.execute(
-                "select column_name,column_comment,is_nullable from information_schema.columns where table_name = '" + table + "' order by table_schema,table_name", )
+                "select column_name,data_type,is_nullable,column_comment from information_schema.columns where table_name = '" + table + "' order by table_schema,table_name", )
         values = cursor.fetchall()
         columns = []
         for column in values:
             if not (column[0] == 'id' or column[0] == 'created' or column[0] == 'updated' or column[0] == 'isDeleted' or
                             column[0] == 'status'):
-                columns.append(column[0])
+                columns.append(column)
         print(columns)
         initAll(table, columns)
     cursor.close()
