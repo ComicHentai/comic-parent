@@ -1,14 +1,20 @@
 package com.comichentai.business.impl;
 
 import com.comichentai.bo.JumpBusiness;
+import com.comichentai.dto.ComicDto;
 import com.comichentai.dto.JumpDto;
 import com.comichentai.dto.SpecialDto;
 import com.comichentai.entity.ResultSupport;
 import com.comichentai.service.ComicService;
+import com.comichentai.service.JumpService;
 import com.comichentai.service.SpecialService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Dintama on 2016/3/13.
@@ -23,13 +29,41 @@ public class JumpBusinessImpl implements JumpBusiness {
     @Resource(name = "comicService")
     private ComicService comicService;
 
+    @Resource(name = "jumpService")
+    private JumpService jumpService;
+
     @Override
     public ResultSupport<JumpDto> getJumpBySpecial(SpecialDto specialDto) {
-        ResultSupport<JumpDto> result = new ResultSupport<>();
-        ResultSupport<SpecialDto> special = specialService.getSpecialById(specialDto.getId());
+        List<Integer> idList = new LinkedList<>();
+        //调用getSpecialById的方法
+        ResultSupport special = specialService.getSpecialById(specialDto.getId());
         if(!special.isSuccess()){
-            return null;
+            return special;
         }
-        return null;
+        //整理得到一个JumpDto
+        SpecialDto module = (SpecialDto)special.getModule();
+        JumpDto jumpDto = new JumpDto();
+        jumpDto.setSpecialId(module.getId());
+        //通过JumpDto中的specialId我们可以获得若干的JumpDto，他们拥有相同的SpecialId和不同的ComicId
+        ResultSupport jumpListByQuery = jumpService.getJumpListByQuery(jumpDto);
+        if(!jumpListByQuery.isSuccess()){
+            return jumpListByQuery;
+        }
+        List<JumpDto> jumpDtos = (List<JumpDto>)jumpListByQuery.getModule();
+        //遍历获取idList
+        for(JumpDto jumpDto1 : jumpDtos){
+            idList.add(jumpDto1.getComicId());
+        }
+        ResultSupport comicListByIdList = comicService.getComicListByIdList(idList);
+        if(!comicListByIdList.isSuccess()){
+            return comicListByIdList;
+        }
+        List<ComicDto> comicDtos = (List<ComicDto>)comicListByIdList.getModule();
+        JumpDto jumpDto1 = new JumpDto();
+        Map<SpecialDto, List<ComicDto>> map = new ConcurrentHashMap<>();
+        map.put(module, comicDtos);
+        jumpDto1.setJump(map);
+
+        return ResultSupport.getInstance(true, "[关联查询成功]", jumpDto1);
     }
 }
