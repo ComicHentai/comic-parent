@@ -1,4 +1,5 @@
 import com.alibaba.fastjson.JSON;
+import com.comichentai.dto.JumpDto;
 import com.comichentai.dto.TestComicDto;
 import com.comichentai.entity.ResultSupport;
 import com.comichentai.helper.SpringTestHelper;
@@ -99,6 +100,16 @@ public class TestComicServiceImplTest extends SpringTestHelper {
         dto.setCurrentPage(3);
         testComicListByQuery = testComicService.getTestComicListByQuery(dto);
         logger.info(JSON.toJSONString(testComicListByQuery));
+    }
+
+    @Test
+    public void testCast() throws IOException {
+        TestComicDto dto = new TestComicDto();
+        dto.setPageSize(2);
+        dto.setCurrentPage(1);
+        ResultSupport<List<TestComicDto>> testComicListByQuery = testComicService.getTestComicListByQuery(dto);
+        ResultSupport<JumpDto> cast = testComicListByQuery.castToReturnFailed(JumpDto.class);
+        logger.info(JSON.toJSONString(cast));
     }
 
     @Test

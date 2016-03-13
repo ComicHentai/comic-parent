@@ -78,6 +78,15 @@ public class ResultSupport<T> {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
+    public <O> ResultSupport<O> castToReturnFailed(Class<O> clz) {
+        if (this.isSuccess()) {
+            throw new RuntimeException("结果正常,不允许转换");
+        }
+        this.module = null;
+        return (ResultSupport<O>) this;
+    }
+
     public String getRemark() {
         return remark;
     }
