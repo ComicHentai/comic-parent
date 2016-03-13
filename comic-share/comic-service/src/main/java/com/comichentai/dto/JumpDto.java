@@ -1,5 +1,9 @@
 package com.comichentai.dto;
 
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * 实体DTO
  * Created by hope6537 by Code Generator
@@ -15,6 +19,11 @@ public class JumpDto extends BasicDto {
      * 漫画ID
      */
     private Integer comicId;
+
+    /**
+     * 专辑内容
+     * */
+    private Map<SpecialDto, List<ComicDto>> Jump = new ConcurrentHashMap<>();
 
     public JumpDto() {
 
@@ -44,5 +53,12 @@ public class JumpDto extends BasicDto {
         this.comicId = comicId;
     }
 
+    public Map<SpecialDto, List<ComicDto>> getJump() {
+        return Jump;
+    }
+
+    public void setJump(Map<SpecialDto, List<ComicDto>> jump) {
+        Jump = jump;
+    }
 }
     
