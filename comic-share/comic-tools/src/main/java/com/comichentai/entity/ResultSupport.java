@@ -2,7 +2,9 @@ package com.comichentai.entity;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class ResultSupport<T> {
+import java.io.Serializable;
+
+public class ResultSupport<T> implements Serializable{
 
     public static final String AugumentIsNull = "augument is null";
 
