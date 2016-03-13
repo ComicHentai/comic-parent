@@ -36,29 +36,29 @@ public class JumpBusinessImpl implements JumpBusiness {
     public ResultSupport<JumpDto> getJumpBySpecial(SpecialDto specialDto) {
         List<Integer> idList = new LinkedList<>();
         //调用getSpecialById的方法
-        ResultSupport special = specialService.getSpecialById(specialDto.getId());
-        if(!special.isSuccess()){
-            return special;
+        ResultSupport<SpecialDto> special = specialService.getSpecialById(specialDto.getId());
+        if (!special.isSuccess()) {
+            return special.castToReturnFailed(JumpDto.class);
         }
         //整理得到一个JumpDto
-        SpecialDto module = (SpecialDto)special.getModule();
+        SpecialDto module = (SpecialDto) special.getModule();
         JumpDto jumpDto = new JumpDto();
         jumpDto.setSpecialId(module.getId());
         //通过JumpDto中的specialId我们可以获得若干的JumpDto，他们拥有相同的SpecialId和不同的ComicId
-        ResultSupport jumpListByQuery = jumpService.getJumpListByQuery(jumpDto);
-        if(!jumpListByQuery.isSuccess()){
-            return jumpListByQuery;
+        ResultSupport<List<JumpDto>> jumpListByQuery = jumpService.getJumpListByQuery(jumpDto);
+        if (!jumpListByQuery.isSuccess()) {
+            return jumpListByQuery.castToReturnFailed(JumpDto.class);
         }
-        List<JumpDto> jumpDtos = (List<JumpDto>)jumpListByQuery.getModule();
+        List<JumpDto> jumpDtos = (List<JumpDto>) jumpListByQuery.getModule();
         //遍历获取idList
-        for(JumpDto jumpDto1 : jumpDtos){
+        for (JumpDto jumpDto1 : jumpDtos) {
             idList.add(jumpDto1.getComicId());
         }
-        ResultSupport comicListByIdList = comicService.getComicListByIdList(idList);
-        if(!comicListByIdList.isSuccess()){
-            return comicListByIdList;
+        ResultSupport<List<ComicDto>> comicListByIdList = comicService.getComicListByIdList(idList);
+        if (!comicListByIdList.isSuccess()) {
+            return comicListByIdList.castToReturnFailed(JumpDto.class);
         }
-        List<ComicDto> comicDtos = (List<ComicDto>)comicListByIdList.getModule();
+        List<ComicDto> comicDtos = (List<ComicDto>) comicListByIdList.getModule();
         JumpDto jumpDto1 = new JumpDto();
         Map<SpecialDto, List<ComicDto>> map = new ConcurrentHashMap<>();
         map.put(module, comicDtos);
