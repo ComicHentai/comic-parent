@@ -1,14 +1,14 @@
 package com.comichentai.service.impl;
 
 import com.comichentai.convert.impl.DozerMappingConverter;
-import com.comichentai.dao.TestUserDao;
+import com.comichentai.dao.FavoriteDao;
 import com.comichentai.dataobject.BasicDo;
-import com.comichentai.dataobject.TestUserDo;
-import com.comichentai.dto.TestUserDto;
+import com.comichentai.dataobject.FavoriteDo;
+import com.comichentai.dto.FavoriteDto;
 import com.comichentai.entity.ResultSupport;
 import com.comichentai.enums.IsDeleted;
 import com.comichentai.page.PageDto;
-import com.comichentai.service.TestUserService;
+import com.comichentai.service.FavoriteService;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,30 +25,30 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * 实体服务实现类
  * Created by hope6537 by Code Generator
  */
-@Service(value = "testUserService")
-public class TestUserServiceImpl implements TestUserService {
+@Service(value = "favoriteService")
+public class FavoriteServiceImpl implements FavoriteService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Resource(name = "testUserDao")
-    private TestUserDao testUserDao;
+    @Resource(name = "favoriteDao")
+    private FavoriteDao favoriteDao;
 
     @Resource(name = "mappingConverter")
     private DozerMappingConverter mappingConverter;
 
     @Override
-    public ResultSupport<Integer> addTestUser(TestUserDto testUserDto) {
+    public ResultSupport<Integer> addFavorite(FavoriteDto favoriteDto) {
         Integer result;
         Integer id;
         try {
-            checkNotNull(testUserDto, "[添加失败][当前插入数据实体为空]");
-            if (testUserDto.getStatus() == null) {
-                testUserDto.setStatus(0);
+            checkNotNull(favoriteDto, "[添加失败][当前插入数据实体为空]");
+            if (favoriteDto.getStatus() == null) {
+                favoriteDto.setStatus(0);
             }
-            TestUserDo testUserDo = mappingConverter.doMap(testUserDto, TestUserDo.class);
-            result = testUserDao.insertTestUser(testUserDo);
-            checkNotNull(testUserDo.getId(), "[添加失败][数据库没有返回实体ID]");
-            id = testUserDo.getId();
+            FavoriteDo favoriteDo = mappingConverter.doMap(favoriteDto, FavoriteDo.class);
+            result = favoriteDao.insertFavorite(favoriteDo);
+            checkNotNull(favoriteDo.getId(), "[添加失败][数据库没有返回实体ID]");
+            id = favoriteDo.getId();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -58,25 +58,26 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<Integer> addTestUser(String username, String password) {
+    public ResultSupport<Integer> addFavorite(String userId, String targetId, String targetType) {
         try {
-            checkNotNull(username, "[添加失败][当前插入数据字段(username)为空]");
-            checkNotNull(password, "[添加失败][当前插入数据字段(password)为空]");
+            checkNotNull(userId, "[添加失败][当前插入数据字段(userId)为空]");
+            checkNotNull(targetId, "[添加失败][当前插入数据字段(targetId)为空]");
+            checkNotNull(targetType, "[添加失败][当前插入数据字段(targetType)为空]");
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
         }
-        return this.addTestUser(new TestUserDto(username, password));
+        return this.addFavorite(new FavoriteDto(userId, targetId, targetType));
     }
 
     @Override
-    public ResultSupport<Integer> modifyTestUser(TestUserDto testUserDto) {
+    public ResultSupport<Integer> modifyFavorite(FavoriteDto favoriteDto) {
         Integer result;
         try {
-            checkNotNull(testUserDto, "[单体更新失败][当前入参实体为空]");
-            checkNotNull(testUserDto.getId(), "[单体更新失败][当前入参实体ID为空,无法更新]");
-            result = testUserDao.updateTestUser(mappingConverter.doMap(testUserDto, TestUserDo.class));
+            checkNotNull(favoriteDto, "[单体更新失败][当前入参实体为空]");
+            checkNotNull(favoriteDto.getId(), "[单体更新失败][当前入参实体ID为空,无法更新]");
+            result = favoriteDao.updateFavorite(mappingConverter.doMap(favoriteDto, FavoriteDo.class));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -86,13 +87,13 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<Integer> batchModifyTestUser(TestUserDto testUserDto, List<Integer> idList) {
+    public ResultSupport<Integer> batchModifyFavorite(FavoriteDto favoriteDto, List<Integer> idList) {
         Integer result;
         try {
-            checkNotNull(testUserDto, "[批量更新失败][当前入参实体为空]");
+            checkNotNull(favoriteDto, "[批量更新失败][当前入参实体为空]");
             checkNotNull(idList, "[批量更新失败][当前入参实体ID为空,无法更新]");
             checkArgument(idList.size() > 0, "[批量更新失败][当前入参实体更新的ID集合大小为0]");
-            result = testUserDao.batchUpdateTestUser(mappingConverter.doMap(testUserDto, TestUserDo.class), idList);
+            result = favoriteDao.batchUpdateFavorite(mappingConverter.doMap(favoriteDto, FavoriteDo.class), idList);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -102,14 +103,14 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<Integer> removeTestUser(Integer id) {
+    public ResultSupport<Integer> removeFavorite(Integer id) {
         Integer result;
         try {
             checkNotNull(id, "[单体删除失败][当前入参实体为空]");
-            TestUserDo readyToDelete = testUserDao.selectTestUserById(id);
+            FavoriteDo readyToDelete = favoriteDao.selectFavoriteById(id);
             checkNotNull(readyToDelete, "[单体删除失败][ID=" + id + "记录从未存在]");
             checkArgument(readyToDelete.getIsDeleted() != 1, "[单体删除失败][ID=" + id + "记录已经被删除]");
-            result = testUserDao.deleteTestUser(id);
+            result = favoriteDao.deleteFavorite(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -119,7 +120,7 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<Integer> batchRemoveTestUser(List<Integer> idList) {
+    public ResultSupport<Integer> batchRemoveFavorite(List<Integer> idList) {
         Integer result; //返回结果
         boolean flag = true;  //是否存在无效数据
         String alreadyBeenDeletedIdListString; //打印的ID
@@ -127,7 +128,7 @@ public class TestUserServiceImpl implements TestUserService {
             checkNotNull(idList, "[批量删除失败][当前入参实体为空]");
             checkArgument(idList.size() > 0, "[批量删除失败][当前入参实体更新的ID集合大小为0]");
 
-            List<TestUserDo> readyToDelete = testUserDao.selectTestUserListByIds(idList);
+            List<FavoriteDo> readyToDelete = favoriteDao.selectFavoriteListByIds(idList);
 
             checkNotNull(readyToDelete, "[批量删除失败][所有记录从未存在]");
             checkArgument(readyToDelete.size() > 0, "[[批量删除失败][所有记录从未存在]");
@@ -145,7 +146,7 @@ public class TestUserServiceImpl implements TestUserService {
             //求出还未被删除的
             final List<Integer> finalAlreadyBeenDeleted = alreadyBeenDeleted;
             idList = idList.stream().filter(id -> !finalAlreadyBeenDeleted.contains(id)).collect(Collectors.toList());
-            result = testUserDao.batchDeleteTestUser(idList);
+            result = favoriteDao.batchDeleteFavorite(idList);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -156,12 +157,12 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<TestUserDto> getTestUserById(Integer id) {
-        TestUserDto result;
+    public ResultSupport<FavoriteDto> getFavoriteById(Integer id) {
+        FavoriteDto result;
         try {
             checkNotNull(id, "[单体查询失败][当前入参实体为空]");
-            TestUserDo comicDo = testUserDao.selectTestUserById(id);
-            result = mappingConverter.doMap(comicDo, TestUserDto.class);
+            FavoriteDo comicDo = favoriteDao.selectFavoriteById(id);
+            result = mappingConverter.doMap(comicDo, FavoriteDto.class);
             //判断单条数据是否合法
             checkNotNull(result, "[单体查询失败][查询无结果]");
             checkNotNull(result.getId(), "[单体查询失败][查询结果无主键]");
@@ -175,20 +176,20 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<List<TestUserDto>> getTestUserListByIdList(List<Integer> idList) {
+    public ResultSupport<List<FavoriteDto>> getFavoriteListByIdList(List<Integer> idList) {
         boolean flag;
-        List<TestUserDto> result;
-        List<TestUserDo> disableResultList;
+        List<FavoriteDto> result;
+        List<FavoriteDo> disableResultList;
         try {
             checkNotNull(idList, "[批量查询失败][当前入参实体为空]");
-            List<TestUserDo> list = testUserDao.selectTestUserListByIds(idList);
+            List<FavoriteDo> list = favoriteDao.selectFavoriteListByIds(idList);
             checkNotNull(list, "[批量查询失败][查询为空]");
             disableResultList = list.parallelStream().filter(o -> o.getId() == null || o.getStatus() == null || o.getIsDeleted() == null).collect(Collectors.toList());
             if (disableResultList == null) {
                 disableResultList = Lists.newArrayList();
             }
             flag = disableResultList.size() == 0;
-            result = list.parallelStream().filter(o -> o.getId() != null).map(o -> mappingConverter.doMap(o, TestUserDto.class)).collect(Collectors.toList());
+            result = list.parallelStream().filter(o -> o.getId() != null).map(o -> mappingConverter.doMap(o, FavoriteDto.class)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -197,8 +198,8 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<List<TestUserDto>> getTestUserListByQuery(TestUserDto query) {
-        List<TestUserDto> result;
+    public ResultSupport<List<FavoriteDto>> getFavoriteListByQuery(FavoriteDto query) {
+        List<FavoriteDto> result;
         Integer countByQuery;
         try {
             checkNotNull(query, "[条件查询失败][查询对象为空]");
@@ -211,16 +212,16 @@ public class TestUserServiceImpl implements TestUserService {
             if (query.getIsDeleted() == null) {
                 query.setIsDeleted(IsDeleted.NO);
             }
-            TestUserDo doQuery = mappingConverter.doMap(query, TestUserDo.class);
-            countByQuery = testUserDao.selectTestUserCountByQuery(doQuery);
-            result = testUserDao.selectTestUserListByQuery(doQuery).stream().map(o -> mappingConverter.doMap(o, TestUserDto.class)).collect(Collectors.toList());
+            FavoriteDo doQuery = mappingConverter.doMap(query, FavoriteDo.class);
+            countByQuery = favoriteDao.selectFavoriteCountByQuery(doQuery);
+            result = favoriteDao.selectFavoriteListByQuery(doQuery).stream().map(o -> mappingConverter.doMap(o, FavoriteDto.class)).collect(Collectors.toList());
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
         }
         boolean expr = countByQuery >= 0 && result != null;
-        ResultSupport<List<TestUserDto>> instance = ResultSupport.getInstance(expr, expr ? "[条件查询成功]" : "[条件查询失败][查询无数据,请变更查询条件]", result);
+        ResultSupport<List<FavoriteDto>> instance = ResultSupport.getInstance(expr, expr ? "[条件查询成功]" : "[条件查询失败][查询无数据,请变更查询条件]", result);
         instance.setTotalCount(countByQuery);
         return instance;
     }

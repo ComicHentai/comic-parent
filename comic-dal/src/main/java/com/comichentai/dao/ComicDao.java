@@ -7,25 +7,30 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * Created by Dintama on 2016/2/20.
+ * 实体数据访问接口
+ * Created by hope6537 by Code Generator
  */
 @MybatisRepository
 public interface ComicDao {
 
-    List<ComicDo> selectComicListPage();
+    int insertComic(ComicDo comicDo);
 
-    ComicDo selectComicByIds(@Param("ids")Integer... ids);
+    int updateComic(ComicDo comicDo);
 
-    ComicDo selectComicById(@Param("id")Integer id);
+    int batchUpdateComic(@Param("data") ComicDo comicDo, @Param("idList") List<Integer> idList);
 
-    List<ComicDo> selectComicByTitle(@Param("title") String title);
+    int deleteComic(@Param("id") Integer id);
 
-    void insertComic(ComicDo comicDo);
+    int batchDeleteComic(@Param("idList") List<Integer> idList);
 
-    void updateComic(ComicDo comicDo);
+    ComicDo selectComicById(@Param("id") Integer id);
 
-    void deleteComicByIds(@Param("ids") Integer... ids);
+    List<ComicDo> selectComicListByIds(@Param("idList") List<Integer> idList);
 
+    List<ComicDo> selectComicListByQuery(ComicDo query);
 
+    int selectComicCountByQuery(ComicDo query);
 
 }
+
+    

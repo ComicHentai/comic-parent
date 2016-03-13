@@ -1,19 +1,24 @@
 package com.comichentai.dataobject;
 
 /**
- * Created by Dintama on 2016/3/2.
+ * 实体DO
+ * Created by hope6537 by Code Generator
  */
 public class ClassifiedDo extends BasicDo {
 
+    /** */
     private String title;
 
-    public ClassifiedDo(){}
+    public ClassifiedDo() {
 
-    public ClassifiedDo(String title) {
-        this.title = title;
     }
 
+    public ClassifiedDo(String title) {
 
+        this.title = title;
+
+
+    }
 
     public String getTitle() {
         return title;
@@ -22,4 +27,6 @@ public class ClassifiedDo extends BasicDo {
     public void setTitle(String title) {
         this.title = title;
     }
+
 }
+    

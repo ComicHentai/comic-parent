@@ -6,17 +6,31 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * 实体数据访问接口
+ * Created by hope6537 by Code Generator
+ */
 @MybatisRepository
 public interface ClassifiedDao {
+
+    int insertClassified(ClassifiedDo classifiedDo);
+
+    int updateClassified(ClassifiedDo classifiedDo);
+
+    int batchUpdateClassified(@Param("data") ClassifiedDo classifiedDo, @Param("idList") List<Integer> idList);
+
+    int deleteClassified(@Param("id") Integer id);
+
+    int batchDeleteClassified(@Param("idList") List<Integer> idList);
+
     ClassifiedDo selectClassifiedById(@Param("id") Integer id);
 
-    List<String> selectClassifiedListByIds(@Param("ids") Integer... ids);
+    List<ClassifiedDo> selectClassifiedListByIds(@Param("idList") List<Integer> idList);
 
-    List<ClassifiedDo> selectClassifiedByTitle(@Param("title") String title);
+    List<ClassifiedDo> selectClassifiedListByQuery(ClassifiedDo query);
 
-    void insertClassified(ClassifiedDo classifiedDo);
+    int selectClassifiedCountByQuery(ClassifiedDo query);
 
-    void updateClassified(ClassifiedDo classifiedDo);
-
-    void deleteClassifiedByIds(@Param("ids") Integer... ids);
 }
+
+    

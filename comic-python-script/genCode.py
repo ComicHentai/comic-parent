@@ -93,7 +93,7 @@ def initDo(objectName, columns):
         }
         """
     for c in columns:
-        firstCharUpper = c.capitalize()
+        firstCharUpper = c[0].upper() + c[1:]
         text += """
             public String get""" + firstCharUpper + """() {
                 return """ + c + """;
@@ -150,7 +150,7 @@ def initDto(objectName, columns):
         }
         """
     for c in columns:
-        firstCharUpper = c.capitalize()
+        firstCharUpper = c[0].upper() + c[1:]
         text += """
             public String get""" + firstCharUpper + """() {
                 return """ + c + """;
@@ -773,12 +773,16 @@ def mysql_connect():
     print(tables)
     for table in tables:
         table = table[0]
+        if table == 'TestComic' or table == "TestUser":
+            continue
         cursor.execute(
                 "select column_name,column_comment,is_nullable from information_schema.columns where table_name = '" + table + "' order by table_schema,table_name", )
         values = cursor.fetchall()
         columns = []
         for column in values:
-            columns.append(column[0])
+            if not (column[0] == 'id' or column[0] == 'created' or column[0] == 'updated' or column[0] == 'isDeleted' or
+                            column[0] == 'status'):
+                columns.append(column[0])
         print(columns)
         initAll(table, columns)
     cursor.close()

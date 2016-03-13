@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD iBatis Mapper 3.0 //EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.comichentai.dao.ComicDao">
+<mapper namespace="com.comichentai.dao.JumpDao">
     <!-- 默认模板生成 添加单行记录 -->
-    <insert id="insertComic">INSERT INTO `Comic`
-        (`title`,`coverTitle`,`author`,`introduction`,`contentTitle`,
+    <insert id="insertJump">INSERT INTO `Jump`
+        (`specialId`,`comicId`,
         <!--<if test="可以为空字段!=null and 可以为空字段!=''"> `可以为空字段`, </if>-->
         `status`, `isDeleted`, `created`, `updated`)
         VALUES
-        (#{title},#{coverTitle},#{author},#{introduction},#{contentTitle},
+        (#{specialId},#{comicId},
         <!--<if test="可以为空字段!=null and 可以为空字段!=''"> #{可以为空字段}, </if>-->
         #{status}, 0, UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
         <selectKey resultType="integer" keyProperty="id">SELECT LAST_INSERT_ID()</selectKey>
     </insert>
     <!-- 默认模板生成 更新单行记录 -->
-    <update id="updateComic">UPDATE `Comic`
+    <update id="updateJump">UPDATE `Jump`
         <set>
-            <if test="title!=null and title!=''">`title` = #{title},</if>
-            <if test="coverTitle!=null and coverTitle!=''">`coverTitle` = #{coverTitle},</if>
-            <if test="author!=null and author!=''">`author` = #{author},</if>
-            <if test="introduction!=null and introduction!=''">`introduction` = #{introduction},</if>
-            <if test="contentTitle!=null and contentTitle!=''">`contentTitle` = #{contentTitle},</if>
+            <if test="specialId!=null and specialId!=''">`specialId` = #{specialId},</if>
+            <if test="comicId!=null and comicId!=''">`comicId` = #{comicId},</if>
 
             <if test="status!=null and status!=''">`status` = #{status},</if>
             updated = UNIX_TIMESTAMP()
@@ -28,13 +25,10 @@
         LIMIT 1
     </update>
     <!-- 默认模板生成 更新多行记录 -->
-    <update id="batchUpdateComic">UPDATE `Comic`
+    <update id="batchUpdateJump">UPDATE `Jump`
         <set>
-            <if test="data.title!=null and data.title!=''">`title` = #{data.title},</if>
-            <if test="data.coverTitle!=null and data.coverTitle!=''">`coverTitle` = #{data.coverTitle},</if>
-            <if test="data.author!=null and data.author!=''">`author` = #{data.author},</if>
-            <if test="data.introduction!=null and data.introduction!=''">`introduction` = #{data.introduction},</if>
-            <if test="data.contentTitle!=null and data.contentTitle!=''">`contentTitle` = #{data.contentTitle},</if>
+            <if test="data.specialId!=null and data.specialId!=''">`specialId` = #{data.specialId},</if>
+            <if test="data.comicId!=null and data.comicId!=''">`comicId` = #{data.comicId},</if>
 
             <if test="data.status!=null and data.status!=''">`status` = #{data.status},</if>
         </set>
@@ -44,24 +38,24 @@
         LIMIT ${idList.size}
     </update>
     <!-- 默认模板生成 删除单行记录-->
-    <update id="deleteComic"> UPDATE `Comic`
+    <update id="deleteJump"> UPDATE `Jump`
     SET isDeleted = 1, updated = UNIX_TIMESTAMP()
     WHERE id = ${id}
     LIMIT 1 </update>
     <!-- 默认模板生成 删除多行记录-->
-    <update id="batchDeleteComic">UPDATE `Comic` SET isDeleted = 1,updated = UNIX_TIMESTAMP()
+    <update id="batchDeleteJump">UPDATE `Jump` SET isDeleted = 1,updated = UNIX_TIMESTAMP()
         <where>
             <foreach collection="idList" item="id" separator=" or ">id = #{id}</foreach>
         </where>
         LIMIT ${idList.size}
     </update>
     <!-- 默认模板生成 根据ID选取单行记录 -->
-    <select id="selectComicById" resultType="com.comichentai.dataobject.ComicDo"> SELECT *
-                                                                                  FROM `Comic`
-                                                                                  WHERE id = ${id}
-                                                                                  LIMIT 1 </select>
+    <select id="selectJumpById" resultType="com.comichentai.dataobject.JumpDo"> SELECT *
+                                                                                FROM `Jump`
+                                                                                WHERE id = ${id}
+                                                                                LIMIT 1 </select>
     <!-- 默认模板生成 根据ID集合选取多行记录-->
-    <select id="selectComicListByIds" resultType="com.comichentai.dataobject.ComicDo">SELECT * FROM `Comic`
+    <select id="selectJumpListByIds" resultType="com.comichentai.dataobject.JumpDo">SELECT * FROM `Jump`
         <where>
             id in (
             <foreach collection="idList" item="id" separator=" , ">#{id}</foreach>
@@ -72,11 +66,8 @@
     <!-- 默认模板生成 动态SQL语句 通常字段判断是否为空 并增加日期范围 -->
     <sql id="where">
         <where>1 = 1
-            <if test="title!=null and title!=''">AND `title` = #{title}</if>
-            <if test="coverTitle!=null and coverTitle!=''">AND `coverTitle` = #{coverTitle}</if>
-            <if test="author!=null and author!=''">AND `author` = #{author}</if>
-            <if test="introduction!=null and introduction!=''">AND `introduction` = #{introduction}</if>
-            <if test="contentTitle!=null and contentTitle!=''">AND `contentTitle` = #{contentTitle}</if>
+            <if test="specialId!=null and specialId!=''">AND `specialId` = #{specialId}</if>
+            <if test="comicId!=null and comicId!=''">AND `comicId` = #{comicId}</if>
 
             <!--<if test="模糊查询字段!=null and 模糊查询字段!=''"> AND`模糊查询字段` LIKE concat('%',#{模糊查询字段},'%') </if>-->
             <if test="createdAfter!=null and createdAfter!=''">AND `created` &lt; #{createdAfter}</if>
@@ -88,8 +79,8 @@
         </where>
     </sql>
     <!-- 默认模板生成 根据Query对象查询记录 -->
-    <select id="selectComicListByQuery" resultType="com.comichentai.dataobject.ComicDo"
-            parameterType="com.comichentai.dto.ComicDto">SELECT * FROM `Comic`
+    <select id="selectJumpListByQuery" resultType="com.comichentai.dataobject.JumpDo"
+            parameterType="com.comichentai.dto.JumpDto">SELECT * FROM `Jump`
         <include refid="where"/>
         ORDER BY `created` DESC
         <if test="limit!=null and limit!=''">LIMIT
@@ -98,8 +89,8 @@
         </if>
     </select>
     <!-- 默认模板生成 根据Query对象查询符合条件的个数 -->
-    <select id="selectComicCountByQuery" resultType="Integer" parameterType="com.comichentai.dataobject.ComicDo">SELECT
-        count(*) FROM `Comic`
+    <select id="selectJumpCountByQuery" resultType="Integer" parameterType="com.comichentai.dataobject.JumpDo">SELECT
+        count(*) FROM `Jump`
         <include refid="where"/>
     </select>
 </mapper>

@@ -1,14 +1,14 @@
 package com.comichentai.service.impl;
 
 import com.comichentai.convert.impl.DozerMappingConverter;
-import com.comichentai.dao.TestUserDao;
+import com.comichentai.dao.JumpDao;
 import com.comichentai.dataobject.BasicDo;
-import com.comichentai.dataobject.TestUserDo;
-import com.comichentai.dto.TestUserDto;
+import com.comichentai.dataobject.JumpDo;
+import com.comichentai.dto.JumpDto;
 import com.comichentai.entity.ResultSupport;
 import com.comichentai.enums.IsDeleted;
 import com.comichentai.page.PageDto;
-import com.comichentai.service.TestUserService;
+import com.comichentai.service.JumpService;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,30 +25,30 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * 实体服务实现类
  * Created by hope6537 by Code Generator
  */
-@Service(value = "testUserService")
-public class TestUserServiceImpl implements TestUserService {
+@Service(value = "jumpService")
+public class JumpServiceImpl implements JumpService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Resource(name = "testUserDao")
-    private TestUserDao testUserDao;
+    @Resource(name = "jumpDao")
+    private JumpDao jumpDao;
 
     @Resource(name = "mappingConverter")
     private DozerMappingConverter mappingConverter;
 
     @Override
-    public ResultSupport<Integer> addTestUser(TestUserDto testUserDto) {
+    public ResultSupport<Integer> addJump(JumpDto jumpDto) {
         Integer result;
         Integer id;
         try {
-            checkNotNull(testUserDto, "[添加失败][当前插入数据实体为空]");
-            if (testUserDto.getStatus() == null) {
-                testUserDto.setStatus(0);
+            checkNotNull(jumpDto, "[添加失败][当前插入数据实体为空]");
+            if (jumpDto.getStatus() == null) {
+                jumpDto.setStatus(0);
             }
-            TestUserDo testUserDo = mappingConverter.doMap(testUserDto, TestUserDo.class);
-            result = testUserDao.insertTestUser(testUserDo);
-            checkNotNull(testUserDo.getId(), "[添加失败][数据库没有返回实体ID]");
-            id = testUserDo.getId();
+            JumpDo jumpDo = mappingConverter.doMap(jumpDto, JumpDo.class);
+            result = jumpDao.insertJump(jumpDo);
+            checkNotNull(jumpDo.getId(), "[添加失败][数据库没有返回实体ID]");
+            id = jumpDo.getId();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -58,25 +58,25 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<Integer> addTestUser(String username, String password) {
+    public ResultSupport<Integer> addJump(String specialId, String comicId) {
         try {
-            checkNotNull(username, "[添加失败][当前插入数据字段(username)为空]");
-            checkNotNull(password, "[添加失败][当前插入数据字段(password)为空]");
+            checkNotNull(specialId, "[添加失败][当前插入数据字段(specialId)为空]");
+            checkNotNull(comicId, "[添加失败][当前插入数据字段(comicId)为空]");
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
         }
-        return this.addTestUser(new TestUserDto(username, password));
+        return this.addJump(new JumpDto(specialId, comicId));
     }
 
     @Override
-    public ResultSupport<Integer> modifyTestUser(TestUserDto testUserDto) {
+    public ResultSupport<Integer> modifyJump(JumpDto jumpDto) {
         Integer result;
         try {
-            checkNotNull(testUserDto, "[单体更新失败][当前入参实体为空]");
-            checkNotNull(testUserDto.getId(), "[单体更新失败][当前入参实体ID为空,无法更新]");
-            result = testUserDao.updateTestUser(mappingConverter.doMap(testUserDto, TestUserDo.class));
+            checkNotNull(jumpDto, "[单体更新失败][当前入参实体为空]");
+            checkNotNull(jumpDto.getId(), "[单体更新失败][当前入参实体ID为空,无法更新]");
+            result = jumpDao.updateJump(mappingConverter.doMap(jumpDto, JumpDo.class));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -86,13 +86,13 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<Integer> batchModifyTestUser(TestUserDto testUserDto, List<Integer> idList) {
+    public ResultSupport<Integer> batchModifyJump(JumpDto jumpDto, List<Integer> idList) {
         Integer result;
         try {
-            checkNotNull(testUserDto, "[批量更新失败][当前入参实体为空]");
+            checkNotNull(jumpDto, "[批量更新失败][当前入参实体为空]");
             checkNotNull(idList, "[批量更新失败][当前入参实体ID为空,无法更新]");
             checkArgument(idList.size() > 0, "[批量更新失败][当前入参实体更新的ID集合大小为0]");
-            result = testUserDao.batchUpdateTestUser(mappingConverter.doMap(testUserDto, TestUserDo.class), idList);
+            result = jumpDao.batchUpdateJump(mappingConverter.doMap(jumpDto, JumpDo.class), idList);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -102,14 +102,14 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<Integer> removeTestUser(Integer id) {
+    public ResultSupport<Integer> removeJump(Integer id) {
         Integer result;
         try {
             checkNotNull(id, "[单体删除失败][当前入参实体为空]");
-            TestUserDo readyToDelete = testUserDao.selectTestUserById(id);
+            JumpDo readyToDelete = jumpDao.selectJumpById(id);
             checkNotNull(readyToDelete, "[单体删除失败][ID=" + id + "记录从未存在]");
             checkArgument(readyToDelete.getIsDeleted() != 1, "[单体删除失败][ID=" + id + "记录已经被删除]");
-            result = testUserDao.deleteTestUser(id);
+            result = jumpDao.deleteJump(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -119,7 +119,7 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<Integer> batchRemoveTestUser(List<Integer> idList) {
+    public ResultSupport<Integer> batchRemoveJump(List<Integer> idList) {
         Integer result; //返回结果
         boolean flag = true;  //是否存在无效数据
         String alreadyBeenDeletedIdListString; //打印的ID
@@ -127,7 +127,7 @@ public class TestUserServiceImpl implements TestUserService {
             checkNotNull(idList, "[批量删除失败][当前入参实体为空]");
             checkArgument(idList.size() > 0, "[批量删除失败][当前入参实体更新的ID集合大小为0]");
 
-            List<TestUserDo> readyToDelete = testUserDao.selectTestUserListByIds(idList);
+            List<JumpDo> readyToDelete = jumpDao.selectJumpListByIds(idList);
 
             checkNotNull(readyToDelete, "[批量删除失败][所有记录从未存在]");
             checkArgument(readyToDelete.size() > 0, "[[批量删除失败][所有记录从未存在]");
@@ -145,7 +145,7 @@ public class TestUserServiceImpl implements TestUserService {
             //求出还未被删除的
             final List<Integer> finalAlreadyBeenDeleted = alreadyBeenDeleted;
             idList = idList.stream().filter(id -> !finalAlreadyBeenDeleted.contains(id)).collect(Collectors.toList());
-            result = testUserDao.batchDeleteTestUser(idList);
+            result = jumpDao.batchDeleteJump(idList);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -156,12 +156,12 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<TestUserDto> getTestUserById(Integer id) {
-        TestUserDto result;
+    public ResultSupport<JumpDto> getJumpById(Integer id) {
+        JumpDto result;
         try {
             checkNotNull(id, "[单体查询失败][当前入参实体为空]");
-            TestUserDo comicDo = testUserDao.selectTestUserById(id);
-            result = mappingConverter.doMap(comicDo, TestUserDto.class);
+            JumpDo comicDo = jumpDao.selectJumpById(id);
+            result = mappingConverter.doMap(comicDo, JumpDto.class);
             //判断单条数据是否合法
             checkNotNull(result, "[单体查询失败][查询无结果]");
             checkNotNull(result.getId(), "[单体查询失败][查询结果无主键]");
@@ -175,20 +175,20 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<List<TestUserDto>> getTestUserListByIdList(List<Integer> idList) {
+    public ResultSupport<List<JumpDto>> getJumpListByIdList(List<Integer> idList) {
         boolean flag;
-        List<TestUserDto> result;
-        List<TestUserDo> disableResultList;
+        List<JumpDto> result;
+        List<JumpDo> disableResultList;
         try {
             checkNotNull(idList, "[批量查询失败][当前入参实体为空]");
-            List<TestUserDo> list = testUserDao.selectTestUserListByIds(idList);
+            List<JumpDo> list = jumpDao.selectJumpListByIds(idList);
             checkNotNull(list, "[批量查询失败][查询为空]");
             disableResultList = list.parallelStream().filter(o -> o.getId() == null || o.getStatus() == null || o.getIsDeleted() == null).collect(Collectors.toList());
             if (disableResultList == null) {
                 disableResultList = Lists.newArrayList();
             }
             flag = disableResultList.size() == 0;
-            result = list.parallelStream().filter(o -> o.getId() != null).map(o -> mappingConverter.doMap(o, TestUserDto.class)).collect(Collectors.toList());
+            result = list.parallelStream().filter(o -> o.getId() != null).map(o -> mappingConverter.doMap(o, JumpDto.class)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -197,8 +197,8 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<List<TestUserDto>> getTestUserListByQuery(TestUserDto query) {
-        List<TestUserDto> result;
+    public ResultSupport<List<JumpDto>> getJumpListByQuery(JumpDto query) {
+        List<JumpDto> result;
         Integer countByQuery;
         try {
             checkNotNull(query, "[条件查询失败][查询对象为空]");
@@ -211,16 +211,16 @@ public class TestUserServiceImpl implements TestUserService {
             if (query.getIsDeleted() == null) {
                 query.setIsDeleted(IsDeleted.NO);
             }
-            TestUserDo doQuery = mappingConverter.doMap(query, TestUserDo.class);
-            countByQuery = testUserDao.selectTestUserCountByQuery(doQuery);
-            result = testUserDao.selectTestUserListByQuery(doQuery).stream().map(o -> mappingConverter.doMap(o, TestUserDto.class)).collect(Collectors.toList());
+            JumpDo doQuery = mappingConverter.doMap(query, JumpDo.class);
+            countByQuery = jumpDao.selectJumpCountByQuery(doQuery);
+            result = jumpDao.selectJumpListByQuery(doQuery).stream().map(o -> mappingConverter.doMap(o, JumpDto.class)).collect(Collectors.toList());
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
         }
         boolean expr = countByQuery >= 0 && result != null;
-        ResultSupport<List<TestUserDto>> instance = ResultSupport.getInstance(expr, expr ? "[条件查询成功]" : "[条件查询失败][查询无数据,请变更查询条件]", result);
+        ResultSupport<List<JumpDto>> instance = ResultSupport.getInstance(expr, expr ? "[条件查询成功]" : "[条件查询失败][查询无数据,请变更查询条件]", result);
         instance.setTotalCount(countByQuery);
         return instance;
     }

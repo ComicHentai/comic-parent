@@ -1,14 +1,14 @@
 package com.comichentai.service.impl;
 
 import com.comichentai.convert.impl.DozerMappingConverter;
-import com.comichentai.dao.TestUserDao;
+import com.comichentai.dao.UserInfoDao;
 import com.comichentai.dataobject.BasicDo;
-import com.comichentai.dataobject.TestUserDo;
-import com.comichentai.dto.TestUserDto;
+import com.comichentai.dataobject.UserInfoDo;
+import com.comichentai.dto.UserInfoDto;
 import com.comichentai.entity.ResultSupport;
 import com.comichentai.enums.IsDeleted;
 import com.comichentai.page.PageDto;
-import com.comichentai.service.TestUserService;
+import com.comichentai.service.UserInfoService;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,30 +25,30 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * 实体服务实现类
  * Created by hope6537 by Code Generator
  */
-@Service(value = "testUserService")
-public class TestUserServiceImpl implements TestUserService {
+@Service(value = "userInfoService")
+public class UserInfoServiceImpl implements UserInfoService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Resource(name = "testUserDao")
-    private TestUserDao testUserDao;
+    @Resource(name = "userInfoDao")
+    private UserInfoDao userInfoDao;
 
     @Resource(name = "mappingConverter")
     private DozerMappingConverter mappingConverter;
 
     @Override
-    public ResultSupport<Integer> addTestUser(TestUserDto testUserDto) {
+    public ResultSupport<Integer> addUserInfo(UserInfoDto userInfoDto) {
         Integer result;
         Integer id;
         try {
-            checkNotNull(testUserDto, "[添加失败][当前插入数据实体为空]");
-            if (testUserDto.getStatus() == null) {
-                testUserDto.setStatus(0);
+            checkNotNull(userInfoDto, "[添加失败][当前插入数据实体为空]");
+            if (userInfoDto.getStatus() == null) {
+                userInfoDto.setStatus(0);
             }
-            TestUserDo testUserDo = mappingConverter.doMap(testUserDto, TestUserDo.class);
-            result = testUserDao.insertTestUser(testUserDo);
-            checkNotNull(testUserDo.getId(), "[添加失败][数据库没有返回实体ID]");
-            id = testUserDo.getId();
+            UserInfoDo userInfoDo = mappingConverter.doMap(userInfoDto, UserInfoDo.class);
+            result = userInfoDao.insertUserInfo(userInfoDo);
+            checkNotNull(userInfoDo.getId(), "[添加失败][数据库没有返回实体ID]");
+            id = userInfoDo.getId();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -58,25 +58,28 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<Integer> addTestUser(String username, String password) {
+    public ResultSupport<Integer> addUserInfo(String username, String password, String nickname, String sexy, String email) {
         try {
             checkNotNull(username, "[添加失败][当前插入数据字段(username)为空]");
             checkNotNull(password, "[添加失败][当前插入数据字段(password)为空]");
+            checkNotNull(nickname, "[添加失败][当前插入数据字段(nickname)为空]");
+            checkNotNull(sexy, "[添加失败][当前插入数据字段(sexy)为空]");
+            checkNotNull(email, "[添加失败][当前插入数据字段(email)为空]");
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
         }
-        return this.addTestUser(new TestUserDto(username, password));
+        return this.addUserInfo(new UserInfoDto(username, password, nickname, sexy, email));
     }
 
     @Override
-    public ResultSupport<Integer> modifyTestUser(TestUserDto testUserDto) {
+    public ResultSupport<Integer> modifyUserInfo(UserInfoDto userInfoDto) {
         Integer result;
         try {
-            checkNotNull(testUserDto, "[单体更新失败][当前入参实体为空]");
-            checkNotNull(testUserDto.getId(), "[单体更新失败][当前入参实体ID为空,无法更新]");
-            result = testUserDao.updateTestUser(mappingConverter.doMap(testUserDto, TestUserDo.class));
+            checkNotNull(userInfoDto, "[单体更新失败][当前入参实体为空]");
+            checkNotNull(userInfoDto.getId(), "[单体更新失败][当前入参实体ID为空,无法更新]");
+            result = userInfoDao.updateUserInfo(mappingConverter.doMap(userInfoDto, UserInfoDo.class));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -86,13 +89,13 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<Integer> batchModifyTestUser(TestUserDto testUserDto, List<Integer> idList) {
+    public ResultSupport<Integer> batchModifyUserInfo(UserInfoDto userInfoDto, List<Integer> idList) {
         Integer result;
         try {
-            checkNotNull(testUserDto, "[批量更新失败][当前入参实体为空]");
+            checkNotNull(userInfoDto, "[批量更新失败][当前入参实体为空]");
             checkNotNull(idList, "[批量更新失败][当前入参实体ID为空,无法更新]");
             checkArgument(idList.size() > 0, "[批量更新失败][当前入参实体更新的ID集合大小为0]");
-            result = testUserDao.batchUpdateTestUser(mappingConverter.doMap(testUserDto, TestUserDo.class), idList);
+            result = userInfoDao.batchUpdateUserInfo(mappingConverter.doMap(userInfoDto, UserInfoDo.class), idList);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -102,14 +105,14 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<Integer> removeTestUser(Integer id) {
+    public ResultSupport<Integer> removeUserInfo(Integer id) {
         Integer result;
         try {
             checkNotNull(id, "[单体删除失败][当前入参实体为空]");
-            TestUserDo readyToDelete = testUserDao.selectTestUserById(id);
+            UserInfoDo readyToDelete = userInfoDao.selectUserInfoById(id);
             checkNotNull(readyToDelete, "[单体删除失败][ID=" + id + "记录从未存在]");
             checkArgument(readyToDelete.getIsDeleted() != 1, "[单体删除失败][ID=" + id + "记录已经被删除]");
-            result = testUserDao.deleteTestUser(id);
+            result = userInfoDao.deleteUserInfo(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -119,7 +122,7 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<Integer> batchRemoveTestUser(List<Integer> idList) {
+    public ResultSupport<Integer> batchRemoveUserInfo(List<Integer> idList) {
         Integer result; //返回结果
         boolean flag = true;  //是否存在无效数据
         String alreadyBeenDeletedIdListString; //打印的ID
@@ -127,7 +130,7 @@ public class TestUserServiceImpl implements TestUserService {
             checkNotNull(idList, "[批量删除失败][当前入参实体为空]");
             checkArgument(idList.size() > 0, "[批量删除失败][当前入参实体更新的ID集合大小为0]");
 
-            List<TestUserDo> readyToDelete = testUserDao.selectTestUserListByIds(idList);
+            List<UserInfoDo> readyToDelete = userInfoDao.selectUserInfoListByIds(idList);
 
             checkNotNull(readyToDelete, "[批量删除失败][所有记录从未存在]");
             checkArgument(readyToDelete.size() > 0, "[[批量删除失败][所有记录从未存在]");
@@ -145,7 +148,7 @@ public class TestUserServiceImpl implements TestUserService {
             //求出还未被删除的
             final List<Integer> finalAlreadyBeenDeleted = alreadyBeenDeleted;
             idList = idList.stream().filter(id -> !finalAlreadyBeenDeleted.contains(id)).collect(Collectors.toList());
-            result = testUserDao.batchDeleteTestUser(idList);
+            result = userInfoDao.batchDeleteUserInfo(idList);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -156,12 +159,12 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<TestUserDto> getTestUserById(Integer id) {
-        TestUserDto result;
+    public ResultSupport<UserInfoDto> getUserInfoById(Integer id) {
+        UserInfoDto result;
         try {
             checkNotNull(id, "[单体查询失败][当前入参实体为空]");
-            TestUserDo comicDo = testUserDao.selectTestUserById(id);
-            result = mappingConverter.doMap(comicDo, TestUserDto.class);
+            UserInfoDo comicDo = userInfoDao.selectUserInfoById(id);
+            result = mappingConverter.doMap(comicDo, UserInfoDto.class);
             //判断单条数据是否合法
             checkNotNull(result, "[单体查询失败][查询无结果]");
             checkNotNull(result.getId(), "[单体查询失败][查询结果无主键]");
@@ -175,20 +178,20 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<List<TestUserDto>> getTestUserListByIdList(List<Integer> idList) {
+    public ResultSupport<List<UserInfoDto>> getUserInfoListByIdList(List<Integer> idList) {
         boolean flag;
-        List<TestUserDto> result;
-        List<TestUserDo> disableResultList;
+        List<UserInfoDto> result;
+        List<UserInfoDo> disableResultList;
         try {
             checkNotNull(idList, "[批量查询失败][当前入参实体为空]");
-            List<TestUserDo> list = testUserDao.selectTestUserListByIds(idList);
+            List<UserInfoDo> list = userInfoDao.selectUserInfoListByIds(idList);
             checkNotNull(list, "[批量查询失败][查询为空]");
             disableResultList = list.parallelStream().filter(o -> o.getId() == null || o.getStatus() == null || o.getIsDeleted() == null).collect(Collectors.toList());
             if (disableResultList == null) {
                 disableResultList = Lists.newArrayList();
             }
             flag = disableResultList.size() == 0;
-            result = list.parallelStream().filter(o -> o.getId() != null).map(o -> mappingConverter.doMap(o, TestUserDto.class)).collect(Collectors.toList());
+            result = list.parallelStream().filter(o -> o.getId() != null).map(o -> mappingConverter.doMap(o, UserInfoDto.class)).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
@@ -197,8 +200,8 @@ public class TestUserServiceImpl implements TestUserService {
     }
 
     @Override
-    public ResultSupport<List<TestUserDto>> getTestUserListByQuery(TestUserDto query) {
-        List<TestUserDto> result;
+    public ResultSupport<List<UserInfoDto>> getUserInfoListByQuery(UserInfoDto query) {
+        List<UserInfoDto> result;
         Integer countByQuery;
         try {
             checkNotNull(query, "[条件查询失败][查询对象为空]");
@@ -211,16 +214,16 @@ public class TestUserServiceImpl implements TestUserService {
             if (query.getIsDeleted() == null) {
                 query.setIsDeleted(IsDeleted.NO);
             }
-            TestUserDo doQuery = mappingConverter.doMap(query, TestUserDo.class);
-            countByQuery = testUserDao.selectTestUserCountByQuery(doQuery);
-            result = testUserDao.selectTestUserListByQuery(doQuery).stream().map(o -> mappingConverter.doMap(o, TestUserDto.class)).collect(Collectors.toList());
+            UserInfoDo doQuery = mappingConverter.doMap(query, UserInfoDo.class);
+            countByQuery = userInfoDao.selectUserInfoCountByQuery(doQuery);
+            result = userInfoDao.selectUserInfoListByQuery(doQuery).stream().map(o -> mappingConverter.doMap(o, UserInfoDto.class)).collect(Collectors.toList());
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
         }
         boolean expr = countByQuery >= 0 && result != null;
-        ResultSupport<List<TestUserDto>> instance = ResultSupport.getInstance(expr, expr ? "[条件查询成功]" : "[条件查询失败][查询无数据,请变更查询条件]", result);
+        ResultSupport<List<UserInfoDto>> instance = ResultSupport.getInstance(expr, expr ? "[条件查询成功]" : "[条件查询失败][查询无数据,请变更查询条件]", result);
         instance.setTotalCount(countByQuery);
         return instance;
     }
