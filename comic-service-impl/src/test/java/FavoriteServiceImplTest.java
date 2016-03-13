@@ -41,16 +41,16 @@ public class FavoriteServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testAddFavorite() {
-        ResultSupport<Integer> integerResultSupport = favoriteService.addFavorite("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis());
+        ResultSupport<Integer> integerResultSupport = favoriteService.addFavorite("test" + System.currentTimeMillis(), "test1" + System.currentTimeMillis(), "test2" + System.currentTimeMillis());
         logger.info(JSON.toJSONString(integerResultSupport));
         assertTrue(integerResultSupport.getModule() > 0);
     }
 
     @Test
     public void testModifyFavorite() {
-        ResultSupport<Integer> resultSupport = favoriteService.addFavorite("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = favoriteService.addFavorite("test" + System.currentTimeMillis(), "test1" + System.currentTimeMillis(), "test2" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
-        FavoriteDto dto = new FavoriteDto("title_modify_single", "imgTitle_modify_single");
+        FavoriteDto dto = new FavoriteDto("modify" + System.currentTimeMillis(), "modify1" + System.currentTimeMillis(), "modify2" + System.currentTimeMillis());
         dto.setId(id);
         ResultSupport<Integer> modifyResultSupport = favoriteService.modifyFavorite(dto);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -63,7 +63,7 @@ public class FavoriteServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testRemoveFavorite() {
-        ResultSupport<Integer> resultSupport = favoriteService.addFavorite("wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = favoriteService.addFavorite("wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
         ResultSupport<Integer> modifyResultSupport = favoriteService.removeFavorite(id);
         logger.info(JSON.toJSONString(modifyResultSupport));

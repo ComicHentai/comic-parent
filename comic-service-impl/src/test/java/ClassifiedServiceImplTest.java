@@ -50,7 +50,7 @@ public class ClassifiedServiceImplTest extends SpringTestHelper {
     public void testModifyClassified() {
         ResultSupport<Integer> resultSupport = classifiedService.addClassified("test" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
-        ClassifiedDto dto = new ClassifiedDto("test" + System.currentTimeMillis());
+        ClassifiedDto dto = new ClassifiedDto("modify" + System.currentTimeMillis());
         dto.setId(id);
         ResultSupport<Integer> modifyResultSupport = classifiedService.modifyClassified(dto);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -63,7 +63,7 @@ public class ClassifiedServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testRemoveClassified() {
-        ResultSupport<Integer> resultSupport = classifiedService.addClassified("test" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = classifiedService.addClassified("wait_delete" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
         ResultSupport<Integer> modifyResultSupport = classifiedService.removeClassified(id);
         logger.info(JSON.toJSONString(modifyResultSupport));

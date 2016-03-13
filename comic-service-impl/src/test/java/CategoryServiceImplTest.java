@@ -41,16 +41,16 @@ public class CategoryServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testAddCategory() {
-        ResultSupport<Integer> integerResultSupport = categoryService.addCategory("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis(), "string3" + System.currentTimeMillis());
+        ResultSupport<Integer> integerResultSupport = categoryService.addCategory("test" + System.currentTimeMillis(), "test2" + System.currentTimeMillis(), "test3" + System.currentTimeMillis());
         logger.info(JSON.toJSONString(integerResultSupport));
         assertTrue(integerResultSupport.getModule() > 0);
     }
 
     @Test
     public void testModifyCategory() {
-        ResultSupport<Integer> resultSupport = categoryService.addCategory("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis(), "string3" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = categoryService.addCategory("test" + System.currentTimeMillis(), "test2" + System.currentTimeMillis(), "test3" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
-        CategoryDto dto = new CategoryDto("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis(), "string3" + System.currentTimeMillis());
+        CategoryDto dto = new CategoryDto("modify" + System.currentTimeMillis(), "modify2" + System.currentTimeMillis(), "modify3" + System.currentTimeMillis());
         dto.setId(id);
         ResultSupport<Integer> modifyResultSupport = categoryService.modifyCategory(dto);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -63,7 +63,7 @@ public class CategoryServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testRemoveCategory() {
-        ResultSupport<Integer> resultSupport = categoryService.addCategory("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis(), "string3" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = categoryService.addCategory("wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
         ResultSupport<Integer> modifyResultSupport = categoryService.removeCategory(id);
         logger.info(JSON.toJSONString(modifyResultSupport));

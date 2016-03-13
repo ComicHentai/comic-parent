@@ -41,16 +41,17 @@ public class UserInfoServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testAddUserInfo() {
-        ResultSupport<Integer> integerResultSupport = userInfoService.addUserInfo("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis());
+        ResultSupport<Integer> integerResultSupport = userInfoService
+                .addUserInfo("test" + System.currentTimeMillis(), "test1" + System.currentTimeMillis(), "test2" + System.currentTimeMillis(), "test3" + System.currentTimeMillis(), "test4" + System.currentTimeMillis());
         logger.info(JSON.toJSONString(integerResultSupport));
         assertTrue(integerResultSupport.getModule() > 0);
     }
 
     @Test
     public void testModifyUserInfo() {
-        ResultSupport<Integer> resultSupport = userInfoService.addUserInfo("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = userInfoService.addUserInfo("test" + System.currentTimeMillis(), "test1" + System.currentTimeMillis(), "test2" + System.currentTimeMillis(), "test3" + System.currentTimeMillis(), "test4" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
-        UserInfoDto dto = new UserInfoDto("title_modify_single", "imgTitle_modify_single");
+        UserInfoDto dto = new UserInfoDto("modify1" + System.currentTimeMillis(), "modify2" + System.currentTimeMillis(), "modify3" + System.currentTimeMillis(), "modify4" + System.currentTimeMillis(), "modify5" + System.currentTimeMillis());
         dto.setId(id);
         ResultSupport<Integer> modifyResultSupport = userInfoService.modifyUserInfo(dto);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -63,7 +64,7 @@ public class UserInfoServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testRemoveUserInfo() {
-        ResultSupport<Integer> resultSupport = userInfoService.addUserInfo("wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = userInfoService.addUserInfo("wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
         ResultSupport<Integer> modifyResultSupport = userInfoService.removeUserInfo(id);
         logger.info(JSON.toJSONString(modifyResultSupport));

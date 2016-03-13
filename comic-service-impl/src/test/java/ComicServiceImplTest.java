@@ -41,16 +41,16 @@ public class ComicServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testAddComic() {
-        ResultSupport<Integer> integerResultSupport = comicService.addComic("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis());
+        ResultSupport<Integer> integerResultSupport = comicService.addComic("test" + System.currentTimeMillis(), "test1" + System.currentTimeMillis(), "test2" + System.currentTimeMillis(), "test3" + System.currentTimeMillis(), "test4" + System.currentTimeMillis());
         logger.info(JSON.toJSONString(integerResultSupport));
         assertTrue(integerResultSupport.getModule() > 0);
     }
 
     @Test
     public void testModifyComic() {
-        ResultSupport<Integer> resultSupport = comicService.addComic("test" + System.currentTimeMillis(), "imgTitle" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = comicService.addComic("test" + System.currentTimeMillis(), "test1" + System.currentTimeMillis(), "test2" + System.currentTimeMillis(), "test3" + System.currentTimeMillis(), "test4" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
-        ComicDto dto = new ComicDto("title_modify_single", "imgTitle_modify_single");
+        ComicDto dto = new ComicDto("modify1" + System.currentTimeMillis(), "modify2" + System.currentTimeMillis(), "modify3" + System.currentTimeMillis(), "modify4" + System.currentTimeMillis(), "modify5" + System.currentTimeMillis());
         dto.setId(id);
         ResultSupport<Integer> modifyResultSupport = comicService.modifyComic(dto);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -63,7 +63,7 @@ public class ComicServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testRemoveComic() {
-        ResultSupport<Integer> resultSupport = comicService.addComic("wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = comicService.addComic("wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis(), "wait_delete" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
         ResultSupport<Integer> modifyResultSupport = comicService.removeComic(id);
         logger.info(JSON.toJSONString(modifyResultSupport));
