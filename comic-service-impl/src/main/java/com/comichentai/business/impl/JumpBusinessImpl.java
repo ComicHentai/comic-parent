@@ -41,7 +41,7 @@ public class JumpBusinessImpl implements JumpBusiness {
             return special.castToReturnFailed(JumpDto.class);
         }
         //整理得到一个JumpDto
-        SpecialDto module = (SpecialDto) special.getModule();
+        SpecialDto module = special.getModule();
         JumpDto jumpDto = new JumpDto();
         jumpDto.setSpecialId(module.getId());
         //通过JumpDto中的specialId我们可以获得若干的JumpDto，他们拥有相同的SpecialId和不同的ComicId
@@ -49,7 +49,7 @@ public class JumpBusinessImpl implements JumpBusiness {
         if (!jumpListByQuery.isSuccess()) {
             return jumpListByQuery.castToReturnFailed(JumpDto.class);
         }
-        List<JumpDto> jumpDtos = (List<JumpDto>) jumpListByQuery.getModule();
+        List<JumpDto> jumpDtos = jumpListByQuery.getModule();
         //遍历获取idList
         for (JumpDto jumpDto1 : jumpDtos) {
             idList.add(jumpDto1.getComicId());
@@ -58,7 +58,7 @@ public class JumpBusinessImpl implements JumpBusiness {
         if (!comicListByIdList.isSuccess()) {
             return comicListByIdList.castToReturnFailed(JumpDto.class);
         }
-        List<ComicDto> comicDtos = (List<ComicDto>) comicListByIdList.getModule();
+        List<ComicDto> comicDtos = comicListByIdList.getModule();
         JumpDto jumpDto1 = new JumpDto();
         Map<SpecialDto, List<ComicDto>> map = new ConcurrentHashMap<>();
         map.put(module, comicDtos);
