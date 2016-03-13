@@ -23,6 +23,8 @@
     <dubbo:reference id="specialService" interface="com.comichentai.service.SpecialService"/>
     <dubbo:reference id="userInfoService" interface="com.comichentai.service.UserInfoService"/>
 
+    <dubbo:reference id="jumpBusiness" interface="com.comichentai.bo.JumpBusiness"/>
+
     <dubbo:application name="comic-rest-api"/>
 
     <dubbo:registry protocol="zookeeper" address="www.hope6537.com:2181"/>

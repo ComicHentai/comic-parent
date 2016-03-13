@@ -27,4 +27,6 @@
     <dubbo:service ref="specialService" interface="com.comichentai.service.SpecialService"/>
     <dubbo:service ref="userInfoService" interface="com.comichentai.service.UserInfoService"/>
 
+    <dubbo:service ref="jumpBusiness" interface="com.comichentai.bo.JumpBusiness"/>
+
 </beans>
