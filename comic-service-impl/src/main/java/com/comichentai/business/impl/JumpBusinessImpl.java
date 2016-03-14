@@ -33,10 +33,10 @@ public class JumpBusinessImpl implements JumpBusiness {
     private JumpService jumpService;
 
     @Override
-    public ResultSupport<JumpDto> getJumpBySpecial(SpecialDto specialDto) {
+    public ResultSupport<JumpDto> getJumpBySpecial(Integer specialId) {
         List<Integer> idList = new LinkedList<>();
         //调用getSpecialById的方法
-        ResultSupport<SpecialDto> special = specialService.getSpecialById(specialDto.getId());
+        ResultSupport<SpecialDto> special = specialService.getSpecialById(specialId);
         if (!special.isSuccess()) {
             return special.castToReturnFailed(JumpDto.class);
         }
@@ -63,7 +63,8 @@ public class JumpBusinessImpl implements JumpBusiness {
         Map<SpecialDto, List<ComicDto>> map = new ConcurrentHashMap<>();
         map.put(module, comicDtos);
         jumpDto1.setJump(map);
-
         return ResultSupport.getInstance(true, "[关联查询成功]", jumpDto1);
     }
+
+
 }

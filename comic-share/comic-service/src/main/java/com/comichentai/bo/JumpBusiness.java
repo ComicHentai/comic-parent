@@ -13,9 +13,9 @@ public interface JumpBusiness {
     /**
      * 获取专辑内容-关联内容拼接
      *
-     * @param specialDto 专辑对象
+     * @param specialId 专辑ID
      * @return ResultSupport.module = 专辑
      * */
-    ResultSupport<JumpDto> getJumpBySpecial(SpecialDto specialDto);
+    ResultSupport<JumpDto> getJumpBySpecial(Integer specialId);
 
 }
