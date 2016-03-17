@@ -1,6 +1,5 @@
 package com.comichentai.security;
 
-import org.junit.Test;
 import sun.misc.BASE64Decoder;
 
 import javax.crypto.Cipher;
@@ -9,9 +8,21 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AESLocker {
 
+    public static final int BASE64 = 0;
+    public static final int HEX = 1;
+
     public static String encrypt(String data) {
         try {
-            return encrypt(data, "xComicHentai6537");
+            return encrypt(data, "xComicHentai6537", HEX);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String encryptBase64(String data) {
+        try {
+            return encrypt(data, "xComicHentai6537", BASE64);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -20,14 +31,24 @@ public class AESLocker {
 
     public static String decrypt(String data) {
         try {
-            return decrypt(data, "xComicHentai6537");
+            return decrypt(data, "xComicHentai6537", HEX);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private static String encrypt(String data, String key) throws Exception {
+    public static String decryptBase64(String data) {
+        try {
+            return decrypt(data, "xComicHentai6537", BASE64);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static String encrypt(String data, String key, int mode) throws Exception {
+
         try {
             if (key == null || key.length() != 16) {
                 throw new RuntimeException("key error");
@@ -50,8 +71,14 @@ public class AESLocker {
 
             cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
             byte[] encrypted = cipher.doFinal(plaintext);
-
-            return new sun.misc.BASE64Encoder().encode(encrypted);
+            switch (mode) {
+                case BASE64:
+                    return new sun.misc.BASE64Encoder().encode(encrypted);
+                case HEX:
+                    return ConvertUtils.asHex(encrypted);
+                default:
+                    return null;
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,13 +86,24 @@ public class AESLocker {
         }
     }
 
-    private static String decrypt(String data, String key) throws Exception {
+
+    private static String decrypt(String data, String key, int mode) throws Exception {
         try {
             if (key == null || key.length() != 16) {
                 throw new RuntimeException("key error");
             }
             String iv = "4798145623545678";
-            byte[] encrypted1 = new BASE64Decoder().decodeBuffer(data);
+            byte[] encrypted1;
+            switch (mode) {
+                case BASE64:
+                    encrypted1 = new BASE64Decoder().decodeBuffer(data);
+                    break;
+                case HEX:
+                    encrypted1 = ConvertUtils.fromHex(data);
+                    break;
+                default:
+                    return null;
+            }
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             SecretKeySpec keyspec = new SecretKeySpec(key.getBytes(), "AES");
             IvParameterSpec ivspec = new IvParameterSpec(iv.getBytes());
@@ -78,9 +116,4 @@ public class AESLocker {
         }
     }
 
-
-    @Test
-    public void test() {
-        System.out.println(encrypt("hello world"));
-    }
 }

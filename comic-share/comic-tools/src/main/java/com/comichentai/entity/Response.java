@@ -20,7 +20,6 @@ public class Response implements Serializable {
     private static final String ERROR_MSG = "%E6%93%8D%E4%BD%9C%E5%A4%B1%E8%B4%A5";
     private Logger LOGGER = LoggerFactory.getLogger(Response.class);
     private boolean success;
-    private Integer totalCount;
     private String returnMsg;
     private Map<String, Object> data;
 
@@ -37,14 +36,6 @@ public class Response implements Serializable {
     public Response addAttribute(String key, Object value) {
         this.data.put(key, value);
         return this;
-    }
-
-    public Integer getTotalCount() {
-        return totalCount;
-    }
-
-    public void setTotalCount(Integer totalCount) {
-        this.totalCount = totalCount;
     }
 
     public String getReturnMsg() {
