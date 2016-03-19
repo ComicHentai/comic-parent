@@ -1,5 +1,6 @@
 import com.alibaba.fastjson.JSON;
 import com.comichentai.controller.ComicController;
+import com.comichentai.controller.LockerController;
 import com.comichentai.page.PageDto;
 import com.comichentai.security.AESLocker;
 import org.junit.Test;
@@ -11,7 +12,7 @@ import org.springframework.boot.SpringApplication;
 public class Driver {
 
     public static void main(String[] args) {
-        Class[] classes = new Class[]{ComicController.class};
+        Class[] classes = new Class[]{ComicController.class, LockerController.class};
         SpringApplication.run(classes, args);
     }
 
@@ -33,6 +34,13 @@ public class Driver {
         System.out.println(encrypt);
         String decrypt = RSALocker.decrypt(encrypt, serverPrivateKey);
         System.out.println(decrypt);*/
+    }
+
+    @Test
+    public void testAES() throws Exception {
+        String s = "8e2a1d4e0adf7d364f1796fc8c04b7c2fd8ff0a1a255cf2bc192a8c1ce74227610f7d7cb837f570bef77bc1e425c42beb769839865060fb9b4152f8dcfc99bbcd4b85a39f755ebc800100933ffaa512bacdca117f3de77818688df4ceb8678006ffa89cbc31cac1649806d9b2674f969a346474664df71f5ba95c02f947acfac29973e41a1973f6df27dd14093a3ca58d58cb6ec33b8b544594bad22de1caf198a3a8334efd82c09f132dbf6040bc0d560e65c5c359b3d1d0be8cab99d68b2ee953ad80b6b1946c16d3a1d5586205ac3476621731a77323700f836322eef9a68f76f7745658a60c00ace42b3e14bdc695bb6d32098d91a7d72ddc12d6d8a9f411f75cb431336d0840d8e6c4cc76e000731ed6aa1e0d58c736e9ec2d791e64c8ee5862fce5ca3ac7f7eef991c72416e48";
+        String decrypt = AESLocker.decrypt(s);
+        System.out.println(decrypt);
     }
 
 

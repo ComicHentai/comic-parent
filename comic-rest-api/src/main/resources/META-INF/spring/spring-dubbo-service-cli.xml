@@ -13,8 +13,6 @@
     <!-- 默认消费者域名 -->
     <dubbo:protocol host="www.hope6537.com"/>
 
-    <dubbo:reference id="testComicService" interface="com.comichentai.service.TestComicService"/>
-    <dubbo:reference id="testUserService" interface="com.comichentai.service.TestUserService"/>
     <dubbo:reference id="categoryService" interface="com.comichentai.service.CategoryService"/>
     <dubbo:reference id="classifiedService" interface="com.comichentai.service.ClassifiedService"/>
     <dubbo:reference id="comicService" interface="com.comichentai.service.ComicService"/>
