@@ -3,7 +3,6 @@ package com.comichentai.controller;
 import com.comichentai.security.AESLocker;
 import com.comichentai.service.ComicService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,7 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@EnableAutoConfiguration{
+@EnableAutoConfiguration
 public class LockerController {
 
     private static final String IILEGAL_REQUEST = "非法请求";
