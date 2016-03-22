@@ -37,66 +37,37 @@ public class CategoryBusinessImpl implements CategoryBusiness {
     @Resource(name = "categoryService")
     private CategoryService categoryService;
 
-    private <T extends BasicDto> ResultSupport<CategoryDto> getTargetByClassified(Integer classifiedId, Integer targetType, Class<T> clz){
-        /*获取Key*/
-        ResultSupport<ClassifiedDto> classifiedById = classifiedService.getClassifiedById(classifiedId);
-        if(!classifiedById.isSuccess()){
-            return classifiedById.castToReturnFailed(CategoryDto.class);
-        }
+    private ResultSupport<List<Integer>> getTargetIdListByClassified(Integer classifiedId, Integer targetType){
         /*整理得到一个CategoryDto*/
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setClassifiedId(classifiedId);
         categoryDto.setTargetType(targetType);
         ResultSupport<List<CategoryDto>> categoryListByQuery = categoryService.getCategoryListByQuery(categoryDto);
         if(!categoryListByQuery.isSuccess()){
-            return categoryListByQuery.castToReturnFailed(CategoryDto.class);
+            return categoryListByQuery.castToReturnFailed(null);
         }
         List<CategoryDto> categoryDtos = categoryListByQuery.getModule();
         List<Integer> idList = new LinkedList<>();
         for(CategoryDto tmp : categoryDtos){
             idList.add(tmp.getTargetId());
         }
-        ResultSupport<List<T>> targetListByIdList = new ResultSupport<>();
-        if(targetType == 0){
-            targetListByIdList = comicService.getComicListByIdList(idList);
-        }else{
-            targetListByIdList = specialService.getSpecialListByIdList(idList);
-        }
-        if(!targetListByIdList.isSuccess()){
-            return targetListByIdList.castToReturnFailed(CategoryDto.class);
-        }
-        Map<ClassifiedDto, List<T>> result = new ConcurrentHashMap<>();
-        result.put(classifiedById.getModule(), targetListByIdList.getModule());
-        CategoryDto categoryDto1 = new CategoryDto();
-
+        return ResultSupport.getInstance(true, "[targetId查询成功]", idList);
     }
 
-    private ResultSupport<List<CategoryDto>> test(Integer classifiedId){
-        ResultSupport<ClassifiedDto> classifiedById = classifiedService.getClassifiedById(classifiedId);
-        return classifiedById.castToReturnFailed(List<CategoryDto>.class);
-    }
 
     @Override
-    public ResultSupport<CategoryDto> getComicByClassified(Integer classifiedId) {
+    public ResultSupport<CategoryDto> getComicByClassified(CategoryDto categoryDto) {
+        Integer classifiedId = categoryDto.getClassifiedId();
         /*获取Key*/
         ResultSupport<ClassifiedDto> classifiedById = classifiedService.getClassifiedById(classifiedId);
         if(!classifiedById.isSuccess()){
             return classifiedById.castToReturnFailed(CategoryDto.class);
         }
-        /*整理得到一个CategoryDto*/
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setClassifiedId(classifiedId);
-        ResultSupport<List<CategoryDto>> categoryListByQuery = categoryService.getCategoryListByQuery(categoryDto);
-        if(!categoryListByQuery.isSuccess()){
-            return categoryListByQuery.castToReturnFailed(CategoryDto.class);
+        ResultSupport<List<Integer>> targetByClassified = getTargetIdListByClassified(classifiedId, TYPE_COMIC);
+        if(!targetByClassified.isSuccess()){
+            return targetByClassified.castToReturnFailed(CategoryDto.class);
         }
-        List<CategoryDto> categoryDtos = categoryListByQuery.getModule();
-        List<Integer> idList = new LinkedList<>();
-        for(CategoryDto tmp : categoryDtos){
-            if(tmp.getTargetType() == 0) {  //如果是漫画的
-                idList.add(tmp.getTargetId());
-            }
-        }
+        List<Integer> idList = targetByClassified.getModule();
         ResultSupport<List<ComicDto>> comicListByIdList = comicService.getComicListByIdList(idList);
         if(!comicListByIdList.isSuccess()){
             return comicListByIdList.castToReturnFailed(CategoryDto.class);
@@ -108,27 +79,20 @@ public class CategoryBusinessImpl implements CategoryBusiness {
         return ResultSupport.getInstance(true, "[关联查询成功]", categoryDto1);
     }
 
+
     @Override
-    public ResultSupport<CategoryDto> getSpecialByClassified(Integer classifiedId) {
+    public ResultSupport<CategoryDto> getSpecialByClassified(CategoryDto categoryDto) {
+        Integer classifiedId = categoryDto.getClassifiedId();
         /*获取Key*/
         ResultSupport<ClassifiedDto> classifiedById = classifiedService.getClassifiedById(classifiedId);
         if(!classifiedById.isSuccess()){
             return classifiedById.castToReturnFailed(CategoryDto.class);
         }
-        /*整理得到一个CategoryDto*/
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setClassifiedId(classifiedId);
-        ResultSupport<List<CategoryDto>> categoryListByQuery = categoryService.getCategoryListByQuery(categoryDto);
-        if(!categoryListByQuery.isSuccess()){
-            return categoryListByQuery.castToReturnFailed(CategoryDto.class);
+        ResultSupport<List<Integer>> targetByClassified = getTargetIdListByClassified(classifiedId, TYPE_SPECIAL);
+        if(!targetByClassified.isSuccess()){
+            return targetByClassified.castToReturnFailed(CategoryDto.class);
         }
-        List<CategoryDto> categoryDtos = categoryListByQuery.getModule();
-        List<Integer> idList = new LinkedList<>();
-        for(CategoryDto tmp : categoryDtos){
-            if(tmp.getTargetType() == 1) {  //如果是专辑的
-                idList.add(tmp.getTargetId());
-            }
-        }
+        List<Integer> idList = targetByClassified.getModule();
         ResultSupport<List<SpecialDto>> specialListByIdList = specialService.getSpecialListByIdList(idList);
         if(!specialListByIdList.isSuccess()){
             return specialListByIdList.castToReturnFailed(CategoryDto.class);
@@ -140,28 +104,36 @@ public class CategoryBusinessImpl implements CategoryBusiness {
         return ResultSupport.getInstance(true, "[关联查询成功]", categoryDto1);
     }
 
+    private ResultSupport<List<Integer>> getTargetClassifiedIdList(Integer targetId, Integer targetType){
+        /*整理得到一个CategoryDto*/
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setTargetId(targetId);
+        categoryDto.setTargetType(0);
+        ResultSupport<List<CategoryDto>> categoryListByQuery = categoryService.getCategoryListByQuery(categoryDto);
+        if(!categoryListByQuery.isSuccess()){
+            return categoryListByQuery.castToReturnFailed(null);
+        }
+        List<CategoryDto> categoryDtos = categoryListByQuery.getModule();
+        List<Integer> idList = new LinkedList<>();
+        for(CategoryDto tmp : categoryDtos){
+            idList.add(tmp.getClassifiedId());
+        }
+        return ResultSupport.getInstance(true, "[classifiedId查询成功]", idList);
+    }
+
     @Override
-    public ResultSupport<CategoryDto> getComicClassified(Integer comicId) {
+    public ResultSupport<CategoryDto> getComicClassified(CategoryDto categoryDto) {
+        Integer comicId = categoryDto.getTargetId();
         /*获取Key*/
         ResultSupport<ComicDto> comicById = comicService.getComicById(comicId);
         if(!comicById.isSuccess()){
             return comicById.castToReturnFailed(CategoryDto.class);
         }
-        /*整理得到一个CategoryDto*/
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setTargetId(comicId);
-        categoryDto.setTargetType(0);
-        ResultSupport<List<CategoryDto>> categoryListByQuery = categoryService.getCategoryListByQuery(categoryDto);
-        if(!categoryListByQuery.isSuccess()){
-            return categoryListByQuery.castToReturnFailed(CategoryDto.class);
+        ResultSupport<List<Integer>> targetClassifiedIdList = getTargetClassifiedIdList(comicId, TYPE_COMIC);
+        if(!targetClassifiedIdList.isSuccess()){
+            return targetClassifiedIdList.castToReturnFailed(CategoryDto.class);
         }
-        List<CategoryDto> categoryDtos = categoryListByQuery.getModule();
-        List<Integer> idList = new LinkedList<>();
-        for(CategoryDto tmp : categoryDtos){
-            if(tmp.getTargetType() == 0){
-                idList.add(tmp.getClassifiedId());
-            }
-        }
+        List<Integer> idList = targetClassifiedIdList.getModule();
         ResultSupport<List<ClassifiedDto>> classifiedListByIdList = classifiedService.getClassifiedListByIdList(idList);
         if(!classifiedListByIdList.isSuccess()){
             return classifiedListByIdList.castToReturnFailed(CategoryDto.class);
@@ -174,27 +146,18 @@ public class CategoryBusinessImpl implements CategoryBusiness {
     }
 
     @Override
-    public ResultSupport<CategoryDto> getSpecialClassified(Integer specialId) {
+    public ResultSupport<CategoryDto> getSpecialClassified(CategoryDto categoryDto) {
+        Integer specialId = categoryDto.getTargetId();
         /*获取Key*/
         ResultSupport<SpecialDto> specialById = specialService.getSpecialById(specialId);
         if(!specialById.isSuccess()){
             return specialById.castToReturnFailed(CategoryDto.class);
         }
-        /*整理得到一个CategoryDto*/
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setTargetId(specialId);
-        categoryDto.setTargetType(1);
-        ResultSupport<List<CategoryDto>> categoryListByQuery = categoryService.getCategoryListByQuery(categoryDto);
-        if(!categoryListByQuery.isSuccess()){
-            return categoryListByQuery.castToReturnFailed(CategoryDto.class);
+        ResultSupport<List<Integer>> targetClassifiedIdList = getTargetClassifiedIdList(specialId, TYPE_COMIC);
+        if(!targetClassifiedIdList.isSuccess()){
+            return targetClassifiedIdList.castToReturnFailed(CategoryDto.class);
         }
-        List<CategoryDto> categoryDtos = categoryListByQuery.getModule();
-        List<Integer> idList = new LinkedList<>();
-        for(CategoryDto tmp : categoryDtos){
-            if(tmp.getTargetType() == 1){
-                idList.add(tmp.getClassifiedId());
-            }
-        }
+        List<Integer> idList = targetClassifiedIdList.getModule();
         ResultSupport<List<ClassifiedDto>> classifiedListByIdList = classifiedService.getClassifiedListByIdList(idList);
         if(!classifiedListByIdList.isSuccess()){
             return classifiedListByIdList.castToReturnFailed(CategoryDto.class);

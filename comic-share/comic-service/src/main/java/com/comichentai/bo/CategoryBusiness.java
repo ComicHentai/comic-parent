@@ -12,37 +12,37 @@ public interface CategoryBusiness {
     /**
      * 通过分类获取漫画。
      *
-     *@param classifiedId 分类ID
+     *@param categoryDto query-分类ID
      *@return ResultSupport.module = Map<分类，漫画>
      * */
-    ResultSupport<CategoryDto> getComicByClassified(Integer classifiedId);
+    ResultSupport<CategoryDto> getComicByClassified(CategoryDto categoryDto);
 
 
     /**
      * 通过分类获取专辑。
      *
-     * @param classifiedId 分类ID
+     * @param categoryDto query-分类ID
      * @return ResultSupport.module = Map<分类，专辑>
      * */
-    ResultSupport<CategoryDto> getSpecialByClassified(Integer classifiedId);
+    ResultSupport<CategoryDto> getSpecialByClassified(CategoryDto categoryDto);
 
 
     /**
      * 获取漫画详细信息
      *
-     * @param comicId 漫画ID
+     * @param categoryDto query-漫画ID
      * @return ResultSupport.module = 漫画详细信息
      * */
-    ResultSupport<CategoryDto> getComicClassified(Integer comicId);
+    ResultSupport<CategoryDto> getComicClassified(CategoryDto categoryDto);
 
 
     /**
      * 获取专辑分类信息
      *
-     * @param specialId 专辑ID
+     * @param categoryDto query-专辑ID
      * @return ResultSupport.module = 专辑分类详细信息
      * */
-    ResultSupport<CategoryDto> getSpecialClassified(Integer specialId);
+    ResultSupport<CategoryDto> getSpecialClassified(CategoryDto categoryDto);
 
 
 }
