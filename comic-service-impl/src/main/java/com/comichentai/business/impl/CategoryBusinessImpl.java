@@ -1,10 +1,7 @@
 package com.comichentai.business.impl;
 
 import com.comichentai.bo.CategoryBusiness;
-import com.comichentai.dto.CategoryDto;
-import com.comichentai.dto.ClassifiedDto;
-import com.comichentai.dto.ComicDto;
-import com.comichentai.dto.SpecialDto;
+import com.comichentai.dto.*;
 import com.comichentai.entity.ResultSupport;
 import com.comichentai.service.CategoryService;
 import com.comichentai.service.ClassifiedService;
@@ -24,6 +21,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service("categoryBusiness")
 public class CategoryBusinessImpl implements CategoryBusiness {
 
+
+    private static final int TYPE_COMIC = 0;
+    private static final int TYPE_SPECIAL = 1;
+
     @Resource(name = "classifiedService")
     private ClassifiedService classifiedService;
 
@@ -35,6 +36,45 @@ public class CategoryBusinessImpl implements CategoryBusiness {
 
     @Resource(name = "categoryService")
     private CategoryService categoryService;
+
+    private <T extends BasicDto> ResultSupport<CategoryDto> getTargetByClassified(Integer classifiedId, Integer targetType, Class<T> clz){
+        /*获取Key*/
+        ResultSupport<ClassifiedDto> classifiedById = classifiedService.getClassifiedById(classifiedId);
+        if(!classifiedById.isSuccess()){
+            return classifiedById.castToReturnFailed(CategoryDto.class);
+        }
+        /*整理得到一个CategoryDto*/
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setClassifiedId(classifiedId);
+        categoryDto.setTargetType(targetType);
+        ResultSupport<List<CategoryDto>> categoryListByQuery = categoryService.getCategoryListByQuery(categoryDto);
+        if(!categoryListByQuery.isSuccess()){
+            return categoryListByQuery.castToReturnFailed(CategoryDto.class);
+        }
+        List<CategoryDto> categoryDtos = categoryListByQuery.getModule();
+        List<Integer> idList = new LinkedList<>();
+        for(CategoryDto tmp : categoryDtos){
+            idList.add(tmp.getTargetId());
+        }
+        ResultSupport<List<T>> targetListByIdList = new ResultSupport<>();
+        if(targetType == 0){
+            targetListByIdList = comicService.getComicListByIdList(idList);
+        }else{
+            targetListByIdList = specialService.getSpecialListByIdList(idList);
+        }
+        if(!targetListByIdList.isSuccess()){
+            return targetListByIdList.castToReturnFailed(CategoryDto.class);
+        }
+        Map<ClassifiedDto, List<T>> result = new ConcurrentHashMap<>();
+        result.put(classifiedById.getModule(), targetListByIdList.getModule());
+        CategoryDto categoryDto1 = new CategoryDto();
+
+    }
+
+    private ResultSupport<List<CategoryDto>> test(Integer classifiedId){
+        ResultSupport<ClassifiedDto> classifiedById = classifiedService.getClassifiedById(classifiedId);
+        return classifiedById.castToReturnFailed(List<CategoryDto>.class);
+    }
 
     @Override
     public ResultSupport<CategoryDto> getComicByClassified(Integer classifiedId) {

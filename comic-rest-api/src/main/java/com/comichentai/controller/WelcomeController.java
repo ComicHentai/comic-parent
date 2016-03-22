@@ -1,9 +1,8 @@
 package com.comichentai.controller;
 
+import com.alibaba.dubbo.common.json.JSONObject;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-import com.comichentai.bo.CategoryBusiness;
 import com.comichentai.dto.ComicDto;
 import com.comichentai.entity.Response;
 import com.comichentai.entity.ResultSupport;
@@ -16,93 +15,68 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Created by dintama on 16/3/22.
+ */
 @Controller
-@RequestMapping("/comic/")
 @ImportResource("classpath*:/META-INF/spring/spring-dubbo-service-cli.xml")
+@RequestMapping("/welcome/")
 @EnableAutoConfiguration
-public class ComicController {
+public class WelcomeController {
 
     private static final String IILEGAL_REQUEST = "非法请求";
 
     @Resource(name = "comicService")
     public ComicService comicService;
 
-    @Resource(name = "categoryBusiness")
-    public CategoryBusiness categoryBusiness;
-
     @RequestMapping(value = "index", method = RequestMethod.GET)
     @ResponseBody
-    public Response getComicInfoByComicId(HttpServletRequest request, @RequestParam("comicId")int comicId){
+    public Response getWelcomeComicByQuery(HttpServletRequest request){
         //获取参数
         String data = request.getParameter("data");
-        JSONObject paramMap;
+        com.alibaba.fastjson.JSONObject paramMap;
+        //获取设备信息
         String mode = request.getParameter("_mode");
         String auth = request.getParameter("_auth");
         try{
+            //判断data是否合法
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
+            //判断是否需要对data进行加密
             if(!"debug".equals(mode)){
                 data = AESLocker.decrypt(data);
             }
+            //获取验证登录的必要信息
             paramMap = JSON.parseObject(data);
             String token = paramMap.getString("token");
             String deviceId = paramMap.getString("deviceId");
             if(!"debug".equals(auth)){
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
-
-        }
-    }
-
-    @RequestMapping(value = "/getComic", method = RequestMethod.GET)
-    @ResponseBody
-    public Response getComicByQuery(HttpServletRequest request) {
-        //获取参数
-        String data = request.getParameter("data");
-        JSONObject paramMap;
-        //获取设备信息
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
-        boolean isEnd = false;
-        try {
-            checkNotNull(data, IILEGAL_REQUEST);
-            checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
-            if (!"debug".equals(mode)) {
-                data = AESLocker.decrypt(data);
-            }
-            paramMap = JSON.parseObject(data);
-            String token = paramMap.getString("token");
-            String deviceId = paramMap.getString("deviceId");
-            if (!"debug".equals(auth)) {
-                TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
-            }
+            //验证完成,开始查询
             ComicDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), ComicDto.class);
             ResultSupport<List<ComicDto>> comicListByQuery = comicService.getComicListByQuery(query);
             return Response.getInstance(comicListByQuery.isSuccess())
                     .addAttribute("data", comicListByQuery.getModule())
-                    .addAttribute("isEnd", comicListByQuery.getTotalCount() < query.getCurrentPage() * query.getPageSize())
+                    .addAttribute("isEnd", comicListByQuery.getTotalCount() < query.getPageSize() * query.getCurrentPage())
                     .addAttribute("pageMap", PageMapUtil.sendNextPage(query));
-        } catch (JSONException jsonException) {
-            return Response.getInstance(false).setReturnMsg("参数非法");
-        } catch (Exception e) {
+        }catch (JSONException e){
+            return Response.getInstance(false).setReturnMsg("非法参数");
+        }catch (Exception e){
             e.printStackTrace();
             return Response.getInstance(false).setReturnMsg(e.getMessage());
         }
+
     }
-
-
-
-
-
 
 }

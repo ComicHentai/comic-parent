@@ -22,6 +22,7 @@
     <dubbo:reference id="userInfoService" interface="com.comichentai.service.UserInfoService"/>
 
     <dubbo:reference id="jumpBusiness" interface="com.comichentai.bo.JumpBusiness"/>
+    <dubbo:reference id="categoryBusiness" interface="com.comichentai.bo.CategoryBusiness"/>
 
     <dubbo:application name="comic-rest-api"/>
 
