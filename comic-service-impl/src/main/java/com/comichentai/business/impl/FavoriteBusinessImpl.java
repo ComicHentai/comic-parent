@@ -25,6 +25,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service("favoriteBusiness")
 public class FavoriteBusinessImpl implements FavoriteBusiness {
 
+    private static final int TYPE_COMIC = 0;
+    private static final int TYPE_SPECIAL = 1;
+
     @Resource(name = "userInfoService")
     private UserInfoService userInfoService;
 
@@ -37,28 +40,36 @@ public class FavoriteBusinessImpl implements FavoriteBusiness {
     @Resource(name = "favoriteService")
     private FavoriteService favoriteService;
 
+    private ResultSupport<List<Integer>> getUserFavoriteTargetId(Integer userId, Integer targetType){
+        /*整理得到一个FavoriteDto*/
+        FavoriteDto favoriteDto = new FavoriteDto();
+        favoriteDto.setUserId(userId);
+        favoriteDto.setTargetType(targetType);
+        ResultSupport<List<FavoriteDto>> favoriteListByQuery = favoriteService.getFavoriteListByQuery(favoriteDto);
+        if(!favoriteListByQuery.isSuccess()){
+            return favoriteListByQuery.castToReturnFailed(null);
+        }
+        List<FavoriteDto> favoriteDtos = favoriteListByQuery.getModule();
+        List<Integer> idList = new LinkedList<>();
+        for(FavoriteDto tmp : favoriteDtos){
+            idList.add(tmp.getTargetId());
+        }
+        return ResultSupport.getInstance(true, "[targetId查询成功]", idList);
+    }
+
     @Override
-    public ResultSupport<FavoriteDto> getUserFavoriteComics(Integer userId) {
+    public ResultSupport<FavoriteDto> getUserFavoriteComics(FavoriteDto favoriteDto) {
+        Integer userId = favoriteDto.getUserId();
         /*获取Key*/
         ResultSupport<UserInfoDto> userInfoById = userInfoService.getUserInfoById(userId);
         if(!userInfoById.isSuccess()){
             return userInfoById.castToReturnFailed(FavoriteDto.class);
         }
-        /*整理得到一个FavoriteDto*/
-        FavoriteDto favoriteDto = new FavoriteDto();
-        favoriteDto.setUserId(userId);
-        favoriteDto.setTargetType(0);
-        ResultSupport<List<FavoriteDto>> favoriteListByQuery = favoriteService.getFavoriteListByQuery(favoriteDto);
-        if(!favoriteListByQuery.isSuccess()){
-            return favoriteListByQuery.castToReturnFailed(FavoriteDto.class);
+        ResultSupport<List<Integer>> userFavoriteTargetId = getUserFavoriteTargetId(userId, TYPE_COMIC);
+        if(!userFavoriteTargetId.isSuccess()){
+            return userFavoriteTargetId.castToReturnFailed(FavoriteDto.class);
         }
-        List<FavoriteDto> favoriteDtos = favoriteListByQuery.getModule();
-        List<Integer> idList = new LinkedList<>();
-        for(FavoriteDto tmp : favoriteDtos){
-            if(tmp.getTargetType() == 0){
-                idList.add(tmp.getTargetId());
-            }
-        }
+        List<Integer> idList = userFavoriteTargetId.getModule();
         ResultSupport<List<ComicDto>> comicListByIdList = comicService.getComicListByIdList(idList);
         if(!comicListByIdList.isSuccess()){
             return comicListByIdList.castToReturnFailed(FavoriteDto.class);
@@ -71,27 +82,18 @@ public class FavoriteBusinessImpl implements FavoriteBusiness {
     }
 
     @Override
-    public ResultSupport<FavoriteDto> getUserFavoriteSpecials(Integer userId) {
+    public ResultSupport<FavoriteDto> getUserFavoriteSpecials(FavoriteDto favoriteDto) {
+        Integer userId = favoriteDto.getUserId();
         /*获取Key*/
         ResultSupport<UserInfoDto> userInfoById = userInfoService.getUserInfoById(userId);
         if(!userInfoById.isSuccess()){
             return userInfoById.castToReturnFailed(FavoriteDto.class);
         }
-        /*整理得到一个FavoriteDto*/
-        FavoriteDto favoriteDto = new FavoriteDto();
-        favoriteDto.setUserId(userId);
-        favoriteDto.setTargetType(1);
-        ResultSupport<List<FavoriteDto>> favoriteListByQuery = favoriteService.getFavoriteListByQuery(favoriteDto);
-        if(!favoriteListByQuery.isSuccess()){
-            return favoriteListByQuery.castToReturnFailed(FavoriteDto.class);
+        ResultSupport<List<Integer>> userFavoriteTargetId = getUserFavoriteTargetId(userId, TYPE_COMIC);
+        if(!userFavoriteTargetId.isSuccess()){
+            return userFavoriteTargetId.castToReturnFailed(FavoriteDto.class);
         }
-        List<FavoriteDto> favoriteDtos = favoriteListByQuery.getModule();
-        List<Integer> idList = new LinkedList<>();
-        for(FavoriteDto tmp : favoriteDtos){
-            if(tmp.getTargetType() == 1){
-                idList.add(tmp.getTargetId());
-            }
-        }
+        List<Integer> idList = userFavoriteTargetId.getModule();
         ResultSupport<List<SpecialDto>> specialListByIdList = specialService.getSpecialListByIdList(idList);
         if(!specialListByIdList.isSuccess()){
             return specialListByIdList.castToReturnFailed(FavoriteDto.class);
