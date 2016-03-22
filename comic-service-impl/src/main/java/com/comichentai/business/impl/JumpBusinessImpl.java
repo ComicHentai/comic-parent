@@ -33,7 +33,8 @@ public class JumpBusinessImpl implements JumpBusiness {
     private JumpService jumpService;
 
     @Override
-    public ResultSupport<JumpDto> getJumpBySpecial(Integer specialId) {
+    public ResultSupport<JumpDto> getJumpBySpecial(JumpDto query) {
+        Integer specialId = query.getSpecialId();
         List<Integer> idList = new LinkedList<>();
         //调用getSpecialById的方法
         ResultSupport<SpecialDto> special = specialService.getSpecialById(specialId);
