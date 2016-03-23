@@ -299,4 +299,3 @@ def after(total_json_file):
 
 reload(sys)
 sys.setdefaultencoding('utf8')
-after('ComicHentai[2016-03-23 17:33:14]/total.json')
