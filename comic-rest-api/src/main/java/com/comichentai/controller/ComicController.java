@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.comichentai.bo.CategoryBusiness;
+import com.comichentai.dto.CategoryDto;
 import com.comichentai.dto.ComicDto;
 import com.comichentai.entity.Response;
 import com.comichentai.entity.ResultSupport;
@@ -60,7 +61,20 @@ public class ComicController {
             if(!"debug".equals(auth)){
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
+            CategoryDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), CategoryDto.class);
+            //因为Business中只需要comicId
+            query.setTargetId(comicId);
+            ResultSupport<CategoryDto> comicClassified = categoryBusiness.getComicClassified(query);
+            return Response.getInstance(comicClassified.isSuccess())
+                    .addAttribute("data", comicClassified.getModule())
+                    .addAttribute("isEnd", comicClassified.getTotalCount() < query.getCurrentPage() * query.getPageSize())
+                    .addAttribute("pageMap", PageMapUtil.sendNextPage(query));
 
+        } catch (JSONException jsonException) {
+            return Response.getInstance(false).setReturnMsg("参数非法");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.getInstance(false).setReturnMsg(e.getMessage());
         }
     }
 
