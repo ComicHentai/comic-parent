@@ -1,5 +1,6 @@
 # encoding:utf-8
 import json
+
 import requests
 from pyquery import PyQuery as pq
 
@@ -29,6 +30,47 @@ def high_secret_proxy():
     return init('http://proxy.mimvp.com/free.php?proxy=out_hp')
 
 
+# curl 'http://www.xicidaili.com/wn/1'
+# -H 'If-None-Match: W/"3cef789f0d175497dd09bdcffe621d6b"'
+# -H 'Accept-Encoding: gzip, deflate, sdch'
+# -H 'Accept-Language: zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4'
+# -H 'Upgrade-Insecure-Requests: 1'
+# -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+# -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+# -H 'Cache-Control: max-age=0'
+# -H 'Cookie: _free_proxy_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFVEkiJTE2OTgyOWYxNjBjNmFjNTgwMGRkODg5YzdjY2I2NGYxBjsAVEkiEF9jc3JmX3Rva2VuBjsARkkiMWxUckgyQTJkcDloaDRVekEwQk9nNnhHL0MyWjNKWExjQlV0VjAwMHZTRXc9BjsARg%3D%3D--f4f30e1da8f208e73219badf7cd95a8202dbf1b3; CNZZDATA1256960793=299748290-1458706542-http%253A%252F%252Fwww.baidu.com%252F%7C1458727389'
+# -H 'Connection: keep-alive' --compressed
+def get_more_proxy(count=100):
+    ipList = []
+    headers = {
+        'If-None-Match': 'W/"3cef789f0d175497dd09bdcffe621d6b"',
+        'Accept-Encoding': 'gzip, deflate, sdch',
+        'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4',
+        'Upgrade-Insecure-Requests': "1",
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Cache-Control': 'max-age=0',
+        'Connection': 'keep-alive',
+        'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36",
+        'cookie': '_free_proxy_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFVEkiJTE2OTgyOWYxNjBjNmFjNTgwMGRkODg5YzdjY2I2NGYxBjsAVEkiEF9jc3JmX3Rva2VuBjsARkkiMWxUckgyQTJkcDloaDRVekEwQk9nNnhHL0MyWjNKWExjQlV0VjAwMHZTRXc9BjsARg%3D%3D--f4f30e1da8f208e73219badf7cd95a8202dbf1b3; CNZZDATA1256960793=299748290-1458706542-http%253A%252F%252Fwww.baidu.com%252F%7C1458727389'
+    }
+    url = 'http://www.xicidaili.com/wn/'
+    size = 0
+    page = 1
+    s = requests.Session()
+    while size < count:
+        response = s.get(url + str(page), headers=headers)
+        table = pq(response.text)('#ip_list').children('tr')
+        for i in range(1, len(table) - 1):
+            proxy = table.eq(i).children('td')
+            ip = proxy.eq(2)[0].text
+            port = proxy.eq(3)[0].text
+            proxy_item = "http://" + ip + ":" + str(port)
+            ipList.append(proxy_item)
+            size += 1
+        page += 1
+    return ipList
+
+
 def get_port(img):
     ports = '''
     {
@@ -49,9 +91,20 @@ def get_port(img):
 
 
 def create_proxy():
+    global more_list
     low_list = low_secret_proxy()
     high_list = high_secret_proxy()
-    json_list = json.dumps(low_list + high_list)
+    try:
+        more_list = get_more_proxy(300)
+    except BaseException:
+        pass
+    if len(more_list) == 0:
+        json_list = json.dumps(low_list + high_list)
+    else:
+        json_list = json.dumps(low_list + high_list + more_list)
     json_file = open('proxy.json', 'w')
     json_file.write(json_list)
     json_file.close()
+
+
+create_proxy()
