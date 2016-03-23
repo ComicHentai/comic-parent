@@ -149,6 +149,7 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
     comic_id = comic_link.split('/')[5]
     if os.path.exists('ComicData/' + comic_id + ".json"):
         print(now() + "漫画[" + comic_id + "]的数据已存在")
+        return
     print(now() + "正在读取漫画[" + comic_id + "]的数据")
     this_page_link = comic_link
     prev_page_link = ''
