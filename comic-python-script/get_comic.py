@@ -283,6 +283,7 @@ def start(page=1, max_page=20):
 
 
 def after(total_json_file):
+    global proxy_list
     init_proxy.create_proxy()
     print(now() + "获取代理成功")
     with open('proxy.json', 'r') as f:

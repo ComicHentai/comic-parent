@@ -1,5 +1,6 @@
 # encoding:utf-8
 import json
+import time
 
 import requests
 from pyquery import PyQuery as pq
@@ -20,6 +21,10 @@ def init(url):
         list.append("http://" + str(ip) + ":" + str(port))
         i += 9
     return list
+
+
+def now():
+    return time.strftime("[%Y-%m-%d %H:%M:%S]", time.localtime(int(time.time())))
 
 
 def low_secret_proxy():
@@ -58,7 +63,10 @@ def get_more_proxy(count=100):
     page = 1
     s = requests.Session()
     while size < count:
-        response = s.get(url + str(page), headers=headers)
+        response = s.get(url + str(page), headers=headers, timeout=5)
+        if response.status_code != 200:
+            print(now() + "非正常返回结果,代码[" + str(response.status_code) + "]")
+            continue
         table = pq(response.text)('#ip_list').children('tr')
         for i in range(1, len(table) - 1):
             proxy = table.eq(i).children('td')
@@ -97,7 +105,7 @@ def create_proxy():
     try:
         more_list = get_more_proxy(300)
     except BaseException:
-        pass
+        print("获取大量代理失败")
     if len(more_list) == 0:
         json_list = json.dumps(low_list + high_list)
     else:
