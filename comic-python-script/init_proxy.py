@@ -91,7 +91,7 @@ def get_port(img):
 
 
 def create_proxy():
-    global more_list
+    more_list = []
     low_list = low_secret_proxy()
     high_list = high_secret_proxy()
     try:
