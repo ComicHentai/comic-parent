@@ -146,8 +146,10 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
     if not os.path.exists('ComicData') or not os.path.isdir('ComicData'):
         os.mkdir('ComicData')
     global index, proxy_list
-    comid_id = comic_link.split('/')[5]
-    print(now() + "正在读取漫画[" + comid_id + "]的数据")
+    comic_id = comic_link.split('/')[5]
+    if os.path.exists('ComicData/' + comic_id + ".json"):
+        print(now() + "漫画[" + comic_id + "]的数据已存在")
+    print(now() + "正在读取漫画[" + comic_id + "]的数据")
     this_page_link = comic_link
     prev_page_link = ''
     proxy = {
@@ -243,13 +245,13 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
             continue
         print(now() + "数据查询成功,等待睡眠2秒后进行下一页查询")
         time.sleep(2)
-        if (this_page_link == prev_page_link and total_page != page):
-            print(now() + "漫画[" + comid_id + "]写入出现问题,页数不符")
+        if this_page_link == prev_page_link and total_page != page:
+            print(now() + "漫画[" + comic_id + "]写入出现问题,页数不符")
     print(now() + "当前漫画所有页读取完成,进行写入")
     json_list = json.dumps(img_list)
-    with open("ComicData/" + comid_id + ".json", 'w') as f:
+    with open("ComicData/" + comic_id + ".json", 'w') as f:
         f.write(json_list)
-    print(now() + "漫画[" + comid_id + "]写入完成")
+    print(now() + "漫画[" + comic_id + "]写入完成")
 
 
 def start(page=1, max_page=20):
@@ -258,10 +260,11 @@ def start(page=1, max_page=20):
     print(now() + "获取代理成功")
     with open('proxy.json', 'r') as f:
         proxy_list = json.loads(f.read(-1))
+
     dir_name = init(proxy_list[index], page, max_page)
     print(now() + "梳理获取的数据")
     new_list = []
-    for i in range(1, 10):
+    for i in range(1, max_page - 1):
         with open(dir_name + '/' + str(i) + ".json", 'r') as f:
             new_list += json.loads(f.read(-1))
 
@@ -277,6 +280,22 @@ def start(page=1, max_page=20):
         data = json.loads(data)
         for comic in data:
             read_comic_img_info(comic['comicLink'], headers, proxy_list[index])
-# start()
+
+
+def after(total_json_file):
+    init_proxy.create_proxy()
+    print(now() + "获取代理成功")
+    with open('proxy.json', 'r') as f:
+        proxy_list = json.loads(f.read(-1))
+    data = ''
+    with open(total_json_file, 'r') as f:
+        for line in f.readlines():
+            data += line.strip()
+        data = json.loads(data)
+        for comic in data:
+            read_comic_img_info(comic['comicLink'], headers, proxy_list[index])
+
+
 reload(sys)
 sys.setdefaultencoding('utf8')
+after('ComicHentai[2016-03-23 17:33:14]/total.json')
