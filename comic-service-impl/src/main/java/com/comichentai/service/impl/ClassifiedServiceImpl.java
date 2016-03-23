@@ -1,3 +1,4 @@
+
 package com.comichentai.service.impl;
 
 import com.comichentai.convert.impl.DozerMappingConverter;
@@ -10,6 +11,7 @@ import com.comichentai.enums.IsDeleted;
 import com.comichentai.page.PageDto;
 import com.comichentai.service.ClassifiedService;
 import com.google.common.collect.Lists;
+import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -58,15 +60,16 @@ public class ClassifiedServiceImpl implements ClassifiedService {
     }
 
     @Override
-    public ResultSupport<Integer> addClassified(String title) {
+    public ResultSupport<Integer> addClassified(String title,String coverTitle) {
         try {
             checkNotNull(title, "[添加失败][当前插入数据字段(title)为空]");
+checkNotNull(coverTitle, "[添加失败][当前插入数据字段(coverTitle)为空]");
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
         }
-        return this.addClassified(new ClassifiedDto(title));
+        return this.addClassified(new ClassifiedDto(title,coverTitle));
     }
 
     @Override

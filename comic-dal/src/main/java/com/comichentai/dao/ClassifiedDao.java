@@ -1,36 +1,37 @@
-package com.comichentai.dao;
 
-import com.comichentai.annotation.MybatisRepository;
-import com.comichentai.dataobject.ClassifiedDo;
-import org.apache.ibatis.annotations.Param;
+    package com.comichentai.dao;
 
-import java.util.List;
+    import com.comichentai.annotation.MybatisRepository;
+    import com.comichentai.dataobject.ClassifiedDo;
+    import org.apache.ibatis.annotations.Param;
 
-/**
- * 实体数据访问接口
- * Created by hope6537 by Code Generator
- */
-@MybatisRepository
-public interface ClassifiedDao {
+    import java.util.List;
 
-    int insertClassified(ClassifiedDo classifiedDo);
+    /**
+     * 实体数据访问接口
+     * Created by hope6537 by Code Generator
+     */
+    @MybatisRepository
+    public interface ClassifiedDao {
 
-    int updateClassified(ClassifiedDo classifiedDo);
+        int insertClassified(ClassifiedDo classifiedDo);
 
-    int batchUpdateClassified(@Param("data") ClassifiedDo classifiedDo, @Param("idList") List<Integer> idList);
+        int updateClassified(ClassifiedDo classifiedDo);
 
-    int deleteClassified(@Param("id") Integer id);
+        int batchUpdateClassified(@Param("data") ClassifiedDo classifiedDo, @Param("idList") List<Integer> idList);
 
-    int batchDeleteClassified(@Param("idList") List<Integer> idList);
+        int deleteClassified(@Param("id") Integer id);
 
-    ClassifiedDo selectClassifiedById(@Param("id") Integer id);
+        int batchDeleteClassified(@Param("idList") List<Integer> idList);
 
-    List<ClassifiedDo> selectClassifiedListByIds(@Param("idList") List<Integer> idList);
+        ClassifiedDo selectClassifiedById(@Param("id") Integer id);
 
-    List<ClassifiedDo> selectClassifiedListByQuery(ClassifiedDo query);
+        List<ClassifiedDo> selectClassifiedListByIds(@Param("idList") List<Integer> idList);
 
-    int selectClassifiedCountByQuery(ClassifiedDo query);
+        List<ClassifiedDo> selectClassifiedListByQuery(ClassifiedDo query);
 
-}
+        int selectClassifiedCountByQuery(ClassifiedDo query);
+
+    }
 
     
