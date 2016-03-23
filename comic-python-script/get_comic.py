@@ -11,7 +11,7 @@ from requests.exceptions import ConnectionError, ReadTimeout
 
 import init_proxy
 
-proxy_list = json.loads(open('proxy.json', 'r').read(-1))
+proxy_list = []
 url = "http://lofi.e-hentai.org"
 headers = {
     'cache-control': "no-cache",
@@ -22,7 +22,7 @@ index = 0
 
 
 def init(proxy, page=1, max_page=20, use_proxy=True, dir_name=None):
-    global index
+    global index, proxy_list
     if dir_name is None:
         # 首先创建一个基于当前时间的文件夹
         dir_name = time.strftime("[%Y-%m-%d %H:%M:%S]", time.localtime(int(time.time())))
@@ -55,6 +55,9 @@ def init(proxy, page=1, max_page=20, use_proxy=True, dir_name=None):
                 index += 1
                 if index == len(proxy_list):
                     index = 0
+                    init_proxy.create_proxy()
+                    print("重新获取代理成功")
+                    proxy_list = json.loads(open('proxy.json', 'r').read(-1))
                 print("代理[" + proxies.get('http') + "]不可用,切换至[" + proxy_list[index] + "],当前为第" + str(page) + "页")
                 proxies = {
                     "http": proxy_list[index]
@@ -65,6 +68,9 @@ def init(proxy, page=1, max_page=20, use_proxy=True, dir_name=None):
                 index += 1
                 if index == len(proxy_list):
                     index = 0
+                    init_proxy.create_proxy()
+                    print("重新获取代理成功")
+                    proxy_list = json.loads(open('proxy.json', 'r').read(-1))
                 print("代理[" + proxies.get('http') + "]超时,切换至[" + proxy_list[index] + "],当前为第" + str(page) + "页")
                 proxies = {
                     "http": proxy_list[index]
@@ -128,10 +134,12 @@ def read_comic_img_info(comic_link, headers, proxies, use_proxy=True):
 
 
 def start(page=1, max_page=20):
+    global proxy_list
     reload(sys)
     sys.setdefaultencoding('utf8')
     init_proxy.create_proxy()
     print("获取代理成功")
+    proxy_list = json.loads(open('proxy.json', 'r').read(-1))
     dir_name = init(proxy_list[index], page, max_page)
     print("梳理获取的数据")
     new_list = []
