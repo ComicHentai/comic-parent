@@ -7,7 +7,7 @@ import time
 import requests
 # 首先获取漫画的基本信息
 from pyquery import PyQuery as pq
-from requests.exceptions import ConnectionError, ReadTimeout
+from requests.exceptions import ConnectionError, ReadTimeout, TooManyRedirects
 
 import init_proxy
 
@@ -224,6 +224,21 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
                 with open('proxy.json', 'r') as f:
                     proxy_list = json.loads(f.read(-1))
             print(now() + "代理[" + proxy.get('http') + "]不可用,切换至[" + proxy_list[index] +
+                  "],当前为" + ("目录" if page == 0 else "第" + str(page)) + "页")
+            proxy = {
+                "http": proxy_list[index]
+            }
+            continue
+        except TooManyRedirects:
+            # 如果代理连不上,换一个
+            index += 1
+            if index == len(proxy_list):
+                index = 0
+                init_proxy.create_proxy()
+                print(now() + "重新获取代理成功")
+                with open('proxy.json', 'r') as f:
+                    proxy_list = json.loads(f.read(-1))
+            print(now() + "代理[" + proxy.get('http') + "]链接不可用,切换至[" + proxy_list[index] +
                   "],当前为" + ("目录" if page == 0 else "第" + str(page)) + "页")
             proxy = {
                 "http": proxy_list[index]
