@@ -50,12 +50,22 @@ def init(proxy, page=1, max_page=20, use_proxy=True, dir_name=None):
                     print("当前代理已被Ban,切换代理")
                     raise ConnectionError("has been blocked")
                 print("入侵成功!当前为第" + str(page) + "页")
-            except ConnectionError or ReadTimeout:
+            except ConnectionError:
                 # 如果代理连不上,换一个
                 index += 1
                 if index == len(proxy_list):
                     index = 0
                 print("代理[" + proxies.get('http') + "]不可用,切换至[" + proxy_list[index] + "],当前为第" + str(page) + "页")
+                proxies = {
+                    "http": proxy_list[index]
+                }
+                continue
+            except ReadTimeout:
+                # 如果代理连不上,换一个
+                index += 1
+                if index == len(proxy_list):
+                    index = 0
+                print("代理[" + proxies.get('http') + "]超时,切换至[" + proxy_list[index] + "],当前为第" + str(page) + "页")
                 proxies = {
                     "http": proxy_list[index]
                 }
@@ -72,8 +82,12 @@ def init(proxy, page=1, max_page=20, use_proxy=True, dir_name=None):
             comic_json_list.append(comic)
             list_len += 1
             print("读取漫画信息中[" + json.dumps(comic) + "]")
+
         comic_json_list = json.dumps(comic_json_list)
         print("读取了 " + str(list_len) + " 个漫画 , 准备写入")
+        if list_len == 0:
+            print("读取漫画失败,重新读取")
+            continue
         # 最后将当前页的数据写回json
         with open(dir_name + "/" + str(page) + ".json", 'w') as f:
             f.write(comic_json_list)
