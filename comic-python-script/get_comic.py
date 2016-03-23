@@ -179,6 +179,9 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
                 if tmp is None:
                     print(now() + "读取数据错误,重新读取,切换代理")
                     raise ConnectionError("has been blocked")
+                if tmp.count("590.gif") > 0:
+                    print(now() + "当前代理已被Ban,重新读取,切换代理")
+                    raise ConnectionError("has been blocked")
                 prev_page_link = this_page_link
                 this_page_link = tmp
                 page += 1
@@ -189,14 +192,24 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
                 if img_link is None:
                     print(now() + "读取数据错误,重新读取,切换代理")
                     raise ConnectionError("has been blocked")
+                if img_link.count("590.gif") > 0:
+                    print(now() + "当前代理已被Ban,重新读取,切换代理")
+                    raise ConnectionError("has been blocked")
                 print(now() + "第" + str(page) + "页数据为[" + img_link + "]")
                 img_list.append(img_link)
-                prev_page_link = this_page_link
                 td = pq(response.text)('#ia').children().eq(0).children().children()
-                this_page_link = td.eq(2).children().attr('href')
-                print(now() + "下一页为[" + this_page_link + "]")
                 total_page = int(td.eq(1).text().split('/')[1])
+                tmp = td.eq(2).children().attr('href')
+                prev_page_link = this_page_link
+                this_page_link = tmp
                 print(now() + "第" + str(page) + "页读取完成,总共有" + str(total_page) + "页")
+                if total_page == page:
+                    print(now() + "当前漫画已读取完毕")
+                    break
+                if this_page_link is None:
+                    print(now() + "读取下一页出现错误")
+                    raise ConnectionError("has been blocked")
+                print(now() + "下一页为[" + this_page_link + "]")
                 page += 1
         except ConnectionError:
             # 如果代理连不上,换一个
