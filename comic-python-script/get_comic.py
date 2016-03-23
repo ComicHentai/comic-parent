@@ -57,7 +57,8 @@ def init(proxy, page=1, max_page=20, use_proxy=True, dir_name=None):
                     index = 0
                     init_proxy.create_proxy()
                     print("重新获取代理成功")
-                    proxy_list = json.loads(open('proxy.json', 'r').read(-1))
+                    with open('proxy.json', 'r') as f:
+                        proxy_list = json.loads(f.read(-1))
                 print("代理[" + proxies.get('http') + "]不可用,切换至[" + proxy_list[index] + "],当前为第" + str(page) + "页")
                 proxies = {
                     "http": proxy_list[index]
@@ -70,7 +71,8 @@ def init(proxy, page=1, max_page=20, use_proxy=True, dir_name=None):
                     index = 0
                     init_proxy.create_proxy()
                     print("重新获取代理成功")
-                    proxy_list = json.loads(open('proxy.json', 'r').read(-1))
+                    with open('proxy.json', 'r') as f:
+                        proxy_list = json.loads(f.read(-1))
                 print("代理[" + proxies.get('http') + "]超时,切换至[" + proxy_list[index] + "],当前为第" + str(page) + "页")
                 proxies = {
                     "http": proxy_list[index]
@@ -98,7 +100,8 @@ def init(proxy, page=1, max_page=20, use_proxy=True, dir_name=None):
         with open(dir_name + "/" + str(page) + ".json", 'w') as f:
             f.write(comic_json_list)
         page += 1
-        print("数据写入成功")  # http://108.170.13.22:8888
+        print("数据写入成功,等待睡眠2秒后进行下一页查询")
+        time.sleep(2)
     return dir_name
 
 
@@ -128,18 +131,70 @@ def read_basic_comic_info(element):
     return dict
 
 
-def read_comic_img_info(comic_link, headers, proxies, use_proxy=True):
-    pass;
-    index_response = requests.request("GET", comic_link, headers=headers, proxies=proxies)
+def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
+    global index, proxy_list
+    this_page_link = comic_link
+    prev_page_link = ''
+    proxy = {
+        "http": proxy
+    }
+    page = 0
+    # 当上一页和当前页相同时,说明完结了,退出
+    while this_page_link != prev_page_link:
+        try:
+            if use_proxy:
+                response = requests.request("GET", this_page_link, headers=headers, proxies=proxy, timeout=10)
+            else:
+                response = requests.request("GET", this_page_link, headers=headers, timeout=10)
+            print(response.text)
+            if page == 0:
+                # 目录页 提取第一页的链接
+                prev_page_link = this_page_link
+                this_page_link = pq(response.text).find('.gi').eq(0).find('a').attr('href')
+                page += 1
+                print("目录页读取完成,开始进入第一页")
+            else:
+                # 图片页 提取下一页的链接
+                print(response.text)
+
+        except ConnectionError:
+            # 如果代理连不上,换一个
+            index += 1
+            if index == len(proxy_list):
+                index = 0
+                init_proxy.create_proxy()
+                print("重新获取代理成功")
+                with open('proxy.json', 'r') as f:
+                    proxy_list = json.loads(f.read(-1))
+            print("代理[" + proxy.get('http') + "]不可用,切换至[" + proxy_list[index] +"],当前为" + ("目录" if page == 0 else "第") + str(page) + "页")
+            proxy = {
+                "http": proxy_list[index]
+            }
+            continue
+        except ReadTimeout:
+            # 如果代理连不上,换一个
+            index += 1
+            if index == len(proxy_list):
+                index = 0
+                init_proxy.create_proxy()
+                print("重新获取代理成功")
+                with open('proxy.json', 'r') as f:
+                    proxy_list = json.loads(f.read(-1))
+            print("代理[" + proxy.get('http') + "]超时,切换至[" + proxy_list[index] +"],当前为" + ("目录" if page == 0 else "第") + str(page) + "页")
+            proxy = {
+                "http": proxy_list[index]
+            }
+            continue
+        print("数据写入成功,等待睡眠2秒后进行下一页查询")
+        time.sleep(2)
 
 
 def start(page=1, max_page=20):
     global proxy_list
-    reload(sys)
-    sys.setdefaultencoding('utf8')
     init_proxy.create_proxy()
     print("获取代理成功")
-    proxy_list = json.loads(open('proxy.json', 'r').read(-1))
+    with open('proxy.json', 'r') as f:
+        proxy_list = json.loads(f.read(-1))
     dir_name = init(proxy_list[index], page, max_page)
     print("梳理获取的数据")
     new_list = []
@@ -152,4 +207,15 @@ def start(page=1, max_page=20):
     print ("梳理完成")
 
 
-start()
+# start()
+def test():
+    global proxy_list
+
+    with open('proxy.json', 'r') as f:
+        proxy_list = json.loads(f.read(-1))
+    read_comic_img_info('http://lofi.e-hentai.org/g/916326/90c9376790/', headers, proxy_list[index])
+
+
+reload(sys)
+sys.setdefaultencoding('utf8')
+test()
