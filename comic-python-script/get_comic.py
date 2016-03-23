@@ -276,7 +276,7 @@ def start(page=1, max_page=20):
             data += line.strip()
         data = json.loads(data)
         for comic in data:
-            read_comic_img_info('http://lofi.e-hentai.org/g/916207/b446c1caf5/', headers, proxy_list[index])
+            read_comic_img_info(comic['comicLink'], headers, proxy_list[index])
 # start()
 reload(sys)
 sys.setdefaultencoding('utf8')
