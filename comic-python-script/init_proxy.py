@@ -105,6 +105,3 @@ def create_proxy():
     json_file = open('proxy.json', 'w')
     json_file.write(json_list)
     json_file.close()
-
-
-create_proxy()

@@ -147,7 +147,7 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
         os.mkdir('ComicData')
     global index, proxy_list
     comid_id = comic_link.split('/')[5]
-    print(now() + "读取漫画[" + comid_id + "]的数据")
+    print(now() + "正在读取漫画[" + comid_id + "]的数据")
     this_page_link = comic_link
     prev_page_link = ''
     proxy = {
@@ -269,17 +269,14 @@ def start(page=1, max_page=20):
         f.write(json.dumps(new_list))
     print(now() + "梳理完成")
 
-
+    # 梳理完成后开始读取图片
+    data = ''
+    with open(dir_name + '/total.json', 'r') as f:
+        for line in f.readlines():
+            data += line.strip()
+        data = json.loads(data)
+        for comic in data:
+            read_comic_img_info('http://lofi.e-hentai.org/g/916207/b446c1caf5/', headers, proxy_list[index])
 # start()
-def test():
-    global proxy_list
-    init_proxy.create_proxy()
-    print(now() + "获取代理成功")
-    with open('proxy.json', 'r') as f:
-        proxy_list = json.loads(f.read(-1))
-    read_comic_img_info('http://lofi.e-hentai.org/g/916207/b446c1caf5/', headers, proxy_list[index])
-
-
 reload(sys)
 sys.setdefaultencoding('utf8')
-test()
