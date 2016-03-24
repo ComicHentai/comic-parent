@@ -7,7 +7,7 @@ from pyquery import PyQuery as pq
 
 
 def init(url):
-    response = requests.get(url)
+    response = requests.get(url, timeout=5)
     html = pq(response.text)("tbody")
     table = html.children()
     i = 1
@@ -99,9 +99,18 @@ def get_port(img):
 
 
 def create_proxy():
+    has_proxy = False
     more_list = []
-    low_list = low_secret_proxy()
-    high_list = high_secret_proxy()
+    low_list = []
+    high_list = []
+    while not has_proxy:
+        try:
+            low_list = low_secret_proxy()
+            high_list = high_secret_proxy()
+            has_proxy = True
+        except BaseException:
+            print("获取代理失败,重新获取")
+            continue
     try:
         more_list = get_more_proxy(300)
     except BaseException:
