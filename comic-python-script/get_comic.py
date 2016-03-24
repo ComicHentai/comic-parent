@@ -182,7 +182,7 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
                 if tmp is None:
                     print(now() + "读取数据错误,重新读取,切换代理")
                     raise ConnectionError("has been blocked")
-                if tmp.count("590.gif") > 0:
+                if tmp.count("509.gif") > 0:
                     print(now() + "当前代理已被Ban,重新读取,切换代理")
                     raise ConnectionError("has been blocked")
                 prev_page_link = this_page_link
@@ -192,13 +192,25 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
             else:
                 # 图片页 提取下一页的链接
                 img_link = pq(response.text)("#sm").attr('src')
+                # 图片页链接非法
                 if img_link is None:
                     print(now() + "读取数据错误,重新读取,切换代理")
                     raise ConnectionError("has been blocked")
-                if img_link.count("590.gif") > 0:
+                if img_link.count("509.gif") > 0:
                     print(now() + "当前代理已被Ban,重新读取,切换代理")
                     raise ConnectionError("has been blocked")
                 print(now() + "第" + str(page) + "页数据为[" + img_link + "]")
+                # 下载中
+                download_count = 0
+                result = download_img(img_link, comic_id)
+                while download_count < 5 and not result:
+                    download_count += 1
+                    print(now() + "图片下载失败[" + img_link + "],重试第" + str(download_count) + "次中")
+                    result = download_img(img_link, comic_id)
+                if download_count >= 5 and not result:
+                    print(now() + "下载图片失败,重新读取,切换代理")
+                    raise ConnectionError("has been blocked")
+                # 下载完成
                 img_list.append(img_link)
                 td = pq(response.text)('#ia').children().eq(0).children().children()
                 total_page = int(td.eq(1).text().split('/')[1])
@@ -270,6 +282,26 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
     print(now() + "漫画[" + comic_id + "]写入完成")
 
 
+# 下载图片
+def download_img(img_link, comic_id):
+    try:
+        print(now() + "下载图片中[" + img_link + "]")
+        if not os.path.exists("ComicData/" + comic_id):
+            print(now() + "创建目录[" + comic_id + "]")
+            os.mkdir("ComicData/" + comic_id)
+        file_name = img_link.split("/")[-1]
+        print(now() + "文件名称为[" + file_name + "]")
+        r = requests.get(img_link)
+        with open("ComicData/" + comic_id + "/" + file_name, "wb") as code:
+            code.write(r.content)
+        print(now() + "写入完成")
+        return True
+    except Exception as e:
+        print("下载出现异常 : [{0:s}]".format(e))
+        return False
+
+
+# 从头开始
 def start(page=1, max_page=20):
     global proxy_list
     init_proxy.create_proxy()
@@ -298,6 +330,7 @@ def start(page=1, max_page=20):
             read_comic_img_info(comic['comicLink'], headers, proxy_list[index])
 
 
+# 从total.json开始
 def after(total_json_file):
     global proxy_list
     init_proxy.create_proxy()
