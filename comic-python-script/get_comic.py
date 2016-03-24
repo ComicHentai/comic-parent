@@ -291,11 +291,14 @@ def download_img(img_link, comic_id):
             os.mkdir("ComicData/" + comic_id)
         file_name = img_link.split("/")[-1]
         print(now() + "文件名称为[" + file_name + "]")
-        r = requests.get(img_link)
+        r = requests.get(img_link, timeout=10)
         with open("ComicData/" + comic_id + "/" + file_name, "wb") as code:
             code.write(r.content)
         print(now() + "写入完成")
         return True
+    except ReadTimeout as e:
+        print("下载超时 : [{0:s}]".format(e))
+        return False
     except Exception as e:
         print("下载出现异常 : [{0:s}]".format(e))
         return False
