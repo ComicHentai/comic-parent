@@ -20,7 +20,7 @@ public class ComicHentaiDataSource extends DruidDataSource {
     @Override
     public void setPassword(String password) {
         logger.debug("decrypted [" + password + "]");
-        password = AESLocker.decrypt(password);
+        password = AESLocker.decryptBase64(password);
         super.setPassword(password);
     }
 }
