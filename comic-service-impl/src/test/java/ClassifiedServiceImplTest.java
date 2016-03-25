@@ -41,16 +41,16 @@ public class ClassifiedServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testAddClassified() {
-        ResultSupport<Integer> integerResultSupport = classifiedService.addClassified("test0" + System.currentTimeMillis());
+        ResultSupport<Integer> integerResultSupport = classifiedService.addClassified("test0" + System.currentTimeMillis(), "test1" + System.currentTimeMillis());
         logger.info(JSON.toJSONString(integerResultSupport));
         assertTrue(integerResultSupport.getModule() > 0);
     }
 
     @Test
     public void testModifyClassified() {
-        ResultSupport<Integer> resultSupport = classifiedService.addClassified("test0" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = classifiedService.addClassified("test0" + System.currentTimeMillis(), "test1" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
-        ClassifiedDto dto = new ClassifiedDto("modify0" + System.currentTimeMillis());
+        ClassifiedDto dto = new ClassifiedDto("modify0" + System.currentTimeMillis(), "modify1" + System.currentTimeMillis());
         dto.setId(id);
         ResultSupport<Integer> modifyResultSupport = classifiedService.modifyClassified(dto);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -63,7 +63,7 @@ public class ClassifiedServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testRemoveClassified() {
-        ResultSupport<Integer> resultSupport = classifiedService.addClassified("wait_delete0" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = classifiedService.addClassified("wait_delete0" + System.currentTimeMillis(), "wait_delete1" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
         ResultSupport<Integer> modifyResultSupport = classifiedService.removeClassified(id);
         logger.info(JSON.toJSONString(modifyResultSupport));

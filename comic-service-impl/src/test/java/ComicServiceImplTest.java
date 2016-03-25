@@ -36,6 +36,14 @@ public class ComicServiceImplTest extends SpringTestHelper {
 
     @Before
     public void init() {
+        ComicDto query = new ComicDto();
+        query.setTitle("test01");
+        query.setAuthor("test01");
+        query.setCoverTitle("test01");
+        query.setIntroduction("test01");
+        query.setContentTitle("test01");
+        query.setStatus(0);
+        comicService.addComic(query);
         logger.info(comicService.toString());
     }
 
