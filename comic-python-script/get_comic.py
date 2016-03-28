@@ -357,6 +357,29 @@ def start(page=1, max_page=20):
     after(dir_name + '/total.json')
 
 
+# 从头开始
+def multi_start(page=1, max_page=20):
+    global proxy_list
+    init_proxy.create_proxy()
+    print(now() + "获取代理成功")
+    with open('proxy.json', 'r') as f:
+        proxy_list = json.loads(f.read(-1))
+
+    dir_name = init(proxy_list[index], page, max_page)
+    print(now() + "梳理获取的数据")
+    new_list = []
+    for i in range(1, max_page - 1):
+        with open(dir_name + '/' + str(i) + ".json", 'r') as f:
+            new_list += json.loads(f.read(-1))
+
+    with open(dir_name + '/total.json', 'w') as f:
+        f.write(json.dumps(new_list))
+    print(now() + "梳理完成")
+
+    # 梳理完成后开始读取图片
+    multi_thread_after(dir_name + '/total.json')
+
+
 # 读取每个漫画的图片
 def after(total_json_file):
     global proxy_list
@@ -440,4 +463,3 @@ def multi_thread_after(total_json_file):
 
 reload(sys)
 sys.setdefaultencoding('utf8')
-multi_thread_after("ComicHentai[2016-03-28 17-53-27]\\1.json")
