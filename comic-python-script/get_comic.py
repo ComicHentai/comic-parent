@@ -249,6 +249,8 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
                 print(now() + "重新获取代理成功")
                 with open('proxy.json', 'r') as f:
                     proxy_list = json.loads(f.read(-1))
+            if index >= len(proxy_list):
+                index = 0
             print(now() + "读取漫画[" + comic_id + "]:" + "代理[" + proxy.get('http') + "]不可用,切换至[" + proxy_list[index] +
                   "],当前为" + ("目录" if page == 0 else "第" + str(page)) + "页")
             proxy = {
@@ -264,6 +266,8 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
                 print(now() + "重新获取代理成功")
                 with open('proxy.json', 'r') as f:
                     proxy_list = json.loads(f.read(-1))
+            if index >= len(proxy_list):
+                index = len(proxy_list) - 1
             print(now() + "读取漫画[" + comic_id + "]:" + "代理[" + proxy.get('http') + "]链接不可用,切换至[" + proxy_list[index] +
                   "],当前为" + ("目录" if page == 0 else "第" + str(page)) + "页")
             proxy = {
@@ -279,6 +283,8 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
                 print(now() + "重新获取代理成功")
                 with open('proxy.json', 'r') as f:
                     proxy_list = json.loads(f.read(-1))
+            if index >= len(proxy_list):
+                index = len(proxy_list) - 1
             print(now() + "读取漫画[" + comic_id + "]:" + "代理[" + proxy.get('http') + "]超时,切换至[" + proxy_list[index] +
                   "],当前为" + ("目录" if page == 0 else "第" + str(page)) + "页")
             proxy = {
@@ -294,6 +300,8 @@ def read_comic_img_info(comic_link, headers, proxy, use_proxy=True):
                 print(now() + "重新获取代理成功")
                 with open('proxy.json', 'r') as f:
                     proxy_list = json.loads(f.read(-1))
+            if index >= len(proxy_list):
+                index = len(proxy_list) - 1
             print(now() + "读取漫画[" + comic_id + "]:" + "出现未知异常 [{0:s}]".format(e))
             print(now() + "读取漫画[" + comic_id + "]:" + "代理[" + proxy.get('http') + "]出现异常,切换至[" + proxy_list[index] +
                   "],当前为" + ("目录" if page == 0 else "第" + str(page)) + "页")
