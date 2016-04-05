@@ -44,7 +44,7 @@ public class SearchController {
 
     @RequestMapping(value = "result", method = RequestMethod.GET)
     @ResponseBody
-    public Response getSearchResult(HttpServletRequest request, @RequestParam("name")String name){
+    public Response getSearchResult(HttpServletRequest request){
         //获取参数
         String data = request.getParameter("data");
         JSONObject paramMap;
@@ -63,6 +63,7 @@ public class SearchController {
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
             ComicDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), ComicDto.class);
+            String name = paramMap.getString("name");
             query.setTitle(name);
             query.setAuthor(name);
             ResultSupport<List<ComicDto>> comicListByName = comicBusiness.getComicListByName(query);

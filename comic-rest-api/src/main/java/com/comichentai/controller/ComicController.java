@@ -8,9 +8,11 @@ import com.comichentai.dto.CategoryDto;
 import com.comichentai.dto.ComicDto;
 import com.comichentai.entity.Response;
 import com.comichentai.entity.ResultSupport;
+import com.comichentai.rest.utils.JSONUtil;
 import com.comichentai.rest.utils.PageMapUtil;
 import com.comichentai.rest.utils.TokenCheckUtil;
 import com.comichentai.security.AESLocker;
+import com.comichentai.service.CategoryService;
 import com.comichentai.service.ComicService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ImportResource;
@@ -36,14 +38,119 @@ public class ComicController {
     private static final String IILEGAL_REQUEST = "非法请求";
 
     @Resource(name = "comicService")
-    public ComicService comicService;
+    private ComicService comicService;
 
     @Resource(name = "categoryBusiness")
-    public CategoryBusiness categoryBusiness;
+    private CategoryBusiness categoryBusiness;
+
+
+
+
+    @RequestMapping(value = "add/info", method = RequestMethod.GET)
+    @ResponseBody
+    public Response addComicInfo(HttpServletRequest request){
+        //获取参数
+        String data = request.getParameter("data");
+        JSONObject paramMap;
+        String mode = request.getParameter("_mode");
+        String auth = request.getParameter("_auth");
+        try{
+            checkNotNull(data, IILEGAL_REQUEST);
+            checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
+            if(!"debug".equals(mode)){
+                data = AESLocker.decrypt(data);
+            }
+            paramMap = JSON.parseObject(data);
+            String token = paramMap.getString("token");
+            String deviceId = paramMap.getString("deviceId");
+            if(!"debug".equals(auth)){
+                TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
+            }
+            ComicDto comic = paramMap.getObject("comic", ComicDto.class);
+            checkNotNull(comic, IILEGAL_REQUEST);
+            ResultSupport<Integer> integerResultSupport = comicService.addComic(comic);
+            return Response.getInstance(integerResultSupport.isSuccess())
+                    .addAttribute("data", integerResultSupport.getModule());
+        } catch (JSONException jsonException) {
+            return Response.getInstance(false).setReturnMsg("参数非法");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.getInstance(false).setReturnMsg(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "delete", method = RequestMethod.GET)
+    @ResponseBody
+    public Response deletedComic(HttpServletRequest request){
+        //获取参数
+        String data = request.getParameter("data");
+        JSONObject paramMap;
+        String mode = request.getParameter("_mode");
+        String auth = request.getParameter("_auth");
+        try{
+            checkNotNull(data, IILEGAL_REQUEST);
+            checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
+            if(!"debug".equals(mode)){
+                data = AESLocker.decrypt(data);
+            }
+            paramMap = JSON.parseObject(data);
+            String token = paramMap.getString("token");
+            String deviceId = paramMap.getString("deviceId");
+            if(!"debug".equals(auth)){
+                TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
+            }
+            List<Integer> idList = JSONUtil.parseJsonArrayToList(paramMap.getString("idList"), Integer.class);
+            checkArgument(!idList.isEmpty(), IILEGAL_REQUEST);
+            ResultSupport<Integer> integerResultSupport = comicService.batchRemoveComic(idList);
+            return Response.getInstance(integerResultSupport.isSuccess())
+                    .addAttribute("data", integerResultSupport.getModule());
+        } catch (JSONException jsonException) {
+            return Response.getInstance(false).setReturnMsg("参数非法");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.getInstance(false).setReturnMsg(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "updated", method = RequestMethod.GET)
+    @ResponseBody
+    public Response updatedComic(HttpServletRequest request){
+        //获取参数
+        String data = request.getParameter("data");
+        JSONObject paramMap;
+        String mode = request.getParameter("_mode");
+        String auth = request.getParameter("_auth");
+        try{
+            checkNotNull(data, IILEGAL_REQUEST);
+            checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
+            if(!"debug".equals(mode)){
+                data = AESLocker.decrypt(data);
+            }
+            paramMap = JSON.parseObject(data);
+            String token = paramMap.getString("token");
+            String deviceId = paramMap.getString("deviceId");
+            if(!"debug".equals(auth)){
+                TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
+            }
+            ComicDto comicDto = paramMap.getObject("comicDto", ComicDto.class);
+            checkNotNull(comicDto, IILEGAL_REQUEST);
+            ResultSupport<Integer> integerResultSupport = comicService.modifyComic(comicDto);
+            return Response.getInstance(integerResultSupport.isSuccess())
+                    .addAttribute("data", integerResultSupport.getModule());
+        } catch (JSONException jsonException) {
+            return Response.getInstance(false).setReturnMsg("参数非法");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.getInstance(false).setReturnMsg(e.getMessage());
+        }
+    }
+
+
+
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     @ResponseBody
-    public Response getComicInfoByComicId(HttpServletRequest request, @RequestParam("comicId")int comicId){
+    public Response getComicInfoByComicId(HttpServletRequest request){
         //获取参数
         String data = request.getParameter("data");
         JSONObject paramMap;
@@ -62,6 +169,7 @@ public class ComicController {
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
             CategoryDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), CategoryDto.class);
+            Integer comicId = paramMap.getInteger("comicId");
             //因为Business中只需要comicId
             query.setTargetId(comicId);
             ResultSupport<CategoryDto> comicClassified = categoryBusiness.getComicClassified(query);
