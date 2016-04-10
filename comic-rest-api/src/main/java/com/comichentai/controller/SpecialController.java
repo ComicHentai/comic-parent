@@ -35,7 +35,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Controller
 @RequestMapping("/special/")
-@ImportResource("classpath*:/META-INF/spring/spring-dubbo-service-cli.xml")
 @EnableAutoConfiguration
 public class SpecialController {
 

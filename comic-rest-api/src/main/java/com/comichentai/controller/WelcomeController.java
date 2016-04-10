@@ -11,7 +11,6 @@ import com.comichentai.rest.utils.TokenCheckUtil;
 import com.comichentai.security.AESLocker;
 import com.comichentai.service.ComicService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -29,7 +27,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by dintama on 16/3/22.
  */
 @Controller
-@ImportResource("classpath*:/META-INF/spring/spring-dubbo-service-cli.xml")
 @RequestMapping("/welcome/")
 @EnableAutoConfiguration
 public class WelcomeController {

@@ -37,7 +37,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Controller
 @RequestMapping("/classification/")
-@ImportResource("classpath*:/META-INF/spring/spring-dubbo-service-cli.xml")
 @EnableAutoConfiguration
 public class ClassifiedController {
 

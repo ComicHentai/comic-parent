@@ -33,7 +33,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by dintama on 16/3/31.
  */
 @Controller
-@ImportResource("classpath*:/META-INF/spring/spring-dubbo-service-cli.xml")
 @RequestMapping("/user/")
 @EnableAutoConfiguration
 public class UserInfoController {
