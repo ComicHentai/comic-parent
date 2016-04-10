@@ -8,7 +8,7 @@
 	   http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.comichentai.*"/>
+    <context:component-scan base-package="com.comichentai.controller.*"/>
 
     <!-- 默认消费者域名 -->
     <dubbo:protocol host="www.hope6537.com"/>

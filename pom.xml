@@ -16,7 +16,6 @@
         <module>comic-web</module>
         <module>comic-service-monitor</module>
         <module>comic-deploy</module>
-        <module>comic-rest-api</module>
     </modules>
 
     <properties>
