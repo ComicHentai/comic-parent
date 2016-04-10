@@ -15,6 +15,7 @@ import com.comichentai.rest.utils.TokenCheckUtil;
 import com.comichentai.security.AESLocker;
 import com.comichentai.service.SpecialService;
 import com.sun.org.apache.regexp.internal.RE;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Controller
 @RequestMapping("/special/")
 @ImportResource("classpath*:/META-INF/spring/spring-dubbo-service-cli.xml")
+@EnableAutoConfiguration
 public class SpecialController {
 
 
