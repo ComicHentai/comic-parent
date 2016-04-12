@@ -2,6 +2,7 @@ package com.comichentai.controller;
 
 import com.alibaba.fastjson.JSON;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.comichentai.dto.UserInfoDto;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -114,7 +116,7 @@ public class UserInfoController {
     }
 
 
-    @RequestMapping(value = "updated", method = RequestMethod.POST)
+    @RequestMapping(value = "updated", method = RequestMethod.GET)
     @ResponseBody
     public Response updatedUserInfo(HttpServletRequest request){
         String data = request.getParameter("data");
@@ -155,9 +157,9 @@ public class UserInfoController {
                 data = AESLocker.decrypt(data);
             }
             paramMap = JSON.parseObject(data);
-            Integer id = paramMap.getInteger("id");
-            checkNotNull(id, IILEGAL_REQUEST);
-            ResultSupport<Integer> integerResultSupport = userInfoService.removeUserInfo(id);
+            UserInfoDto userInfoDto = paramMap.getObject("userInfo", UserInfoDto.class);
+            checkNotNull(userInfoDto, IILEGAL_REQUEST);
+            ResultSupport<Integer> integerResultSupport = userInfoService.removeUserInfo(userInfoDto.getId());
             return Response.getInstance(integerResultSupport.isSuccess())
                     .addAttribute("data", integerResultSupport.getModule());
         }catch (Exception e){
@@ -180,10 +182,13 @@ public class UserInfoController {
             }
             paramMap = JSON.parseObject(data);
 
-            String idString = paramMap.getString("idList");
-            List<Integer> idList = JSONUtil.parseJsonArrayToList(idString, Integer.class);
-            checkNotNull(idList, IILEGAL_REQUEST);
-            checkArgument(!idList.isEmpty(), IILEGAL_REQUEST);
+            List<UserInfoDto> module = JSONArray.parseArray(paramMap.getString("userInfos"), UserInfoDto.class);
+            checkNotNull(module, IILEGAL_REQUEST);
+            checkArgument(!module.isEmpty(), IILEGAL_REQUEST);
+            List<Integer> idList = new LinkedList<>();
+            for(UserInfoDto o : module){
+                idList.add(o.getId());
+            }
             ResultSupport<Integer> integerResultSupport = userInfoService.batchRemoveUserInfo(idList);
             return Response.getInstance(integerResultSupport.isSuccess())
                     .addAttribute("data", integerResultSupport.getModule());
@@ -193,7 +198,7 @@ public class UserInfoController {
         }
     }
 
-    @RequestMapping(value = "signIn", method = RequestMethod.POST)
+    @RequestMapping(value = "signIn", method = RequestMethod.GET)
     @ResponseBody
     public Response signInUserInfo(HttpServletRequest request){
         //获取参数
@@ -223,9 +228,9 @@ public class UserInfoController {
             }
             UserInfoDto user = userInfoListByQuery.getModule().get(0);
             //登录成功
-            TokenCheckUtil.initToken(user.getId().toString(), DEFALUT_AVAILABLE_DAYS, deviceId, request);
+            String result = TokenCheckUtil.initToken(user.getId().toString(), DEFALUT_AVAILABLE_DAYS, deviceId, request);
             return Response.getInstance(userInfoListByQuery.isSuccess())
-                    .addAttribute("data", user);
+                    .addAttribute("data", result);
         }catch (JSONException e){
             return Response.getInstance(false).setReturnMsg("非法参数");
         }catch (Exception e){
@@ -239,7 +244,7 @@ public class UserInfoController {
      * 用户注册前验证username
      * 用户修改或注册时nickname的验证
      * */
-    @RequestMapping(value = "volatileUser", method = RequestMethod.POST)
+    @RequestMapping(value = "volatile", method = RequestMethod.GET)
     @ResponseBody
     public Response volatileUser(HttpServletRequest request){
         String data = request.getParameter("data");

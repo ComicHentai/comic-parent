@@ -1,6 +1,7 @@
 package com.comichentai.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.comichentai.bo.CategoryBusiness;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -78,7 +80,7 @@ public class ComicController {
         }
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.GET)
+    @RequestMapping(value = "deleted", method = RequestMethod.GET)
     @ResponseBody
     public Response deletedComic(HttpServletRequest request){
         //获取参数
@@ -98,8 +100,13 @@ public class ComicController {
             if(!"debug".equals(auth)){
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
-            List<Integer> idList = JSONUtil.parseJsonArrayToList(paramMap.getString("idList"), Integer.class);
-            checkArgument(!idList.isEmpty(), IILEGAL_REQUEST);
+            List<ComicDto> module = JSONArray.parseArray(paramMap.getString("comics"), ComicDto.class);
+            checkNotNull(module, IILEGAL_REQUEST);
+            checkArgument(!module.isEmpty(), IILEGAL_REQUEST);
+            List<Integer> idList = new LinkedList<>();
+            for(ComicDto o : module){
+                idList.add(o.getId());
+            }
             ResultSupport<Integer> integerResultSupport = comicService.batchRemoveComic(idList);
             return Response.getInstance(integerResultSupport.isSuccess())
                     .addAttribute("data", integerResultSupport.getModule());
@@ -131,7 +138,7 @@ public class ComicController {
             if(!"debug".equals(auth)){
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
-            ComicDto comicDto = paramMap.getObject("comicDto", ComicDto.class);
+            ComicDto comicDto = paramMap.getObject("comic", ComicDto.class);
             checkNotNull(comicDto, IILEGAL_REQUEST);
             ResultSupport<Integer> integerResultSupport = comicService.modifyComic(comicDto);
             return Response.getInstance(integerResultSupport.isSuccess())
@@ -168,9 +175,9 @@ public class ComicController {
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
             CategoryDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), CategoryDto.class);
-            Integer comicId = paramMap.getInteger("comicId");
+            ComicDto comicDto = paramMap.getObject("comic", ComicDto.class);
             //因为Business中只需要comicId
-            query.setTargetId(comicId);
+            query.setTargetId(comicDto.getId());
             ResultSupport<CategoryDto> comicClassified = categoryBusiness.getComicClassified(query);
             return Response.getInstance(comicClassified.isSuccess())
                     .addAttribute("data", comicClassified.getModule())
