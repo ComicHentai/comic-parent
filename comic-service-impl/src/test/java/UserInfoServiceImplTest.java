@@ -41,16 +41,16 @@ public class UserInfoServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testAddUserInfo() {
-        ResultSupport<Integer> integerResultSupport = userInfoService.addUserInfo("test0" + System.currentTimeMillis(), "test1" + System.currentTimeMillis(), "test2" + System.currentTimeMillis(), "test3" + System.currentTimeMillis(), "test4" + System.currentTimeMillis());
+        ResultSupport<Integer> integerResultSupport = userInfoService.addUserInfo("test0" + System.currentTimeMillis(), "test1" + System.currentTimeMillis(), "test2" + System.currentTimeMillis(), "test3" + System.currentTimeMillis(), "test4" + System.currentTimeMillis(), "test5" + System.currentTimeMillis());
         logger.info(JSON.toJSONString(integerResultSupport));
         assertTrue(integerResultSupport.getModule() > 0);
     }
 
     @Test
     public void testModifyUserInfo() {
-        ResultSupport<Integer> resultSupport = userInfoService.addUserInfo("test0" + System.currentTimeMillis(), "test1" + System.currentTimeMillis(), "test2" + System.currentTimeMillis(), "test3" + System.currentTimeMillis(), "test4" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = userInfoService.addUserInfo("test0" + System.currentTimeMillis(), "test1" + System.currentTimeMillis(), "test2" + System.currentTimeMillis(), "test3" + System.currentTimeMillis(), "test4" + System.currentTimeMillis(), "test5" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
-        UserInfoDto dto = new UserInfoDto("modify0" + System.currentTimeMillis(), "modify1" + System.currentTimeMillis(), "modify2" + System.currentTimeMillis(), "modify3" + System.currentTimeMillis(), "modify4" + System.currentTimeMillis());
+        UserInfoDto dto = new UserInfoDto("modify0" + System.currentTimeMillis(), "modify1" + System.currentTimeMillis(), "modify2" + System.currentTimeMillis(), "modify3" + System.currentTimeMillis(), "modify4" + System.currentTimeMillis(), "modify5" + System.currentTimeMillis());
         dto.setId(id);
         ResultSupport<Integer> modifyResultSupport = userInfoService.modifyUserInfo(dto);
         logger.info(JSON.toJSONString(modifyResultSupport));
@@ -63,7 +63,7 @@ public class UserInfoServiceImplTest extends SpringTestHelper {
 
     @Test
     public void testRemoveUserInfo() {
-        ResultSupport<Integer> resultSupport = userInfoService.addUserInfo("wait_delete0" + System.currentTimeMillis(), "wait_delete1" + System.currentTimeMillis(), "wait_delete2" + System.currentTimeMillis(), "wait_delete3" + System.currentTimeMillis(), "wait_delete4" + System.currentTimeMillis());
+        ResultSupport<Integer> resultSupport = userInfoService.addUserInfo("wait_delete0" + System.currentTimeMillis(), "wait_delete1" + System.currentTimeMillis(), "wait_delete2" + System.currentTimeMillis(), "wait_delete3" + System.currentTimeMillis(), "wait_delete4" + System.currentTimeMillis(), "wait_delete5" + System.currentTimeMillis());
         Integer id = resultSupport.getModule();
         ResultSupport<Integer> modifyResultSupport = userInfoService.removeUserInfo(id);
         logger.info(JSON.toJSONString(modifyResultSupport));
