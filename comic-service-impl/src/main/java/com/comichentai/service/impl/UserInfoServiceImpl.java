@@ -58,8 +58,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public ResultSupport<Integer> addUserInfo(String username, String password, String nickname, String sexy, String email) {
+    public ResultSupport<Integer> addUserInfo(String coverTitle, String username, String password, String nickname, String sexy, String email) {
         try {
+            checkNotNull(coverTitle, "[添加失败][当前插入数据字段(coverTitle)为空]");
             checkNotNull(username, "[添加失败][当前插入数据字段(username)为空]");
             checkNotNull(password, "[添加失败][当前插入数据字段(password)为空]");
             checkNotNull(nickname, "[添加失败][当前插入数据字段(nickname)为空]");
@@ -70,7 +71,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             logger.error(e.getMessage(), e);
             return ResultSupport.getInstance(e);
         }
-        return this.addUserInfo(new UserInfoDto(username, password, nickname, sexy, email));
+        return this.addUserInfo(new UserInfoDto(coverTitle, username, password, nickname, sexy, email));
     }
 
     @Override

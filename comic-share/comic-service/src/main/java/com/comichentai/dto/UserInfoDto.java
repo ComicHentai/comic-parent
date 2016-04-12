@@ -6,6 +6,9 @@ package com.comichentai.dto;
  */
 public class UserInfoDto extends BasicDto {
 
+    /** */
+    private String coverTitle;
+
     /**
      * 用户名
      */
@@ -35,8 +38,9 @@ public class UserInfoDto extends BasicDto {
 
     }
 
-    public UserInfoDto(String username, String password, String nickname, String sexy, String email) {
+    public UserInfoDto(String coverTitle, String username, String password, String nickname, String sexy, String email) {
 
+        this.coverTitle = coverTitle;
         this.username = username;
         this.password = password;
         this.nickname = nickname;
@@ -44,6 +48,14 @@ public class UserInfoDto extends BasicDto {
         this.email = email;
 
 
+    }
+
+    public String getCoverTitle() {
+        return coverTitle;
+    }
+
+    public void setCoverTitle(String coverTitle) {
+        this.coverTitle = coverTitle;
     }
 
     public String getUsername() {

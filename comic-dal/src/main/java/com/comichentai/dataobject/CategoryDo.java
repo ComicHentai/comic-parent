@@ -7,7 +7,7 @@ package com.comichentai.dataobject;
 public class CategoryDo extends BasicDo {
 
     /**
-     * 漫画ID
+     * 分类ID
      */
     private Integer classifiedId;
 

@@ -40,10 +40,7 @@
         LIMIT ${idList.size}
     </update>
     <!-- 默认模板生成 删除单行记录-->
-    <update id="deleteCategory"> UPDATE `Category`
-    SET isDeleted = 1, updated = UNIX_TIMESTAMP()
-    WHERE id = ${id}
-    LIMIT 1 </update>
+    <update id="deleteCategory"> UPDATE `Category` SET isDeleted = 1, updated = UNIX_TIMESTAMP() WHERE id = ${id} LIMIT 1 </update>
     <!-- 默认模板生成 删除多行记录-->
     <update id="batchDeleteCategory">UPDATE `Category` SET isDeleted = 1,updated = UNIX_TIMESTAMP()
         <where>
@@ -52,10 +49,8 @@
         LIMIT ${idList.size}
     </update>
     <!-- 默认模板生成 根据ID选取单行记录 -->
-    <select id="selectCategoryById" resultType="com.comichentai.dataobject.CategoryDo"> SELECT *
-                                                                                        FROM `Category`
-                                                                                        WHERE id = ${id}
-                                                                                        LIMIT 1 </select>
+    <select id="selectCategoryById"
+            resultType="com.comichentai.dataobject.CategoryDo"> SELECT * FROM `Category` WHERE id = ${id} LIMIT 1 </select>
     <!-- 默认模板生成 根据ID集合选取多行记录-->
     <select id="selectCategoryListByIds" resultType="com.comichentai.dataobject.CategoryDo">SELECT * FROM `Category`
         <where>

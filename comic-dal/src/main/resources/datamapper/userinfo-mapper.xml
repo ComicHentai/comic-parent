@@ -3,11 +3,11 @@
 <mapper namespace="com.comichentai.dao.UserInfoDao">
     <!-- 默认模板生成 添加单行记录 -->
     <insert id="insertUserInfo">INSERT INTO `UserInfo`
-        (`username`,`password`,`nickname`,`sexy`,`email`,
+        (`coverTitle`,`username`,`password`,`nickname`,`sexy`,`email`,
         <!--<if test="可以为空字段!=null and 可以为空字段!=''"> `可以为空字段`, </if>-->
         `status`, `isDeleted`, `created`, `updated`)
         VALUES
-        (#{username},#{password},#{nickname},#{sexy},#{email},
+        (#{coverTitle},#{username},#{password},#{nickname},#{sexy},#{email},
         <!--<if test="可以为空字段!=null and 可以为空字段!=''"> #{可以为空字段}, </if>-->
         #{status}, 0, UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
         <selectKey resultType="integer" keyProperty="id">SELECT LAST_INSERT_ID()</selectKey>
@@ -15,6 +15,7 @@
     <!-- 默认模板生成 更新单行记录 -->
     <update id="updateUserInfo">UPDATE `UserInfo`
         <set>
+            <if test="coverTitle!=null and coverTitle!=''">`coverTitle` = #{coverTitle},</if>
             <if test="username!=null and username!=''">`username` = #{username},</if>
             <if test="password!=null and password!=''">`password` = #{password},</if>
             <if test="nickname!=null and nickname!=''">`nickname` = #{nickname},</if>
@@ -30,6 +31,7 @@
     <!-- 默认模板生成 更新多行记录 -->
     <update id="batchUpdateUserInfo">UPDATE `UserInfo`
         <set>
+            <if test="data.coverTitle!=null and data.coverTitle!=''">`coverTitle` = #{data.coverTitle},</if>
             <if test="data.username!=null and data.username!=''">`username` = #{data.username},</if>
             <if test="data.password!=null and data.password!=''">`password` = #{data.password},</if>
             <if test="data.nickname!=null and data.nickname!=''">`nickname` = #{data.nickname},</if>
@@ -44,11 +46,7 @@
         LIMIT ${idList.size}
     </update>
     <!-- 默认模板生成 删除单行记录-->
-    <update id="deleteUserInfo">UPDATE `UserInfo`
-        SET isDeleted = 1, updated = UNIX_TIMESTAMP()
-        WHERE id = ${id}
-        LIMIT 1
-    </update>
+    <update id="deleteUserInfo"> UPDATE `UserInfo` SET isDeleted = 1, updated = UNIX_TIMESTAMP() WHERE id = ${id} LIMIT 1 </update>
     <!-- 默认模板生成 删除多行记录-->
     <update id="batchDeleteUserInfo">UPDATE `UserInfo` SET isDeleted = 1,updated = UNIX_TIMESTAMP()
         <where>
@@ -57,11 +55,8 @@
         LIMIT ${idList.size}
     </update>
     <!-- 默认模板生成 根据ID选取单行记录 -->
-    <select id="selectUserInfoById" resultType="com.comichentai.dataobject.UserInfoDo">SELECT *
-        FROM `UserInfo`
-        WHERE id = ${id}
-        LIMIT 1
-    </select>
+    <select id="selectUserInfoById"
+            resultType="com.comichentai.dataobject.UserInfoDo"> SELECT * FROM `UserInfo` WHERE id = ${id} LIMIT 1 </select>
     <!-- 默认模板生成 根据ID集合选取多行记录-->
     <select id="selectUserInfoListByIds" resultType="com.comichentai.dataobject.UserInfoDo">SELECT * FROM `UserInfo`
         <where>
@@ -74,6 +69,7 @@
     <!-- 默认模板生成 动态SQL语句 通常字段判断是否为空 并增加日期范围 -->
     <sql id="where">
         <where>1 = 1
+            <if test="coverTitle!=null and coverTitle!=''">AND `coverTitle` = #{coverTitle}</if>
             <if test="username!=null and username!=''">AND `username` = #{username}</if>
             <if test="password!=null and password!=''">AND `password` = #{password}</if>
             <if test="nickname!=null and nickname!=''">AND `nickname` = #{nickname}</if>

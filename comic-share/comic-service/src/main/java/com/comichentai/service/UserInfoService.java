@@ -25,7 +25,7 @@ public interface UserInfoService {
      * @param 数据字段集合
      * @return ResultSupport.getData = 更新行数
      */
-    ResultSupport<Integer> addUserInfo(String username, String password, String nickname, String sexy, String email);
+    ResultSupport<Integer> addUserInfo(String coverTitle, String username, String password, String nickname, String sexy, String email);
 
     /**
      * 标准模板生成-向数据库更新单行记录

@@ -38,10 +38,7 @@
         LIMIT ${idList.size}
     </update>
     <!-- 默认模板生成 删除单行记录-->
-    <update id="deleteJump"> UPDATE `Jump`
-    SET isDeleted = 1, updated = UNIX_TIMESTAMP()
-    WHERE id = ${id}
-    LIMIT 1 </update>
+    <update id="deleteJump"> UPDATE `Jump` SET isDeleted = 1, updated = UNIX_TIMESTAMP() WHERE id = ${id} LIMIT 1 </update>
     <!-- 默认模板生成 删除多行记录-->
     <update id="batchDeleteJump">UPDATE `Jump` SET isDeleted = 1,updated = UNIX_TIMESTAMP()
         <where>
@@ -50,10 +47,8 @@
         LIMIT ${idList.size}
     </update>
     <!-- 默认模板生成 根据ID选取单行记录 -->
-    <select id="selectJumpById" resultType="com.comichentai.dataobject.JumpDo"> SELECT *
-                                                                                FROM `Jump`
-                                                                                WHERE id = ${id}
-                                                                                LIMIT 1 </select>
+    <select id="selectJumpById"
+            resultType="com.comichentai.dataobject.JumpDo"> SELECT * FROM `Jump` WHERE id = ${id} LIMIT 1 </select>
     <!-- 默认模板生成 根据ID集合选取多行记录-->
     <select id="selectJumpListByIds" resultType="com.comichentai.dataobject.JumpDo">SELECT * FROM `Jump`
         <where>

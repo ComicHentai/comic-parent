@@ -6,6 +6,9 @@ package com.comichentai.dataobject;
  */
 public class UserInfoDo extends BasicDo {
 
+    /** */
+    private String coverTitle;
+
     /**
      * 用户名
      */
@@ -35,8 +38,9 @@ public class UserInfoDo extends BasicDo {
 
     }
 
-    public UserInfoDo(String username, String password, String nickname, String sexy, String email) {
+    public UserInfoDo(String coverTitle, String username, String password, String nickname, String sexy, String email) {
 
+        this.coverTitle = coverTitle;
         this.username = username;
         this.password = password;
         this.nickname = nickname;
@@ -44,6 +48,14 @@ public class UserInfoDo extends BasicDo {
         this.email = email;
 
 
+    }
+
+    public String getCoverTitle() {
+        return coverTitle;
+    }
+
+    public void setCoverTitle(String coverTitle) {
+        this.coverTitle = coverTitle;
     }
 
     public String getUsername() {

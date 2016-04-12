@@ -1,6 +1,4 @@
-import com.comichentai.controller.ComicController;
-import com.comichentai.controller.LockerController;
-import com.comichentai.controller.WelcomeController;
+import com.comichentai.controller.*;
 import org.springframework.boot.SpringApplication;
 
 /**
@@ -9,7 +7,9 @@ import org.springframework.boot.SpringApplication;
 public class Driver {
 
     public static void main(String[] args) {
-        Class[] classes = new Class[]{ LockerController.class,ComicController.class, WelcomeController.class};
+        Class[] classes = new Class[]{ LockerController.class,ComicController.class, WelcomeController.class,
+                ClassifiedController.class, MineController.class, SearchController.class, SpecialController.class,
+                UserInfoController.class};
         SpringApplication.run(classes, args);
     }
 
