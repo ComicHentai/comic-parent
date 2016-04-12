@@ -1,6 +1,7 @@
 package com.comichentai.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.comichentai.bo.CategoryBusiness;
@@ -71,7 +72,7 @@ public class ClassifiedController {
             if(!"debug".equals(auth)){
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
-            CategoryDto categoryDto = paramMap.getObject("categoryDto", CategoryDto.class);
+            CategoryDto categoryDto = paramMap.getObject("category", CategoryDto.class);
             checkNotNull(categoryDto, IILEGAL_REQUEST);
             ResultSupport<Integer> integerResultSupport = categoryService.addCategory(categoryDto);
             return Response.getInstance(integerResultSupport.isSuccess())
@@ -104,10 +105,7 @@ public class ClassifiedController {
             if(!"debug".equals(auth)){
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
-            CategoryDto categoryDto = paramMap.getObject("categoryDto", CategoryDto.class);
-            checkNotNull(categoryDto, IILEGAL_REQUEST);
-            ResultSupport<List<CategoryDto>> categoryListByQuery = categoryService.getCategoryListByQuery(categoryDto);
-            List<CategoryDto> module = categoryListByQuery.getModule();
+            List<CategoryDto> module = JSONArray.parseArray(paramMap.getString("categorys"), CategoryDto.class);
             checkNotNull(module, IILEGAL_REQUEST);
             checkArgument(!module.isEmpty(), IILEGAL_REQUEST);
             List<Integer> idList = new LinkedList<>();
@@ -180,9 +178,9 @@ public class ClassifiedController {
             if(!"debug".equals(auth)){
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
-            Integer classifiedId = paramMap.getInteger("classifiedId");
-            checkNotNull(classifiedId, IILEGAL_REQUEST);
-            ResultSupport<Integer> integerResultSupport = classifiedService.removeClassified(classifiedId);
+            ClassifiedDto classifiedDto = paramMap.getObject("classified", ClassifiedDto.class);
+            checkNotNull(classifiedDto, IILEGAL_REQUEST);
+            ResultSupport<Integer> integerResultSupport = classifiedService.removeClassified(classifiedDto.getId());
             return Response.getInstance(integerResultSupport.isSuccess())
                     .addAttribute("data", integerResultSupport.getModule());
         } catch (JSONException jsonException) {
@@ -213,9 +211,13 @@ public class ClassifiedController {
             if(!"debug".equals(auth)){
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
-            List<Integer> idList = JSONUtil.parseJsonArrayToList(paramMap.getString("idList"), Integer.class);
-            checkNotNull(idList, IILEGAL_REQUEST);
-            checkArgument(!idList.isEmpty(), IILEGAL_REQUEST);
+            List<ClassifiedDto> module = JSONArray.parseArray(paramMap.getString("classifieds"), ClassifiedDto.class);
+            checkNotNull(module, IILEGAL_REQUEST);
+            checkArgument(!module.isEmpty(), IILEGAL_REQUEST);
+            List<Integer> idList = new LinkedList<>();
+            for(ClassifiedDto o : module){
+                idList.add(o.getId());
+            }
             ResultSupport<Integer> integerResultSupport = classifiedService.batchRemoveClassified(idList);
             return Response.getInstance(integerResultSupport.isSuccess())
                     .addAttribute("data", integerResultSupport.getModule());
@@ -298,7 +300,7 @@ public class ClassifiedController {
     }
 
 
-    @RequestMapping(value = "ComicDetail", method = RequestMethod.GET)
+    @RequestMapping(value = "comic/detail", method = RequestMethod.GET)
     @ResponseBody
     public Response getClassifiedComicDetail(HttpServletRequest request){
         //获取参数
@@ -319,9 +321,9 @@ public class ClassifiedController {
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
             CategoryDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), CategoryDto.class);
-            Integer classifiedId = paramMap.getInteger("classifiedId");
-            checkNotNull(classifiedId, IILEGAL_REQUEST);
-            query.setTargetId(classifiedId);
+            ClassifiedDto classifiedDto = paramMap.getObject("classified", ClassifiedDto.class);
+            checkNotNull(classifiedDto, IILEGAL_REQUEST);
+            query.setClassifiedId(classifiedDto.getId());
             ResultSupport<CategoryDto> comicByClassified = categoryBusiness.getComicByClassified(query);
             return Response.getInstance(comicByClassified.isSuccess())
                     .addAttribute("date", comicByClassified.getModule())
@@ -336,7 +338,7 @@ public class ClassifiedController {
         }
     }
 
-    @RequestMapping(value = "SpecialDetail", method = RequestMethod.GET)
+    @RequestMapping(value = "special/detail", method = RequestMethod.GET)
     @ResponseBody
     public Response getClassifiedSpecialDetail(HttpServletRequest request){
         //获取参数
@@ -357,9 +359,9 @@ public class ClassifiedController {
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
             CategoryDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), CategoryDto.class);
-            Integer classifiedId = paramMap.getInteger("classifiedId");
-            checkNotNull(classifiedId, IILEGAL_REQUEST);
-            query.setTargetId(classifiedId);
+            ClassifiedDto classifiedDto = paramMap.getObject("classified", ClassifiedDto.class);
+            checkNotNull(classifiedDto, IILEGAL_REQUEST);
+            query.setClassifiedId(classifiedDto.getId());
             ResultSupport<CategoryDto> specialByClassified = categoryBusiness.getSpecialByClassified(query);
             return Response.getInstance(specialByClassified.isSuccess())
                     .addAttribute("date", specialByClassified.getModule())
@@ -373,7 +375,7 @@ public class ClassifiedController {
         }
     }
 
-    @RequestMapping(value = "volatileClassified", method = RequestMethod.GET)
+    @RequestMapping(value = "volatile", method = RequestMethod.GET)
     @ResponseBody
     public Response volatileClassified(HttpServletRequest request){
         String data = request.getParameter("data");
