@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.comichentai.bo.FavoriteBusiness;
 import com.comichentai.dto.CategoryDto;
+import com.comichentai.dto.ComicDto;
 import com.comichentai.dto.FavoriteDto;
+import com.comichentai.dto.SpecialDto;
 import com.comichentai.entity.Response;
 import com.comichentai.entity.ResultSupport;
 import com.comichentai.rest.utils.PageMapUtil;
@@ -86,8 +88,9 @@ public class MineController {
             JSONObject tokenMap = JSON.parseObject(token);
             Integer userInfoId = tokenMap.getInteger("userInfoId");
             checkNotNull(userInfoId, IILEGAL_REQUEST);
-            Integer comicId = paramMap.getInteger("comicId");
-            ResultSupport<Integer> integerResultSupport = favoriteService.addFavorite(userInfoId, comicId, TYPE_COMIC);
+            ComicDto comicDto = paramMap.getObject("comic", ComicDto.class);
+            checkNotNull(comicDto, IILEGAL_REQUEST);
+            ResultSupport<Integer> integerResultSupport = favoriteService.addFavorite(userInfoId, comicDto.getId(), TYPE_COMIC);
             return Response.getInstance(integerResultSupport.isSuccess())
                     .addAttribute("data", integerResultSupport.getModule());
 
@@ -124,8 +127,8 @@ public class MineController {
             JSONObject tokenMap = JSON.parseObject(token);
             Integer userInfoId = tokenMap.getInteger("userInfoId");
             checkNotNull(userInfoId, IILEGAL_REQUEST);
-            Integer comicId = paramMap.getInteger("comicId");
-            List<Integer> favoriteIdList = getFavoriteIdList(userInfoId, comicId, TYPE_COMIC);
+            ComicDto comicDto = paramMap.getObject("comic", ComicDto.class);
+            List<Integer> favoriteIdList = getFavoriteIdList(userInfoId, comicDto.getId(), TYPE_COMIC);
             ResultSupport<Integer> integerResultSupport = favoriteService.batchRemoveFavorite(favoriteIdList);
             return Response.getInstance(integerResultSupport.isSuccess())
                     .addAttribute("data", integerResultSupport.getModule());
@@ -202,8 +205,8 @@ public class MineController {
             JSONObject tokenMap = JSON.parseObject(token);
             Integer userInfoId = tokenMap.getInteger("userInfoId");
             checkNotNull(userInfoId, IILEGAL_REQUEST);
-            Integer specialId = paramMap.getInteger("specialId");
-            ResultSupport<Integer> integerResultSupport = favoriteService.addFavorite(userInfoId, specialId, TYPE_SPECIAL);
+            SpecialDto specialDto = paramMap.getObject("special", SpecialDto.class);
+            ResultSupport<Integer> integerResultSupport = favoriteService.addFavorite(userInfoId, specialDto.getId(), TYPE_SPECIAL);
             return Response.getInstance(integerResultSupport.isSuccess())
                     .addAttribute("data", integerResultSupport.getModule());
 
@@ -240,8 +243,8 @@ public class MineController {
             JSONObject tokenMap = JSON.parseObject(token);
             Integer userInfoId = tokenMap.getInteger("userInfoId");
             checkNotNull(userInfoId, IILEGAL_REQUEST);
-            Integer specialId = paramMap.getInteger("specialId");
-            List<Integer> favoriteIdList = getFavoriteIdList(userInfoId, specialId, TYPE_SPECIAL);
+            SpecialDto specialDto = paramMap.getObject("special", SpecialDto.class);
+            List<Integer> favoriteIdList = getFavoriteIdList(userInfoId, specialDto.getId(), TYPE_SPECIAL);
             ResultSupport<Integer> integerResultSupport = favoriteService.batchRemoveFavorite(favoriteIdList);
             return Response.getInstance(integerResultSupport.isSuccess())
                     .addAttribute("data", integerResultSupport.getModule());
@@ -256,7 +259,7 @@ public class MineController {
 
     @RequestMapping(value = "special/index", method = RequestMethod.GET)
     @ResponseBody
-    public Response getMineSpecial(HttpServletRequest request, @RequestParam("userId")Integer userId){
+    public Response getMineSpecial(HttpServletRequest request){
         //获取参数
         String data = request.getParameter("data");
         JSONObject paramMap;
