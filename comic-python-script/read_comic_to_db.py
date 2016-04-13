@@ -62,9 +62,9 @@ def write_comic_data_to_db(comic_list):
     print(now() + "经过数据去重后,要插入的漫画数量为" + str(len(comic_list)))
     # 完成刷洗后开始写入
     for comic in comic_list:
-        insert_capture_data(comic, conn)
+        comic_id = insert_comic_data(comic, conn)
         # 然后插入capture表
-
+        insert_capture_data(comic, comic_id, conn)
     print(now() + "完成写入")
     conn.close()
 
@@ -102,7 +102,7 @@ def insert_comic_data(comic, conn):
     cursor = conn.cursor()
     cursor.execute(query_id_sql)
     comic_id = cursor.fetchall()[0][0]
-    print(now() + "插入的漫画主键为[" + comic_id + "]")
+    print(now() + "插入的漫画主键为[" + str(comic_id) + "]")
     return comic_id
 
 
@@ -122,7 +122,7 @@ def insert_capture_data(comic, last_insert_comic_id, conn):
     cursor = conn.cursor()
     cursor.execute(query_id_sql)
     capture_id = cursor.fetchall()[0][0]
-    print(now() + "插入的捕获信息主键为[" + capture_id + "]")
+    print(now() + "插入的捕获信息主键为[" + str(capture_id) + "]")
 
 
 reload(sys)
@@ -130,4 +130,6 @@ sys.setdefaultencoding('utf-8')
 
 
 def test():
-    driver('./ComicHentai[2016-04-13 18:04:22]/total.json')
+    driver('./local_total.json')
+
+test()
