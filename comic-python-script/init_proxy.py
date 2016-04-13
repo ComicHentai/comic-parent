@@ -99,11 +99,39 @@ def get_port(img):
 
 
 def create_proxy():
+    has_old_proxy = True
+    old_proxy_list = []
+    try:
+        with open('proxy.json', 'r') as f:
+            old_proxy_list = json.loads(f.read(-1))
+    except IOError:
+        print("没有以前的代理数据,使用本地模板")
+        has_old_proxy = False
+
+    if not has_old_proxy:
+        try:
+            with open('template_proxy.json', 'r') as f:
+                old_proxy_list = json.loads(f.read(-1))
+                has_old_proxy = True
+        except IOError:
+            print("模板数据无效")
+
     has_proxy = False
     more_list = []
     low_list = []
     high_list = []
-    while not has_proxy:
+    count = 0
+    while not has_proxy and count < 5:
+        count += 1
+        if count == 5:
+            if has_old_proxy:
+                print("获取代理失败,使用老数据")
+                low_list = old_proxy_list
+                break
+            else:
+                print("没有老数据,60秒后重新读取")
+                time.sleep(60)
+                count = 0
         try:
             low_list = low_secret_proxy()
             high_list = high_secret_proxy()
@@ -115,10 +143,14 @@ def create_proxy():
         more_list = get_more_proxy(300)
     except BaseException:
         print("获取大量代理失败")
+    proxy_list = low_list + high_list + old_proxy_list
     if len(more_list) == 0:
-        json_list = json.dumps(low_list + high_list)
+        json_list = json.dumps(proxy_list)
     else:
-        json_list = json.dumps(low_list + high_list + more_list)
+        json_list = json.dumps(proxy_list + more_list)
     json_file = open('proxy.json', 'w')
     json_file.write(json_list)
     json_file.close()
+
+
+create_proxy()
