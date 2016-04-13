@@ -15,6 +15,7 @@
 # Others
 target/
 logs/
+comic-python-script/ComicData/
 *.pyc
 *.jar
 hope-python-note/www/static/bower_plugins

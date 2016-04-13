@@ -87,7 +87,7 @@ def initDo(objectName, columns):
     public class {ObjectName}Do extends BasicDo {
     """
     for c in columns:
-        if c[1] == 'varchar':
+        if c[1] == 'varchar' or c[1] == 'text':
             text += """
             /**""" + c[3] + """ */
             private String """ + c[0] + """;
@@ -105,7 +105,7 @@ def initDo(objectName, columns):
     params = ""
     body = ""
     for c in columns:
-        if c[1] == 'varchar':
+        if c[1] == 'varchar' or c[1] == 'text':
             params += "String " + c[0] + ","
             body += "this." + c[0] + " = " + c[0] + ";\n"
         if c[1] == 'int':
@@ -121,7 +121,7 @@ def initDo(objectName, columns):
         """
     for c in columns:
         firstCharUpper = c[0][0].upper() + c[0][1:]
-        if c[1] == 'varchar':
+        if c[1] == 'varchar' or c[1] == 'text':
             text += """
                 public String get""" + firstCharUpper + """() {
                     return """ + c[0] + """;
@@ -163,7 +163,7 @@ def initDto(objectName, columns):
     public class {ObjectName}Dto extends BasicDto {
     """
     for c in columns:
-        if c[1] == 'varchar':
+        if c[1] == 'varchar' or c[1] == 'text':
             text += """
             /**""" + c[3] + """ */
             private String """ + c[0] + """;
@@ -181,7 +181,7 @@ def initDto(objectName, columns):
     params = ""
     body = ""
     for c in columns:
-        if c[1] == 'varchar':
+        if c[1] == 'varchar' or c[1] == 'text':
             params += "String " + c[0] + ","
             body += "this." + c[0] + " = " + c[0] + ";\n"
         if c[1] == 'int':
@@ -197,7 +197,7 @@ def initDto(objectName, columns):
         """
     for c in columns:
         firstCharUpper = c[0][0].upper() + c[0][1:]
-        if c[1] == 'varchar':
+        if c[1] == 'varchar' or c[1] == 'text':
             text += """
                 public String get""" + firstCharUpper + """() {
                     return """ + c[0] + """;
@@ -337,7 +337,7 @@ def initMapper(objectName, columns):
 def initService(objectName, columns):
     params = ""
     for c in columns:
-        if c[1] == 'varchar':
+        if c[1] == 'varchar' or c[1] == 'text':
             params += "String " + c[0] + ","
         if c[1] == 'int':
             params += "Integer " + c[0] + ","
@@ -444,7 +444,7 @@ def initServiceImpl(objectName, columns):
     validation = ''
     nextStep = ""
     for c in columns:
-        if c[1] == 'varchar':
+        if c[1] == 'varchar' or c[1] == 'text':
             params += "String " + c[0] + ","
         if c[1] == 'int':
             params += "Integer " + c[0] + ","
@@ -698,7 +698,7 @@ def initTest(objectName, testColumn):
     delete_param = ''
     i = 0
     for c in testColumn:
-        if c[1] == 'varchar':
+        if c[1] == 'varchar' or c[1] == 'text':
             param += ('"test' + str(i) + '"+System.currentTimeMillis(),')
             modify_param += ('"modify' + str(i) + '"+System.currentTimeMillis(),')
             delete_param += ('"wait_delete' + str(i) + '"+System.currentTimeMillis(),')
