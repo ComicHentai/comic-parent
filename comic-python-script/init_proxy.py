@@ -143,9 +143,9 @@ def create_proxy():
     except BaseException:
         print("获取大量代理失败")
     if has_proxy:
-        proxy_list = low_list + high_list + has_old_proxy
+        proxy_list = low_list + high_list + old_proxy_list
     else:
-        proxy_list = has_old_proxy
+        proxy_list = old_proxy_list
     if len(more_list) == 0:
         json_list = json.dumps(proxy_list)
     else:

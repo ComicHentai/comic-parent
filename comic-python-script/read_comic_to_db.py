@@ -127,4 +127,7 @@ def insert_capture_data(comic, last_insert_comic_id, conn):
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
-driver('./ComicHentai[2016-04-13 18:04:22]/total.json')
+
+
+def test():
+    driver('./ComicHentai[2016-04-13 18:04:22]/total.json')
