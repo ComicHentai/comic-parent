@@ -14,6 +14,7 @@ from pyquery import PyQuery as pq
 from requests.exceptions import ConnectionError, ReadTimeout, TooManyRedirects, RequestException
 
 import init_proxy
+import read_comic_to_db
 
 proxy_list = []
 url = "http://lofi.e-hentai.org"
@@ -361,6 +362,11 @@ def start(page=1, max_page=20):
         f.write(json.dumps(new_list))
     print(now() + "梳理完成")
 
+    # 将梳理结果写入数据库
+    try:
+        read_comic_to_db.driver(dir_name + '/total.json')
+    except Exception:
+        print(now() + "写入数据库失败,跳过写入操作")
     # 梳理完成后开始读取图片
     after(dir_name + '/total.json')
 
@@ -384,6 +390,11 @@ def multi_start(page=1, max_page=20):
         f.write(json.dumps(new_list))
     print(now() + "梳理完成")
 
+    # 将梳理结果写入数据库
+    try:
+        read_comic_to_db.driver(dir_name + '/total.json')
+    except Exception:
+        print(now() + "写入数据库失败,跳过写入操作")
     # 梳理完成后开始读取图片
     multi_thread_after(dir_name + '/total.json')
 
