@@ -1,10 +1,12 @@
 package com.comichentai.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.comichentai.bo.JumpBusiness;
 import com.comichentai.dto.ClassifiedDto;
+import com.comichentai.dto.ComicDto;
 import com.comichentai.dto.JumpDto;
 import com.comichentai.dto.SpecialDto;
 import com.comichentai.entity.Response;
@@ -13,6 +15,7 @@ import com.comichentai.rest.utils.JSONUtil;
 import com.comichentai.rest.utils.PageMapUtil;
 import com.comichentai.rest.utils.TokenCheckUtil;
 import com.comichentai.security.AESLocker;
+import com.comichentai.service.JumpService;
 import com.comichentai.service.SpecialService;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -47,7 +51,10 @@ public class SpecialController {
     @Resource(name = "specialService")
     private SpecialService specialService;
 
-    @RequestMapping(value = "add", method = RequestMethod.GET)
+    @Resource(name = "jumpService")
+    private JumpService jumpService;
+
+    @RequestMapping(value = "add/info", method = RequestMethod.GET)
     @ResponseBody
     public Response addSpecial(HttpServletRequest request){
         //获取参数
@@ -103,7 +110,11 @@ public class SpecialController {
             if(!"debug".equals(auth)){
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
-            List<Integer> idList = JSONUtil.parseJsonArrayToList(paramMap.getString("idList"), Integer.class);
+            List<SpecialDto> specialDtos = JSONArray.parseArray(paramMap.getString("specials"), SpecialDto.class);
+            List<Integer> idList = new LinkedList<>();
+            for(SpecialDto o : specialDtos){
+                idList.add(o.getId());
+            }
             checkArgument(!idList.isEmpty(), IILEGAL_REQUEST);
             ResultSupport<Integer> integerResultSupport = specialService.batchRemoveSpecial(idList);
             return Response.getInstance(integerResultSupport.isSuccess())
@@ -116,9 +127,88 @@ public class SpecialController {
         }
     }
 
+    @RequestMapping(value = "add/comic", method = RequestMethod.GET)
+    @ResponseBody
+    public Response addSpecialComic(HttpServletRequest request){
+        //获取参数
+        String data = request.getParameter("data");
+        JSONObject paramMap;
+        String mode = request.getParameter("_mode");
+        String auth = request.getParameter("_auth");
+        try{
+            checkNotNull(data, IILEGAL_REQUEST);
+            checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
+            if(!"debug".equals(mode)){
+                data = AESLocker.decrypt(data);
+            }
+            paramMap = JSON.parseObject(data);
+            String token = paramMap.getString("token");
+            String deviceId = paramMap.getString("deviceId");
+            if(!"debug".equals(auth)){
+                TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
+            }
+            SpecialDto specialDto = paramMap.getObject("special", SpecialDto.class);
+            checkNotNull(specialDto, IILEGAL_REQUEST);
+            ComicDto comicDto = paramMap.getObject("comic", ComicDto.class);
+            checkNotNull(comicDto, IILEGAL_REQUEST);
+            ResultSupport<Integer> integerResultSupport = jumpService.addJump(specialDto.getId(), comicDto.getId());
+            return Response.getInstance(integerResultSupport.isSuccess())
+                    .addAttribute("data", integerResultSupport.getModule());
+        } catch (JSONException jsonException) {
+            return Response.getInstance(false).setReturnMsg("参数非法");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.getInstance(false).setReturnMsg(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "deleted/comic", method = RequestMethod.GET)
+    @ResponseBody
+    public Response deletedSpecialComic(HttpServletRequest request){
+        //获取参数
+        String data = request.getParameter("data");
+        JSONObject paramMap;
+        String mode = request.getParameter("_mode");
+        String auth = request.getParameter("_auth");
+        try{
+            checkNotNull(data, IILEGAL_REQUEST);
+            checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
+            if(!"debug".equals(mode)){
+                data = AESLocker.decrypt(data);
+            }
+            paramMap = JSON.parseObject(data);
+            String token = paramMap.getString("token");
+            String deviceId = paramMap.getString("deviceId");
+            if(!"debug".equals(auth)){
+                TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
+            }
+            SpecialDto specialDto = paramMap.getObject("special", SpecialDto.class);
+            checkNotNull(specialDto, IILEGAL_REQUEST);
+            ComicDto comicDto = paramMap.getObject("comic", ComicDto.class);
+            checkNotNull(comicDto, IILEGAL_REQUEST);
+            JumpDto jumpDto = new JumpDto(specialDto.getId(), comicDto.getId());
+            ResultSupport<List<JumpDto>> jumpListByQuery = jumpService.getJumpListByQuery(jumpDto);
+            List<Integer> idList = new LinkedList<>();
+            List<JumpDto> module = jumpListByQuery.getModule();
+            for(JumpDto o : module){
+                idList.add(o.getId());
+            }
+            ResultSupport<Integer> integerResultSupport = jumpService.batchRemoveJump(idList);
+            return Response.getInstance(integerResultSupport.isSuccess())
+                    .addAttribute("data", integerResultSupport.getModule());
+        } catch (JSONException jsonException) {
+            return Response.getInstance(false).setReturnMsg("参数非法");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.getInstance(false).setReturnMsg(e.getMessage());
+        }
+    }
+
+
+
     @RequestMapping(value = "content", method = RequestMethod.GET)
     @ResponseBody
-    public Response getSpecialContent(HttpServletRequest request, @RequestParam("specialId")Integer specialId){
+    public Response getSpecialContent(HttpServletRequest request){
         //获取参数
         String data = request.getParameter("data");
         JSONObject paramMap;
@@ -137,7 +227,8 @@ public class SpecialController {
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
             JumpDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), JumpDto.class);
-            query.setSpecialId(specialId);
+            SpecialDto specialDto = paramMap.getObject("special", SpecialDto.class);
+            query.setSpecialId(specialDto.getId());
             ResultSupport<JumpDto> jumpBySpecial = jumpBusiness.getJumpBySpecial(query);
             return Response.getInstance(jumpBySpecial.isSuccess())
                     .addAttribute("data", jumpBySpecial.getModule())
