@@ -126,7 +126,6 @@ def create_proxy():
         if count == 5:
             if has_old_proxy:
                 print("获取代理失败,使用老数据")
-                low_list = old_proxy_list
                 break
             else:
                 print("没有老数据,60秒后重新读取")
@@ -143,7 +142,10 @@ def create_proxy():
         more_list = get_more_proxy(300)
     except BaseException:
         print("获取大量代理失败")
-    proxy_list = low_list + high_list + old_proxy_list
+    if has_proxy:
+        proxy_list = low_list + high_list + has_old_proxy
+    else:
+        proxy_list = has_old_proxy
     if len(more_list) == 0:
         json_list = json.dumps(proxy_list)
     else:
