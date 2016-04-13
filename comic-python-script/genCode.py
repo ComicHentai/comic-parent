@@ -1,8 +1,8 @@
 # encoding:UTF-8
 # coding=utf8
 import os
+import comic_hentai_data_source
 
-import MySQLdb
 
 def initDir():
     if not os.path.exists("./dao"):
@@ -145,7 +145,7 @@ def initDo(objectName, columns):
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = "./dataobject/"+objectName + "Do.java"
+    fileName = "./dataobject/" + objectName + "Do.java"
     with open(fileName, 'w') as f:
         f.write(text)
 
@@ -221,7 +221,7 @@ def initDto(objectName, columns):
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = "./dto/"+objectName + "Dto.java"
+    fileName = "./dto/" + objectName + "Dto.java"
     with open(fileName, 'w') as f:
         f.write(text)
 
@@ -327,7 +327,7 @@ def initMapper(objectName, columns):
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = "./datamapper/"+objectName.lower() + "-mapper.xml"
+    fileName = "./datamapper/" + objectName.lower() + "-mapper.xml"
     with open(fileName, 'w') as f:
         f.write(text)
 
@@ -432,7 +432,7 @@ public interface {ObjectName}Service {
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = "./service/"+objectName + "Service.java"
+    fileName = "./service/" + objectName + "Service.java"
     with open(fileName, 'w') as f:
         f.write(text)
 
@@ -685,7 +685,7 @@ public class {ObjectName}ServiceImpl implements {ObjectName}Service {
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = "./impl/"+objectName + "ServiceImpl.java"
+    fileName = "./impl/" + objectName + "ServiceImpl.java"
     with open(fileName, 'w') as f:
         f.write(text)
 
@@ -826,7 +826,7 @@ public class {ObjectName}ServiceImplTest extends SpringTestHelper {
     text = text.replace("{ObjectName}", objectName)
     lower = objectName[0].lower() + objectName[1:]
     text = text.replace("{objectName}", lower)
-    fileName = "./test/"+objectName + "ServiceImplTest.java"
+    fileName = "./test/" + objectName + "ServiceImplTest.java"
     with open(fileName, 'w') as f:
         f.write(text)
 
@@ -846,7 +846,7 @@ def initAll(objectName, columns):
 
 
 def mysql_connect():
-    conn = MySQLdb.connect(user='root', passwd='gintama123', host='www.hope6537.com', db='ComicHentai')
+    conn = comic_hentai_data_source.get_conn()
     cursor = conn.cursor()
     # 得到当前数据库中的所有表
     cursor.execute(
@@ -873,4 +873,3 @@ def mysql_connect():
 
 mysql_connect()
 # initAll("TestUser")
-
