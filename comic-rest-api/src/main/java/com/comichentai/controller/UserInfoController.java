@@ -81,7 +81,7 @@ public class UserInfoController {
     }
 
 
-    @RequestMapping(value = "register", method = RequestMethod.GET)
+    @RequestMapping(value = "register", method = RequestMethod.POST)
     @ResponseBody
     public Response signUpUserInfo(HttpServletRequest request){
         String result = "";
