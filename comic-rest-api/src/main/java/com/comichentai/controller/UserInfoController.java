@@ -84,6 +84,7 @@ public class UserInfoController {
     @RequestMapping(value = "register", method = RequestMethod.GET)
     @ResponseBody
     public Response signUpUserInfo(HttpServletRequest request){
+        String result = "";
         //获取参数
         String data = request.getParameter("data");
         JSONObject paramMap;
@@ -99,6 +100,7 @@ public class UserInfoController {
             }
             //获取验证登录的必要信息
             paramMap = JSON.parseObject(data);
+            String deviceId = paramMap.getString("deviceId");
             UserInfoDto userInfoDto = paramMap.getObject("userInfo", UserInfoDto.class);
             checkNotNull(userInfoDto, IILEGAL_REQUEST);
             checkNotNull(userInfoDto.getUsername(), IILEGAL_REQUEST);
@@ -107,8 +109,12 @@ public class UserInfoController {
             checkNotNull(userInfoDto, IILEGAL_REQUEST);
             //验证完成 -- username和nickname应该在焦点离开时异步校验的吧= =
             ResultSupport<Integer> integerResultSupport = userInfoService.addUserInfo(userInfoDto);
+            if(integerResultSupport.isSuccess()){
+                //登录成功
+                result = TokenCheckUtil.initToken(userInfoDto.getId().toString(), DEFALUT_AVAILABLE_DAYS, deviceId, request);
+            }
             return Response.getInstance(integerResultSupport.isSuccess())       //这个分页什么的应该不用加到里面了吧..
-                    .addAttribute("data", integerResultSupport.getModule());
+                    .addAttribute("token", result);
         }catch (Exception e){
             e.printStackTrace();
                     return Response.getInstance(false).setReturnMsg(e.getMessage());
@@ -230,7 +236,7 @@ public class UserInfoController {
             //登录成功
             String result = TokenCheckUtil.initToken(user.getId().toString(), DEFALUT_AVAILABLE_DAYS, deviceId, request);
             return Response.getInstance(userInfoListByQuery.isSuccess())
-                    .addAttribute("data", result);
+                    .addAttribute("token", result);
         }catch (JSONException e){
             return Response.getInstance(false).setReturnMsg("非法参数");
         }catch (Exception e){
