@@ -68,6 +68,9 @@ def validate_comic_already_upload(comic_id_list):
     id_list_str = ""
     for comic_id in new_comic_id_list:
         id_list_str += ("'" + comic_id + "'" + ",")
+    if id_list_str == "":
+        print(now() + "没有要更新的数据")
+        return
     id_list_str = id_list_str[0:-1]
     new_comic_id_map = {}
     map_sql = "SELECT ca.foreignId,ca.comicId FROM Capture ca , Comic co where ca.foreignId in (" + id_list_str + ") and ca.comicId = co.id and co.status = 1"
@@ -85,6 +88,9 @@ def upload_and_update_json_data(comic_id_list):
     if not auth or not service or not bucket:
         print(now() + "阿里云初始化失败,停止操作")
     local_path = os.getcwd()
+    if comic_id_list == None:
+        print(now() + "没有要更新的漫画ID")
+        return
     for foreign_id in comic_id_list:
         print(now() + "正在读取漫画[" + foreign_id + "]的信息")
         comic_primary_key = comic_id_list[foreign_id]
@@ -118,8 +124,8 @@ def upload_and_update_json_data(comic_id_list):
 # 初始化阿里云OSS
 def init_oss():
     try:
-        access_key_id = "**********"
-        access_key_secret = "********************"
+        access_key_id = "------------------"
+        access_key_secret = "------------------"
         auth = oss2.Auth(access_key_id, access_key_secret)
         service = oss2.Service(auth, 'http://oss-cn-qingdao.aliyuncs.com', connect_timeout=30)
         bucket = oss2.Bucket(auth, 'http://oss-cn-qingdao.aliyuncs.com', 'comic-hentai')
