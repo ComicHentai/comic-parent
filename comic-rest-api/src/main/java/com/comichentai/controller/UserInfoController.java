@@ -1,20 +1,27 @@
 package com.comichentai.controller;
 
 import com.alibaba.fastjson.JSON;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.comichentai.dto.UserInfoDto;
 import com.comichentai.entity.Response;
 import com.comichentai.entity.ResultSupport;
+import com.comichentai.rest.utils.JSONUtil;
+
 import com.comichentai.rest.utils.TokenCheckUtil;
 import com.comichentai.security.AESLocker;
 import com.comichentai.service.UserInfoService;
+
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -41,21 +48,21 @@ public class UserInfoController {
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     @ResponseBody
-    public Response getUserInfoById(HttpServletRequest request) {
+    public Response getUserInfoById(HttpServletRequest request){
         String data = request.getParameter("data");
         JSONObject paramMap;
         String mode = request.getParameter("_mode");
         String auth = request.getParameter("_auth");
-        try {
+        try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
-            if (!"debug".equals(mode)) {
+            if(!"debug".equals(mode)){
                 data = AESLocker.decrypt(data);
             }
             paramMap = JSON.parseObject(data);
             String token = paramMap.getString("token");
             String deviceId = paramMap.getString("deviceId");
-            if (!"debug".equals(auth)) {
+            if(!"debug".equals(auth)){
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
             checkNotNull(token, IILEGAL_REQUEST);
@@ -65,9 +72,9 @@ public class UserInfoController {
             ResultSupport<UserInfoDto> userInfoById = userInfoService.getUserInfoById(userInfoId);
             return Response.getInstance(userInfoById.isSuccess())
                     .addAttribute("data", userInfoById.getModule());
-        } catch (JSONException e) {
+        }catch (JSONException e){
             return Response.getInstance(false).setReturnMsg("非法参数");
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
             return Response.getInstance(false).setReturnMsg(e.getMessage());
         }
@@ -77,18 +84,19 @@ public class UserInfoController {
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
     @ResponseBody
-    public Response signUpUserInfo(HttpServletRequest request, @RequestParam(name = "data") String data) {
+    public Response signUpUserInfo(HttpServletRequest request, @RequestBody CustomRequest r_request){
         String result = "";
         //获取参数
+        String data = request.getParameter("data");
         JSONObject paramMap;
         //获取设备信息
         String mode = request.getParameter("_mode");
-        try {
+        try{
             //判断data是否合法
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             //判断是否需要对data进行加密
-            if (!"debug".equals(mode)) {
+            if(!"debug".equals(mode)){
                 data = AESLocker.decrypt(data);
             }
             //获取验证登录的必要信息
@@ -102,30 +110,30 @@ public class UserInfoController {
             checkNotNull(userInfoDto, IILEGAL_REQUEST);
             //验证完成 -- username和nickname应该在焦点离开时异步校验的吧= =
             ResultSupport<Integer> integerResultSupport = userInfoService.addUserInfo(userInfoDto);
-            if (integerResultSupport.isSuccess()) {
+            if(integerResultSupport.isSuccess()){
                 //登录成功
                 result = TokenCheckUtil.initToken(integerResultSupport.getModule().toString(), DEFALUT_AVAILABLE_DAYS, deviceId, request);
             }
             return Response.getInstance(integerResultSupport.isSuccess())       //这个分页什么的应该不用加到里面了吧..
                     .addAttribute("token", result);
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
-            return Response.getInstance(false).setReturnMsg(e.getMessage());
+                    return Response.getInstance(false).setReturnMsg(e.getMessage());
         }
     }
 
 
     @RequestMapping(value = "updated", method = RequestMethod.GET)
     @ResponseBody
-    public Response updatedUserInfo(HttpServletRequest request) {
+    public Response updatedUserInfo(HttpServletRequest request){
         String data = request.getParameter("data");
         JSONObject paramMap;
         String mode = request.getParameter("_mode");
-        try {
+        try{
             //判断data是否合法
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
-            if (!"debug".equals(mode)) {
+            if(!"debug".equals(mode)){
                 data = AESLocker.decrypt(data);
             }
             paramMap = JSON.parseObject(data);
@@ -136,7 +144,7 @@ public class UserInfoController {
             ResultSupport<Integer> integerResultSupport = userInfoService.modifyUserInfo(userInfoDto);
             return Response.getInstance(integerResultSupport.isSuccess())
                     .addAttribute("data", integerResultSupport.getModule());
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
             return Response.getInstance(false).setReturnMsg(e.getMessage());
         }
@@ -145,14 +153,14 @@ public class UserInfoController {
 
     @RequestMapping(value = "deleted", method = RequestMethod.GET)
     @ResponseBody
-    public Response deletedUserInfo(HttpServletRequest request) {
+    public Response deletedUserInfo(HttpServletRequest request){
         String data = request.getParameter("data");
         JSONObject paramMap;
         String mode = request.getParameter("_mode");
-        try {
+        try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
-            if (!"debug".equals(mode)) {
+            if(!"debug".equals(mode)){
                 data = AESLocker.decrypt(data);
             }
             paramMap = JSON.parseObject(data);
@@ -161,7 +169,7 @@ public class UserInfoController {
             ResultSupport<Integer> integerResultSupport = userInfoService.removeUserInfo(userInfoDto.getId());
             return Response.getInstance(integerResultSupport.isSuccess())
                     .addAttribute("data", integerResultSupport.getModule());
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
             return Response.getInstance(false).setReturnMsg(e.getMessage());
         }
@@ -169,14 +177,14 @@ public class UserInfoController {
 
     @RequestMapping(value = "deleted/batch", method = RequestMethod.GET)
     @ResponseBody
-    public Response batchDeletedUserInfo(HttpServletRequest request) {
+    public Response batchDeletedUserInfo(HttpServletRequest request){
         String data = request.getParameter("data");
         JSONObject paramMap;
         String mode = request.getParameter("_mode");
-        try {
+        try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkNotNull(!data.isEmpty(), IILEGAL_REQUEST);
-            if (!"debug".equals(mode)) {
+            if(!"debug".equals(mode)){
                 data = AESLocker.decrypt(data);
             }
             paramMap = JSON.parseObject(data);
@@ -185,13 +193,13 @@ public class UserInfoController {
             checkNotNull(module, IILEGAL_REQUEST);
             checkArgument(!module.isEmpty(), IILEGAL_REQUEST);
             List<Integer> idList = new LinkedList<>();
-            for (UserInfoDto o : module) {
+            for(UserInfoDto o : module){
                 idList.add(o.getId());
             }
             ResultSupport<Integer> integerResultSupport = userInfoService.batchRemoveUserInfo(idList);
             return Response.getInstance(integerResultSupport.isSuccess())
                     .addAttribute("data", integerResultSupport.getModule());
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
             return Response.getInstance(false).setReturnMsg(e.getMessage());
         }
@@ -199,18 +207,18 @@ public class UserInfoController {
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     @ResponseBody
-    public Response signInUserInfo(HttpServletRequest request) {
+    public Response signInUserInfo(HttpServletRequest request){
         //获取参数
         String data = request.getParameter("data");
         com.alibaba.fastjson.JSONObject paramMap;
         //获取设备信息
         String mode = request.getParameter("_mode");
-        try {
+        try{
             //判断data是否合法
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             //判断是否需要对data进行加密
-            if (!"debug".equals(mode)) {
+            if(!"debug".equals(mode)){
                 data = AESLocker.decrypt(data);
             }
             //获取登录后的必要信息
@@ -222,7 +230,7 @@ public class UserInfoController {
             checkNotNull(userInfoDto.getPassword(), IILEGAL_REQUEST);
             //验证完成,开始查询
             ResultSupport<List<UserInfoDto>> userInfoListByQuery = userInfoService.getUserInfoListByQuery(userInfoDto);
-            if (userInfoListByQuery.getModule().size() != 1) {        //没匹配到,登录失败~
+            if(userInfoListByQuery.getModule().size() != 1){        //没匹配到,登录失败~
                 return Response.getInstance(false).setReturnMsg("登录失败,请检查用户名密码是否正确");
             }
             UserInfoDto user = userInfoListByQuery.getModule().get(0);
@@ -230,9 +238,9 @@ public class UserInfoController {
             String result = TokenCheckUtil.initToken(user.getId().toString(), DEFALUT_AVAILABLE_DAYS, deviceId, request);
             return Response.getInstance(userInfoListByQuery.isSuccess())
                     .addAttribute("token", result);
-        } catch (JSONException e) {
+        }catch (JSONException e){
             return Response.getInstance(false).setReturnMsg("非法参数");
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
             return Response.getInstance(false).setReturnMsg(e.getMessage());
         }
@@ -242,17 +250,17 @@ public class UserInfoController {
     /**
      * 用户注册前验证username
      * 用户修改或注册时nickname的验证
-     */
+     * */
     @RequestMapping(value = "volatile", method = RequestMethod.GET)
     @ResponseBody
-    public Response volatileUser(HttpServletRequest request) {
+    public Response volatileUser(HttpServletRequest request){
         String data = request.getParameter("data");
         JSONObject paramMap;
         String mode = request.getParameter("_mode");
-        try {
+        try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
-            if (!"debug".equals(mode)) {
+            if(!"debug".equals(mode)){
                 data = AESLocker.decrypt(data);
             }
             paramMap = JSON.parseObject(data);
@@ -263,13 +271,13 @@ public class UserInfoController {
             //验证完成,开始查询
             ResultSupport<List<UserInfoDto>> userInfoListByQuery = userInfoService.getUserInfoListByQuery(userInfoDto);
             Integer flag = userInfoListByQuery.getModule().size();
-            if (flag != 0) {   //该账号已经被注册
+            if(flag != 0){   //该账号已经被注册
                 return Response.getInstance(false)
                         .setReturnMsg("[该用户名或昵称已经被占用]");
             }
             return Response.getInstance(userInfoListByQuery.isSuccess())        //可能查询失败
                     .addAttribute("data", flag);
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
             return Response.getInstance(false).setReturnMsg(e.getMessage());
         }
