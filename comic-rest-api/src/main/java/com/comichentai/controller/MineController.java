@@ -73,7 +73,7 @@ public class MineController {
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
             String token = paramMap.getString("token");
@@ -113,7 +113,7 @@ public class MineController {
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
             String token = paramMap.getString("token");
@@ -153,7 +153,7 @@ public class MineController {
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
             String token = paramMap.getString("token");
@@ -193,7 +193,7 @@ public class MineController {
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
             String token = paramMap.getString("token");
@@ -232,7 +232,7 @@ public class MineController {
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
             String token = paramMap.getString("token");
@@ -272,7 +272,7 @@ public class MineController {
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
             String token = paramMap.getString("token");

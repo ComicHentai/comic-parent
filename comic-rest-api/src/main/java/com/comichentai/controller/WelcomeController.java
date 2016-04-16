@@ -53,7 +53,7 @@ public class WelcomeController {
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             //判断是否需要对data进行加密
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             //获取验证登录的必要信息
             paramMap = JSON.parseObject(data);

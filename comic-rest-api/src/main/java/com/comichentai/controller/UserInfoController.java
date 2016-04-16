@@ -58,7 +58,7 @@ public class UserInfoController {
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
             String token = paramMap.getString("token");
@@ -137,7 +137,7 @@ public class UserInfoController {
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
             UserInfoDto userInfoDto = paramMap.getObject("userInfo", UserInfoDto.class);
@@ -165,7 +165,7 @@ public class UserInfoController {
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
             UserInfoDto userInfoDto = paramMap.getObject("userInfo", UserInfoDto.class);
@@ -190,7 +190,7 @@ public class UserInfoController {
             checkNotNull(data, IILEGAL_REQUEST);
             checkNotNull(!data.isEmpty(), IILEGAL_REQUEST);
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
 
@@ -225,7 +225,7 @@ public class UserInfoController {
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             //判断是否需要对data进行加密
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             //获取登录后的必要信息
             paramMap = JSON.parseObject(data);
@@ -268,7 +268,7 @@ public class UserInfoController {
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
             if(!"debug".equals(mode)){
-                data = AESLocker.decrypt(data);
+                data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
             UserInfoDto userInfoDto = paramMap.getObject("userInfo", UserInfoDto.class);
