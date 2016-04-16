@@ -81,7 +81,7 @@ public class UserInfoController {
     }
 
 
-    @RequestMapping(value = "signUp", method = RequestMethod.GET)
+    @RequestMapping(value = "register", method = RequestMethod.GET)
     @ResponseBody
     public Response signUpUserInfo(HttpServletRequest request){
         //获取参数
@@ -111,7 +111,7 @@ public class UserInfoController {
                     .addAttribute("data", integerResultSupport.getModule());
         }catch (Exception e){
             e.printStackTrace();
-            return Response.getInstance(false).setReturnMsg(e.getMessage());
+                    return Response.getInstance(false).setReturnMsg(e.getMessage());
         }
     }
 
@@ -198,7 +198,7 @@ public class UserInfoController {
         }
     }
 
-    @RequestMapping(value = "signIn", method = RequestMethod.GET)
+    @RequestMapping(value = "login", method = RequestMethod.GET)
     @ResponseBody
     public Response signInUserInfo(HttpServletRequest request){
         //获取参数
