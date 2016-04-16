@@ -29,11 +29,25 @@ public class LockerController {
         return AESLocker.encrypt(message);
     }
 
+    @RequestMapping(value = "/encrypt64", method = RequestMethod.GET)
+    @ResponseBody
+    public String getEncrypt64Message(HttpServletRequest request) {
+        String message = request.getParameter("message");
+        return AESLocker.encryptBase64(message);
+    }
+
     @RequestMapping(value = "/decrypt", method = RequestMethod.GET)
     @ResponseBody
     public String getDecryptMessage(HttpServletRequest request) {
         String message = request.getParameter("message");
         return AESLocker.decrypt(message);
+    }
+
+    @RequestMapping(value = "/decrypt64", method = RequestMethod.GET)
+    @ResponseBody
+    public String getDecrypt64Message(HttpServletRequest request) {
+        String message = request.getParameter("message");
+        return AESLocker.decryptBase64(message);
     }
 
 }
