@@ -84,7 +84,7 @@ public class UserInfoController {
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
     @ResponseBody
-    public Response signUpUserInfo(HttpServletRequest request, @RequestBody CustomRequest r_request){
+    public Response signUpUserInfo(HttpServletRequest request, @RequestBody String r_request){
         String result = "";
         //获取参数
         String data = request.getParameter("data");
