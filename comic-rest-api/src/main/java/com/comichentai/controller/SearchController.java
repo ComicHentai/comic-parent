@@ -14,10 +14,7 @@ import com.comichentai.security.AESLocker;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.annotation.Resource;
@@ -43,12 +40,13 @@ public class SearchController {
 
     @RequestMapping(value = "result", method = RequestMethod.GET)
     @ResponseBody
-    public Response getSearchResult(HttpServletRequest request){
+    public Response getSearchResult(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);

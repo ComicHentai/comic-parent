@@ -12,6 +12,7 @@ import com.comichentai.security.AESLocker;
 import com.comichentai.service.ComicService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,13 +39,14 @@ public class WelcomeController {
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     @ResponseBody
-    public Response getWelcomeComicByQuery(HttpServletRequest request){
+    public Response getWelcomeComicByQuery(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
         //获取设备信息
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             //判断data是否合法
             checkNotNull(data, IILEGAL_REQUEST);

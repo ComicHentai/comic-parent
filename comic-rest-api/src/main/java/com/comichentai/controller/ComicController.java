@@ -18,10 +18,7 @@ import com.comichentai.service.ComicService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -47,14 +44,15 @@ public class ComicController {
 
 
 
-    @RequestMapping(value = "add/info", method = RequestMethod.GET)
+    @RequestMapping(value = "add/info", method = RequestMethod.POST)
     @ResponseBody
-    public Response addComicInfo(HttpServletRequest request){
+    public Response addComicInfo(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -80,14 +78,15 @@ public class ComicController {
         }
     }
 
-    @RequestMapping(value = "deleted", method = RequestMethod.GET)
+    @RequestMapping(value = "deleted", method = RequestMethod.DELETE)
     @ResponseBody
-    public Response deletedComic(HttpServletRequest request){
+    public Response deletedComic(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -118,14 +117,15 @@ public class ComicController {
         }
     }
 
-    @RequestMapping(value = "updated", method = RequestMethod.GET)
+    @RequestMapping(value = "updated", method = RequestMethod.PUT)
     @ResponseBody
-    public Response updatedComic(HttpServletRequest request){
+    public Response updatedComic(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -156,12 +156,13 @@ public class ComicController {
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     @ResponseBody
-    public Response getComicInfoByComicId(HttpServletRequest request){
+    public Response getComicInfoByComicId(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -192,15 +193,16 @@ public class ComicController {
         }
     }
 
-    @RequestMapping(value = "/getComic", method = RequestMethod.GET)
+    @RequestMapping(value = "getComic", method = RequestMethod.GET)
     @ResponseBody
-    public Response getComicByQuery(HttpServletRequest request) {
+    public Response getComicByQuery(HttpServletRequest request, @RequestBody String r_request) {
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
         //获取设备信息
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         boolean isEnd = false;
         try {
             checkNotNull(data, IILEGAL_REQUEST);

@@ -19,10 +19,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.hazelcast.HazelcastJpaDependencyAutoConfiguration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -52,14 +49,15 @@ public class ClassifiedController {
     @Resource(name = "categoryService")
     private CategoryService categoryService;
 
-    @RequestMapping(value = "category/add", method = RequestMethod.GET)
+    @RequestMapping(value = "category/add", method = RequestMethod.POST)
     @ResponseBody
-    public Response addCategory(HttpServletRequest request){
+    public Response addCategory(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -85,14 +83,15 @@ public class ClassifiedController {
         }
     }
 
-    @RequestMapping(value = "category/deleted", method = RequestMethod.GET)
+    @RequestMapping(value = "category/deleted", method = RequestMethod.DELETE)
     @ResponseBody
-    public Response deletedCategory(HttpServletRequest request){
+    public Response deletedCategory(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -124,14 +123,15 @@ public class ClassifiedController {
     }
 
 
-    @RequestMapping(value = "add", method = RequestMethod.GET)
+    @RequestMapping(value = "add", method = RequestMethod.POST)
     @ResponseBody
-    public Response addClassified(HttpServletRequest request){
+    public Response addClassified(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -158,14 +158,15 @@ public class ClassifiedController {
         }
     }
 
-    @RequestMapping(value = "deleted", method = RequestMethod.GET)
+    @RequestMapping(value = "deleted", method = RequestMethod.DELETE)
     @ResponseBody
-    public Response deletedClassified(HttpServletRequest request){
+    public Response deletedClassified(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -191,14 +192,15 @@ public class ClassifiedController {
         }
     }
 
-    @RequestMapping(value = "deleted/batch", method = RequestMethod.GET)
+    @RequestMapping(value = "deleted/batch", method = RequestMethod.DELETE)
     @ResponseBody
-    public Response batchDeletedClassified(HttpServletRequest request){
+    public Response batchDeletedClassified(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -229,14 +231,15 @@ public class ClassifiedController {
         }
     }
 
-    @RequestMapping(value = "updated", method = RequestMethod.GET)
+    @RequestMapping(value = "updated", method = RequestMethod.PUT)
     @ResponseBody
-    public Response updatedClassified(HttpServletRequest request){
+    public Response updatedClassified(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -265,12 +268,13 @@ public class ClassifiedController {
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     @ResponseBody
-    public Response getClassifiedIndex(HttpServletRequest request){
+    public Response getClassifiedIndex(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -302,12 +306,13 @@ public class ClassifiedController {
 
     @RequestMapping(value = "comic/detail", method = RequestMethod.GET)
     @ResponseBody
-    public Response getClassifiedComicDetail(HttpServletRequest request){
+    public Response getClassifiedComicDetail(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -340,12 +345,13 @@ public class ClassifiedController {
 
     @RequestMapping(value = "special/detail", method = RequestMethod.GET)
     @ResponseBody
-    public Response getClassifiedSpecialDetail(HttpServletRequest request){
+    public Response getClassifiedSpecialDetail(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -377,11 +383,12 @@ public class ClassifiedController {
 
     @RequestMapping(value = "volatile", method = RequestMethod.GET)
     @ResponseBody
-    public Response volatileClassified(HttpServletRequest request){
-        String data = request.getParameter("data");
+    public Response volatileClassified(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);

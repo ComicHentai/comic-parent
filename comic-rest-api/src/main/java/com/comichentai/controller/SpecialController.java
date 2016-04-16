@@ -21,10 +21,7 @@ import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -54,14 +51,15 @@ public class SpecialController {
     @Resource(name = "jumpService")
     private JumpService jumpService;
 
-    @RequestMapping(value = "add/info", method = RequestMethod.GET)
+    @RequestMapping(value = "add/info", method = RequestMethod.POST)
     @ResponseBody
-    public Response addSpecial(HttpServletRequest request){
+    public Response addSpecial(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -90,14 +88,15 @@ public class SpecialController {
         }
     }
 
-    @RequestMapping(value = "deleted", method = RequestMethod.GET)
+    @RequestMapping(value = "deleted", method = RequestMethod.DELETE)
     @ResponseBody
-    public Response deletedSpecial(HttpServletRequest request){
+    public Response deletedSpecial(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -127,14 +126,15 @@ public class SpecialController {
         }
     }
 
-    @RequestMapping(value = "add/comic", method = RequestMethod.GET)
+    @RequestMapping(value = "add/comic", method = RequestMethod.POST)
     @ResponseBody
-    public Response addSpecialComic(HttpServletRequest request){
+    public Response addSpecialComic(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -162,14 +162,15 @@ public class SpecialController {
         }
     }
 
-    @RequestMapping(value = "deleted/comic", method = RequestMethod.GET)
+    @RequestMapping(value = "deleted/comic", method = RequestMethod.DELETE)
     @ResponseBody
-    public Response deletedSpecialComic(HttpServletRequest request){
+    public Response deletedSpecialComic(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -208,12 +209,13 @@ public class SpecialController {
 
     @RequestMapping(value = "content", method = RequestMethod.GET)
     @ResponseBody
-    public Response getSpecialContent(HttpServletRequest request){
+    public Response getSpecialContent(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);

@@ -48,11 +48,12 @@ public class UserInfoController {
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     @ResponseBody
-    public Response getUserInfoById(HttpServletRequest request){
-        String data = request.getParameter("data");
+    public Response getUserInfoById(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -85,12 +86,13 @@ public class UserInfoController {
     @RequestMapping(value = "register", method = RequestMethod.POST)
     @ResponseBody
     public Response signUpUserInfo(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         String result = "";
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
         //获取设备信息
-        String mode = request.getParameter("_mode");
+        String mode = JSONRequest.getString("_mode");
         try{
             //判断data是否合法
             checkNotNull(data, IILEGAL_REQUEST);
@@ -123,12 +125,13 @@ public class UserInfoController {
     }
 
 
-    @RequestMapping(value = "updated", method = RequestMethod.GET)
+    @RequestMapping(value = "updated", method = RequestMethod.PUT)
     @ResponseBody
-    public Response updatedUserInfo(HttpServletRequest request){
-        String data = request.getParameter("data");
+    public Response updatedUserInfo(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
+        String mode = JSONRequest.getString("_mode");
         try{
             //判断data是否合法
             checkNotNull(data, IILEGAL_REQUEST);
@@ -151,12 +154,13 @@ public class UserInfoController {
     }
 
 
-    @RequestMapping(value = "deleted", method = RequestMethod.GET)
+    @RequestMapping(value = "deleted", method = RequestMethod.DELETE)
     @ResponseBody
-    public Response deletedUserInfo(HttpServletRequest request){
-        String data = request.getParameter("data");
+    public Response deletedUserInfo(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
+        String mode = JSONRequest.getString("_mode");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -175,12 +179,13 @@ public class UserInfoController {
         }
     }
 
-    @RequestMapping(value = "deleted/batch", method = RequestMethod.GET)
+    @RequestMapping(value = "deleted/batch", method = RequestMethod.DELETE)
     @ResponseBody
-    public Response batchDeletedUserInfo(HttpServletRequest request){
-        String data = request.getParameter("data");
+    public Response batchDeletedUserInfo(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
+        String mode = JSONRequest.getString("_mode");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkNotNull(!data.isEmpty(), IILEGAL_REQUEST);
@@ -207,12 +212,13 @@ public class UserInfoController {
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     @ResponseBody
-    public Response signInUserInfo(HttpServletRequest request){
+    public Response signInUserInfo(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         com.alibaba.fastjson.JSONObject paramMap;
         //获取设备信息
-        String mode = request.getParameter("_mode");
+        String mode = JSONRequest.getString("_mode");
         try{
             //判断data是否合法
             checkNotNull(data, IILEGAL_REQUEST);
@@ -253,10 +259,11 @@ public class UserInfoController {
      * */
     @RequestMapping(value = "volatile", method = RequestMethod.GET)
     @ResponseBody
-    public Response volatileUser(HttpServletRequest request){
-        String data = request.getParameter("data");
+    public Response volatileUser(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
+        String mode = JSONRequest.getString("_mode");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);

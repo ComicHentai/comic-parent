@@ -17,10 +17,7 @@ import com.comichentai.service.FavoriteService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -63,14 +60,15 @@ public class MineController {
     }
 
 
-    @RequestMapping(value = "collection/add", method = RequestMethod.GET)
+    @RequestMapping(value = "collection/add", method = RequestMethod.POST)
     @ResponseBody
-    public Response addMineCollection(HttpServletRequest request){
+    public Response addMineCollection(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -102,14 +100,15 @@ public class MineController {
         }
     }
 
-    @RequestMapping(value = "collection/deleted", method = RequestMethod.GET)
+    @RequestMapping(value = "collection/deleted", method = RequestMethod.DELETE)
     @ResponseBody
-    public Response deletedMineCollection(HttpServletRequest request){
+    public Response deletedMineCollection(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -143,12 +142,13 @@ public class MineController {
 
     @RequestMapping(value = "collection/index", method = RequestMethod.GET)
     @ResponseBody
-    public Response getMineCollection(HttpServletRequest request){
+    public Response getMineCollection(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -180,14 +180,15 @@ public class MineController {
         }
     }
 
-    @RequestMapping(value = "special/add", method = RequestMethod.GET)
+    @RequestMapping(value = "special/add", method = RequestMethod.POST)
     @ResponseBody
-    public Response addMineSpecial(HttpServletRequest request){
+    public Response addMineSpecial(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -218,14 +219,15 @@ public class MineController {
         }
     }
 
-    @RequestMapping(value = "special/deleted", method = RequestMethod.GET)
+    @RequestMapping(value = "special/deleted", method = RequestMethod.DELETE)
     @ResponseBody
-    public Response deletedMineSpecial(HttpServletRequest request){
+    public Response deletedMineSpecial(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -259,12 +261,13 @@ public class MineController {
 
     @RequestMapping(value = "special/index", method = RequestMethod.GET)
     @ResponseBody
-    public Response getMineSpecial(HttpServletRequest request){
+    public Response getMineSpecial(HttpServletRequest request, @RequestBody String r_request){
+        JSONObject JSONRequest = JSON.parseObject(r_request);
         //获取参数
-        String data = request.getParameter("data");
+        String data = JSONRequest.getString("data");
         JSONObject paramMap;
-        String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
+        String mode = JSONRequest.getString("_mode");
+        String auth = JSONRequest.getString("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
