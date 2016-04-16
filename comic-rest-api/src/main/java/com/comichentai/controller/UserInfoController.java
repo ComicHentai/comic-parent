@@ -111,7 +111,7 @@ public class UserInfoController {
             ResultSupport<Integer> integerResultSupport = userInfoService.addUserInfo(userInfoDto);
             if(integerResultSupport.isSuccess()){
                 //登录成功
-                result = TokenCheckUtil.initToken(userInfoDto.getId().toString(), DEFALUT_AVAILABLE_DAYS, deviceId, request);
+                result = TokenCheckUtil.initToken(integerResultSupport.getModule().toString(), DEFALUT_AVAILABLE_DAYS, deviceId, request);
             }
             return Response.getInstance(integerResultSupport.isSuccess())       //这个分页什么的应该不用加到里面了吧..
                     .addAttribute("token", result);
