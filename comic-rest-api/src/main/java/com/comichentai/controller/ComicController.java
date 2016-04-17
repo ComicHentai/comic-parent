@@ -174,15 +174,15 @@ public class ComicController {
             if(!"debug".equals(auth)){
                 TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
             }
-            CategoryDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), CategoryDto.class);
             ComicDto comicDto = paramMap.getObject("comic", ComicDto.class);
+            CategoryDto categoryDto = new CategoryDto();
             //因为Business中只需要comicId
-            query.setTargetId(comicDto.getId());
-             ResultSupport<CategoryDto> comicClassified = categoryBusiness.getComicClassified(query);
+            categoryDto.setTargetId(comicDto.getId());
+             ResultSupport<CategoryDto> comicClassified = categoryBusiness.getComicClassified(categoryDto);
             return Response.getInstance(comicClassified.isSuccess())
                     .addAttribute("category", comicClassified.getModule())
-                    .addAttribute("isEnd", comicClassified.getTotalCount() < query.getCurrentPage() * query.getPageSize())
-                    .addAttribute("pageMap", PageMapUtil.sendNextPage(query));
+                    .addAttribute("isEnd", comicClassified.getTotalCount() < categoryDto.getCurrentPage() * categoryDto.getPageSize())
+                    .addAttribute("pageMap", PageMapUtil.sendNextPage(categoryDto));
 
         } catch (JSONException jsonException) {
             return Response.getInstance(false).setReturnMsg("参数非法");
