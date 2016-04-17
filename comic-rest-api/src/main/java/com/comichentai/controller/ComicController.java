@@ -161,7 +161,6 @@ public class ComicController {
         String data = request.getParameter("data");
         JSONObject paramMap;
         String mode = request.getParameter("_mode");
-        String auth = request.getParameter("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -169,11 +168,6 @@ public class ComicController {
                 data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
-            String token = paramMap.getString("token");
-            String deviceId = paramMap.getString("deviceId");
-            if(!"debug".equals(auth)){
-                TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
-            }
             ComicDto comicDto = paramMap.getObject("comic", ComicDto.class);
             CategoryDto categoryDto = new CategoryDto();
             //因为Business中只需要comicId
