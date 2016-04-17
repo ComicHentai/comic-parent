@@ -180,9 +180,7 @@ public class ComicController {
             categoryDto.setTargetId(comicDto.getId());
              ResultSupport<CategoryDto> comicClassified = categoryBusiness.getComicClassified(categoryDto);
             return Response.getInstance(comicClassified.isSuccess())
-                    .addAttribute("category", comicClassified.getModule())
-                    .addAttribute("isEnd", comicClassified.getTotalCount() < categoryDto.getCurrentPage() * categoryDto.getPageSize())
-                    .addAttribute("pageMap", PageMapUtil.sendNextPage(categoryDto));
+                    .addAttribute("category", comicClassified.getModule());
 
         } catch (JSONException jsonException) {
             return Response.getInstance(false).setReturnMsg("参数非法");
