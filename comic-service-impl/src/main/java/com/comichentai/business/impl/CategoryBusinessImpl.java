@@ -123,6 +123,7 @@ public class CategoryBusinessImpl implements CategoryBusiness {
 
     @Override
     public ResultSupport<CategoryDto> getComicClassified(CategoryDto categoryDto) {
+        ResultSupport<List<ClassifiedDto>> classifiedListByIdList = null;
         Integer comicId = categoryDto.getTargetId();
         /*获取Key*/
         ResultSupport<ComicDto> comicById = comicService.getComicById(comicId);
@@ -134,9 +135,11 @@ public class CategoryBusinessImpl implements CategoryBusiness {
             return targetClassifiedIdList.castToReturnFailed(CategoryDto.class);
         }
         List<Integer> idList = targetClassifiedIdList.getModule();
-        ResultSupport<List<ClassifiedDto>> classifiedListByIdList = classifiedService.getClassifiedListByIdList(idList);
-        if(!classifiedListByIdList.isSuccess()){
-            return classifiedListByIdList.castToReturnFailed(CategoryDto.class);
+        if(!idList.isEmpty()) {
+            classifiedListByIdList = classifiedService.getClassifiedListByIdList(idList);
+            if (!classifiedListByIdList.isSuccess()) {
+                return classifiedListByIdList.castToReturnFailed(CategoryDto.class);
+            }
         }
         Map<ComicDto, List<ClassifiedDto>> result = new ConcurrentHashMap<>();
         result.put(comicById.getModule(), classifiedListByIdList.getModule());
@@ -147,6 +150,7 @@ public class CategoryBusinessImpl implements CategoryBusiness {
 
     @Override
     public ResultSupport<CategoryDto> getSpecialClassified(CategoryDto categoryDto) {
+        ResultSupport<List<ClassifiedDto>> classifiedListByIdList = null;
         Integer specialId = categoryDto.getTargetId();
         /*获取Key*/
         ResultSupport<SpecialDto> specialById = specialService.getSpecialById(specialId);
@@ -158,9 +162,11 @@ public class CategoryBusinessImpl implements CategoryBusiness {
             return targetClassifiedIdList.castToReturnFailed(CategoryDto.class);
         }
         List<Integer> idList = targetClassifiedIdList.getModule();
-        ResultSupport<List<ClassifiedDto>> classifiedListByIdList = classifiedService.getClassifiedListByIdList(idList);
-        if(!classifiedListByIdList.isSuccess()){
-            return classifiedListByIdList.castToReturnFailed(CategoryDto.class);
+        if(!idList.isEmpty()) {
+            classifiedListByIdList = classifiedService.getClassifiedListByIdList(idList);
+            if (!classifiedListByIdList.isSuccess()) {
+                return classifiedListByIdList.castToReturnFailed(CategoryDto.class);
+            }
         }
         Map<SpecialDto, List<ClassifiedDto>> result = new ConcurrentHashMap<>();
         result.put(specialById.getModule(), classifiedListByIdList.getModule());

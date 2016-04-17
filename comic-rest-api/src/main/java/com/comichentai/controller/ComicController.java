@@ -156,13 +156,12 @@ public class ComicController {
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     @ResponseBody
-    public Response getComicInfoByComicId(HttpServletRequest request, @RequestBody String r_request){
-        JSONObject JSONRequest = JSON.parseObject(r_request);
+    public Response getComicInfoByComicId(HttpServletRequest request){
         //获取参数
-        String data = JSONRequest.getString("data");
+        String data = request.getParameter("data");
         JSONObject paramMap;
-        String mode = JSONRequest.getString("_mode");
-        String auth = JSONRequest.getString("_auth");
+        String mode = request.getParameter("_mode");
+        String auth = request.getParameter("_auth");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -179,7 +178,7 @@ public class ComicController {
             ComicDto comicDto = paramMap.getObject("comic", ComicDto.class);
             //因为Business中只需要comicId
             query.setTargetId(comicDto.getId());
-            ResultSupport<CategoryDto> comicClassified = categoryBusiness.getComicClassified(query);
+             ResultSupport<CategoryDto> comicClassified = categoryBusiness.getComicClassified(query);
             return Response.getInstance(comicClassified.isSuccess())
                     .addAttribute("data", comicClassified.getModule())
                     .addAttribute("isEnd", comicClassified.getTotalCount() < query.getCurrentPage() * query.getPageSize())
