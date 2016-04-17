@@ -86,7 +86,7 @@
     <select id="selectComicListByQuery" resultType="com.comichentai.dataobject.ComicDo"
             parameterType="com.comichentai.dto.ComicDto">SELECT * FROM `Comic`
         <include refid="where"/>
-        ORDER BY `created` DESC
+        ORDER BY `status`, `created` DESC
         <if test="limit!=null and limit!=''">LIMIT
             <if test="offset!=null and offset!=''">#{offset},</if>
             #{limit}
