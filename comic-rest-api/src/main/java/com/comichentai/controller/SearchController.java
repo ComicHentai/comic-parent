@@ -40,13 +40,11 @@ public class SearchController {
 
     @RequestMapping(value = "result", method = RequestMethod.GET)
     @ResponseBody
-    public Response getSearchResult(HttpServletRequest request, @RequestBody String r_request){
-        JSONObject JSONRequest = JSON.parseObject(r_request);
+    public Response getSearchResult(HttpServletRequest request){
         //获取参数
-        String data = JSONRequest.getString("data");
+        String data = request.getParameter("data");
         JSONObject paramMap;
-        String mode = JSONRequest.getString("_mode");
-        String auth = JSONRequest.getString("_auth");
+        String mode = request.getParameter("_mode");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -54,13 +52,8 @@ public class SearchController {
                 data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
-            String token = paramMap.getString("token");
-            String deviceId = paramMap.getString("deviceId");
-            if(!"debug".equals(auth)){
-                TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
-            }
             ComicDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), ComicDto.class);
-            String name = paramMap.getString("name");
+            String name = paramMap.getString("keyWord");
             query.setTitle(name);
             query.setAuthor(name);
             ResultSupport<List<ComicDto>> comicListByName = comicBusiness.getComicListByName(query);
@@ -68,8 +61,6 @@ public class SearchController {
                     .addAttribute("data", comicListByName.getModule())
                     .addAttribute("isEnd", comicListByName.getTotalCount() < query.getPageSize() * query.getCurrentPage())
                     .addAttribute("pageMap", PageMapUtil.sendNextPage(query));
-
-
         } catch (JSONException jsonException) {
             return Response.getInstance(false).setReturnMsg("参数非法");
         } catch (Exception e) {
