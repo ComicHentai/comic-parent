@@ -317,7 +317,7 @@ public class ClassifiedController {
             query.setClassifiedId(classifiedDto.getId());
             ResultSupport<CategoryDto> comicByClassified = categoryBusiness.getComicByClassified(query);
             return Response.getInstance(comicByClassified.isSuccess())
-                    .addAttribute("date", comicByClassified.getModule())
+                    .addAttribute("data", comicByClassified.getModule())
                     .addAttribute("isEnd", comicByClassified.getTotalCount() < query.getPageSize() * query.getCurrentPage())
                     .addAttribute("pageMap", PageMapUtil.sendNextPage(query));
 
@@ -356,7 +356,7 @@ public class ClassifiedController {
             query.setClassifiedId(classifiedDto.getId());
             ResultSupport<CategoryDto> specialByClassified = categoryBusiness.getSpecialByClassified(query);
             return Response.getInstance(specialByClassified.isSuccess())
-                    .addAttribute("date", specialByClassified.getModule())
+                    .addAttribute("data", specialByClassified.getModule())
                     .addAttribute("isEnd", specialByClassified.getTotalCount() < query.getPageSize() * query.getCurrentPage())
                     .addAttribute("pageMap", PageMapUtil.sendNextPage(query));
         } catch (JSONException jsonException) {
@@ -393,7 +393,8 @@ public class ClassifiedController {
             if(classifiedListByQuery.getModule().size() != 0){
                 return Response.getInstance(false).setReturnMsg("该分类名称已被使用");
             }
-            return Response.getInstance(classifiedListByQuery.isSuccess());
+            return Response.getInstance(classifiedListByQuery.isSuccess())
+                    .addAttribute("data", classifiedListByQuery.getModule());
         }catch (JSONException jsonException) {
             return Response.getInstance(false).setReturnMsg("参数非法");
         } catch (Exception e) {
