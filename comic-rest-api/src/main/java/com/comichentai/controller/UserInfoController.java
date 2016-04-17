@@ -212,13 +212,12 @@ public class UserInfoController {
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     @ResponseBody
-    public Response signInUserInfo(HttpServletRequest request, @RequestBody String r_request){
-        JSONObject JSONRequest = JSON.parseObject(r_request);
+    public Response signInUserInfo(HttpServletRequest request){
         //获取参数
-        String data = JSONRequest.getString("data");
+        String data = request.getParameter("data");
         com.alibaba.fastjson.JSONObject paramMap;
         //获取设备信息
-        String mode = JSONRequest.getString("_mode");
+        String mode = request.getParameter("_mode");
         try{
             //判断data是否合法
             checkNotNull(data, IILEGAL_REQUEST);
