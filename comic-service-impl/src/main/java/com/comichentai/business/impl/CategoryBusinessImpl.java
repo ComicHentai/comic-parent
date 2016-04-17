@@ -7,6 +7,7 @@ import com.comichentai.service.CategoryService;
 import com.comichentai.service.ClassifiedService;
 import com.comichentai.service.ComicService;
 import com.comichentai.service.SpecialService;
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -57,6 +58,7 @@ public class CategoryBusinessImpl implements CategoryBusiness {
 
     @Override
     public ResultSupport<CategoryDto> getComicByClassified(CategoryDto categoryDto) {
+        ResultSupport<List<ComicDto>> comicListByIdList = null;
         Integer classifiedId = categoryDto.getClassifiedId();
         /*获取Key*/
         ResultSupport<ClassifiedDto> classifiedById = classifiedService.getClassifiedById(classifiedId);
@@ -68,20 +70,29 @@ public class CategoryBusinessImpl implements CategoryBusiness {
             return targetByClassified.castToReturnFailed(CategoryDto.class);
         }
         List<Integer> idList = targetByClassified.getModule();
-        ResultSupport<List<ComicDto>> comicListByIdList = comicService.getComicListByIdList(idList);
-        if(!comicListByIdList.isSuccess()){
-            return comicListByIdList.castToReturnFailed(CategoryDto.class);
+        if(!idList.isEmpty()) {
+            comicListByIdList = comicService.getComicListByIdList(idList);
+            if (!comicListByIdList.isSuccess()) {
+                return comicListByIdList.castToReturnFailed(CategoryDto.class);
+            }
         }
-        Map<ClassifiedDto, List<ComicDto>> result = new ConcurrentHashMap<>();
-        result.put(classifiedById.getModule(), comicListByIdList.getModule());
+        Map<String, Object> result = new ConcurrentHashMap<>();
+        if(comicListByIdList == null){
+            result.put("classified", classifiedById.getModule());
+            result.put("comicList", Lists.newArrayList());
+        }else{
+            result.put("classified", classifiedById.getModule());
+            result.put("comicList", comicListByIdList.getModule());
+        }
         CategoryDto categoryDto1 = new CategoryDto();
-        categoryDto1.setComicByClassfied(result);
+        categoryDto1.setRelation(result);
         return ResultSupport.getInstance(true, "[关联查询成功]", categoryDto1);
     }
 
 
     @Override
     public ResultSupport<CategoryDto> getSpecialByClassified(CategoryDto categoryDto) {
+        ResultSupport<List<SpecialDto>> specialListByIdList = null;
         Integer classifiedId = categoryDto.getClassifiedId();
         /*获取Key*/
         ResultSupport<ClassifiedDto> classifiedById = classifiedService.getClassifiedById(classifiedId);
@@ -93,14 +104,22 @@ public class CategoryBusinessImpl implements CategoryBusiness {
             return targetByClassified.castToReturnFailed(CategoryDto.class);
         }
         List<Integer> idList = targetByClassified.getModule();
-        ResultSupport<List<SpecialDto>> specialListByIdList = specialService.getSpecialListByIdList(idList);
-        if(!specialListByIdList.isSuccess()){
-            return specialListByIdList.castToReturnFailed(CategoryDto.class);
+        if(!idList.isEmpty()) {
+            specialListByIdList = specialService.getSpecialListByIdList(idList);
+            if (!specialListByIdList.isSuccess()) {
+                return specialListByIdList.castToReturnFailed(CategoryDto.class);
+            }
         }
-        Map<ClassifiedDto, List<SpecialDto>> result = new ConcurrentHashMap<>();
-        result.put(classifiedById.getModule(), specialListByIdList.getModule());
+        Map<String, Object> result = new ConcurrentHashMap<>();
+        if(specialListByIdList == null){
+            result.put("classified", classifiedById.getModule());
+            result.put("specialList", Lists.newArrayList());
+        }else{
+            result.put("classified", classifiedById.getModule());
+            result.put("specialList", specialListByIdList.getModule());
+        }
         CategoryDto categoryDto1 = new CategoryDto();
-        categoryDto1.setSpecialByClassfied(result);
+        categoryDto1.setRelation(result);
         return ResultSupport.getInstance(true, "[关联查询成功]", categoryDto1);
     }
 
@@ -141,10 +160,18 @@ public class CategoryBusinessImpl implements CategoryBusiness {
                 return classifiedListByIdList.castToReturnFailed(CategoryDto.class);
             }
         }
-        Map<ComicDto, List<ClassifiedDto>> result = new ConcurrentHashMap<>();
-        result.put(comicById.getModule(), classifiedListByIdList.getModule());
+        Map<String, Object> result = new ConcurrentHashMap<>();
+        if(classifiedListByIdList == null){
+            result.put("comic", comicById.getModule());
+            result.put("classifiedList",Lists.newArrayList());
+        }
+        else{
+
+            result.put("comic", comicById.getModule());
+            result.put("classifiedList",classifiedListByIdList.getModule());
+        }
         CategoryDto categoryDto1 = new CategoryDto();
-        categoryDto1.setComic(result);
+        categoryDto1.setRelation(result);
         return ResultSupport.getInstance(true, "[关联查询成功]", categoryDto1);
     }
 
@@ -168,10 +195,16 @@ public class CategoryBusinessImpl implements CategoryBusiness {
                 return classifiedListByIdList.castToReturnFailed(CategoryDto.class);
             }
         }
-        Map<SpecialDto, List<ClassifiedDto>> result = new ConcurrentHashMap<>();
-        result.put(specialById.getModule(), classifiedListByIdList.getModule());
+        Map<String, Object> result = new ConcurrentHashMap<>();
+        if(classifiedListByIdList == null){
+            result.put("special", specialById.getModule());
+            result.put("classifiedList", Lists.newArrayList());
+        }else{
+            result.put("special", specialById.getModule());
+            result.put("classifiedList", classifiedListByIdList.getModule());
+        }
         CategoryDto categoryDto1 = new CategoryDto();
-        categoryDto1.setSpecial(result);
+        categoryDto1.setRelation(result);
         return ResultSupport.getInstance(true, "[关联查询成功]", categoryDto1);
     }
 }

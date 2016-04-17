@@ -180,7 +180,7 @@ public class ComicController {
             query.setTargetId(comicDto.getId());
              ResultSupport<CategoryDto> comicClassified = categoryBusiness.getComicClassified(query);
             return Response.getInstance(comicClassified.isSuccess())
-                    .addAttribute("data", comicClassified.getModule())
+                    .addAttribute("category", comicClassified.getModule())
                     .addAttribute("isEnd", comicClassified.getTotalCount() < query.getCurrentPage() * query.getPageSize())
                     .addAttribute("pageMap", PageMapUtil.sendNextPage(query));
 

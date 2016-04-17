@@ -26,24 +26,11 @@ public class CategoryDto extends BasicDto {
     private Integer targetType;
 
     /**
-     * 通过分类获取漫画
-     * */
-    private Map<ClassifiedDto,  List<ComicDto>> comicByClassfied = new ConcurrentHashMap<>();
-
-    /**
-     * 通过分类获取专辑
-     * */
-    private Map<ClassifiedDto, List<SpecialDto>> specialByClassfied = new ConcurrentHashMap<>();
-
-    /**
      * 获取漫画详细信息
      * */
-    private Map<ComicDto, List<ClassifiedDto>> comic = new ConcurrentHashMap<>();
+    private Map<String, Object> relation = new ConcurrentHashMap<>();
 
-    /**
-     * 获取分类详细信息
-     * */
-    private Map<SpecialDto, List<ClassifiedDto>> special = new ConcurrentHashMap<>();
+
 
     public CategoryDto() {
 
@@ -81,36 +68,12 @@ public class CategoryDto extends BasicDto {
         this.targetType = targetType;
     }
 
-    public Map<ClassifiedDto, List<ComicDto>> getComicByClassfied() {
-        return comicByClassfied;
+    public Map<String, Object> getRelation() {
+        return relation;
     }
 
-    public void setComicByClassfied(Map<ClassifiedDto, List<ComicDto>> comicByClassfied) {
-        this.comicByClassfied = comicByClassfied;
-    }
-
-    public Map<ClassifiedDto, List<SpecialDto>> getSpecialByClassfied() {
-        return specialByClassfied;
-    }
-
-    public void setSpecialByClassfied(Map<ClassifiedDto, List<SpecialDto>> specialByClassfied) {
-        this.specialByClassfied = specialByClassfied;
-    }
-
-    public Map<ComicDto, List<ClassifiedDto>> getComic() {
-        return comic;
-    }
-
-    public void setComic(Map<ComicDto, List<ClassifiedDto>> comic) {
-        this.comic = comic;
-    }
-
-    public Map<SpecialDto, List<ClassifiedDto>> getSpecial() {
-        return special;
-    }
-
-    public void setSpecial(Map<SpecialDto, List<ClassifiedDto>> special) {
-        this.special = special;
+    public void setRelation(Map<String, Object> relation) {
+        this.relation = relation;
     }
 }
 
