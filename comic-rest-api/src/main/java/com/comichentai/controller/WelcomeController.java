@@ -39,14 +39,12 @@ public class WelcomeController {
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     @ResponseBody
-    public Response getWelcomeComicByQuery(HttpServletRequest request, @RequestBody String r_request){
-        JSONObject JSONRequest = JSON.parseObject(r_request);
+    public Response getWelcomeComicByQuery(HttpServletRequest request){
         //获取参数
-        String data = JSONRequest.getString("data");
+        String data = request.getParameter("data");
         JSONObject paramMap;
         //获取设备信息
-        String mode = JSONRequest.getString("_mode");
-        String auth = JSONRequest.getString("_auth");
+        String mode = request.getParameter("_mode");
         try{
             //判断data是否合法
             checkNotNull(data, IILEGAL_REQUEST);
@@ -57,11 +55,6 @@ public class WelcomeController {
             }
             //获取验证登录的必要信息
             paramMap = JSON.parseObject(data);
-            String token = paramMap.getString("token");
-            String deviceId = paramMap.getString("deviceId");
-            if(!"debug".equals(auth)){
-                TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
-            }
             //验证完成,开始查询
             ComicDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), ComicDto.class);
             ResultSupport<List<ComicDto>> comicListByQuery = comicService.getComicListByQuery(query);
