@@ -62,7 +62,7 @@ public class PageMapUtil {
     public static <T extends PageDto> T getQuery(String pageMap, Class<T> clz) {
         try {
             T query;
-            if (pageMap == null) {
+            if (pageMap == null || pageMap.equals("")) {
                 query = clz.newInstance();
                 query.setCurrentPage(MIN_PAGE_NUMBER);
             } else {
