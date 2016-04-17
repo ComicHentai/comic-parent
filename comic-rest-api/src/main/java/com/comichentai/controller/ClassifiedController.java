@@ -306,13 +306,11 @@ public class ClassifiedController {
 
     @RequestMapping(value = "comic/detail", method = RequestMethod.GET)
     @ResponseBody
-    public Response getClassifiedComicDetail(HttpServletRequest request, @RequestBody String r_request){
-        JSONObject JSONRequest = JSON.parseObject(r_request);
+    public Response getClassifiedComicDetail(HttpServletRequest request){
         //获取参数
-        String data = JSONRequest.getString("data");
+        String data = request.getParameter("data");
         JSONObject paramMap;
-        String mode = JSONRequest.getString("_mode");
-        String auth = JSONRequest.getString("_auth");
+        String mode = request.getParameter("_mode");
         try{
             checkNotNull(data, IILEGAL_REQUEST);
             checkArgument(!data.isEmpty(), IILEGAL_REQUEST);
@@ -320,11 +318,6 @@ public class ClassifiedController {
                 data = AESLocker.decryptBase64(data);
             }
             paramMap = JSON.parseObject(data);
-            String token = paramMap.getString("token");
-            String deviceId = paramMap.getString("deviceId");
-            if(!"debug".equals(auth)){
-                TokenCheckUtil.checkLoginToken(token, mode, deviceId, request);
-            }
             CategoryDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), CategoryDto.class);
             ClassifiedDto classifiedDto = paramMap.getObject("classified", ClassifiedDto.class);
             checkNotNull(classifiedDto, IILEGAL_REQUEST);
