@@ -60,7 +60,7 @@ public class MineController {
     }
 
 
-    @RequestMapping(value = "collection/add", method = RequestMethod.POST)
+    @RequestMapping(value = "comic/add", method = RequestMethod.POST)
     @ResponseBody
     public Response addMineCollection(HttpServletRequest request, @RequestBody String r_request){
         JSONObject JSONRequest = JSON.parseObject(r_request);
@@ -100,7 +100,7 @@ public class MineController {
         }
     }
 
-    @RequestMapping(value = "collection/deleted", method = RequestMethod.DELETE)
+    @RequestMapping(value = "comic/deleted", method = RequestMethod.DELETE)
     @ResponseBody
     public Response deletedMineCollection(HttpServletRequest request, @RequestBody String r_request){
         JSONObject JSONRequest = JSON.parseObject(r_request);
@@ -140,7 +140,7 @@ public class MineController {
         }
     }
 
-    @RequestMapping(value = "collection/index", method = RequestMethod.GET)
+    @RequestMapping(value = "comic/index", method = RequestMethod.GET)
     @ResponseBody
     public Response getMineCollection(HttpServletRequest request, @RequestBody String r_request){
         JSONObject JSONRequest = JSON.parseObject(r_request);
