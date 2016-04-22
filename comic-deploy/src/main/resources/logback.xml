@@ -9,9 +9,9 @@
 
     <!-- 监控输出 -->
     <appender name="MONITOR-FILE" class="ch.qos.logback.core.FileAppender">
-        <file>monitor.log</file>
+        <file>./logs/comic-monitor.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./log/comic-method-monitor-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>./log/comic-monitor-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -27,9 +27,9 @@
 
     <!-- 监控输出 -->
     <appender name="DEBUG-FILE" class="ch.qos.logback.core.FileAppender">
-        <file>debug.log</file>
+        <file>./logs/comic-debug.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./log/comic-debug-log-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>./log/comic-debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -45,9 +45,9 @@
 
     <!-- 正常输出 -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logfile.log</file>
+        <file>./logs/comic-info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./log/comic-info-log-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>./log/comic-info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
