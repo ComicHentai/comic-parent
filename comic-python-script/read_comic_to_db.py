@@ -131,5 +131,3 @@ sys.setdefaultencoding('utf-8')
 
 def test():
     driver('./local_total.json')
-
-test()
