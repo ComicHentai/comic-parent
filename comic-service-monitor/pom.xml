@@ -220,7 +220,7 @@
                 <configuration>
                     <descriptor>src/main/assembly/assembly.xml</descriptor>
                     <finalName>${project.artifactId}</finalName>
-                    <outputDirectory>${basedir}/../target</outputDirectory>
+                    <outputDirectory>${basedir}/../monitorTarget</outputDirectory>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
