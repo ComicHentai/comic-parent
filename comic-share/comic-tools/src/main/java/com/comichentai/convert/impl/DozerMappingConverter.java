@@ -1,5 +1,6 @@
 package com.comichentai.convert.impl;
 
+import com.comichentai.annotation.WatchedMethod;
 import com.comichentai.convert.MappingConverter;
 import com.comichentai.page.PageDo;
 import com.comichentai.page.PageDto;
@@ -41,6 +42,7 @@ public class DozerMappingConverter implements MappingConverter {
         }
     }
 
+    //@WatchedMethod
     @Override
     public <T> T doMap(Object source, Class<T> destinationClass) {
         if (source == null || destinationClass == null) {
