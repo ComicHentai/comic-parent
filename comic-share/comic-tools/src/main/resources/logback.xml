@@ -106,8 +106,11 @@
         <appender-ref ref="DEBUG-FILE"/>
     </logger>
 
+    <logger name="normal" level="INFO" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+
     <root>
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
     </root>
 </configuration>
