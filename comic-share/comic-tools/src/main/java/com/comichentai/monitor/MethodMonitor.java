@@ -23,7 +23,7 @@ import java.util.UUID;
 @Aspect
 public class MethodMonitor {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger("monitor");
 
     private static final String businessExecution = "execution(* com.comichentai.business.*.*(..))";
     private static final String serviceExecution = "execution(* com.comichentai.service.*.*(..))";
