@@ -42,7 +42,7 @@ public class DozerMappingConverter implements MappingConverter {
         }
     }
 
-    @WatchedMethod
+    //@WatchedMethod
     @Override
     public <T> T doMap(Object source, Class<T> destinationClass) {
         if (source == null || destinationClass == null) {
