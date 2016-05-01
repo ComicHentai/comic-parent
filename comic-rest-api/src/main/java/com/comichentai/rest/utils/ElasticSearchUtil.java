@@ -1,58 +1,85 @@
 package com.comichentai.rest.utils;
 
+import com.alibaba.fastjson.JSON;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dintama on 16/5/1.
  */
 public class ElasticSearchUtil {
 
-    public  int execute(String command){
-        String[] cmd = {"/bin/bash"};
-        Runtime runtime = Runtime.getRuntime();
-        Process process = null;
+    private Client client = null;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private String host;
+    private Integer port;
+
+    public void init() {
         try {
-            process = runtime.exec(cmd);
-        } catch (IOException e) {
+            client = TransportClient.builder().build().addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(getHost()), getPort()));
+        } catch (UnknownHostException e) {
+            logger.error("Elasticsearch init failed");
             e.printStackTrace();
         }
-
-        //Output流用来向控制台写入命令
-        OutputStream outputStream = process.getOutputStream();
-        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
-
-        try {
-            bufferedWriter.write(command);
-            bufferedWriter.flush();
-            bufferedWriter.close();
-
-            System.out.println(readCmd(process));
-
-            process.waitFor();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        int exitVal = process.exitValue();
-        return exitVal;
     }
 
-    public  String readCmd(Process process){
-        StringBuffer stringBuffer = new StringBuffer();
-        //input流用来读取cmd执行后的返回结果
-        InputStream inputStream = process.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-
-        String line = null;
-        try {
-            while((line = bufferedReader.readLine()) != null){
-                stringBuffer.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        }
-        return stringBuffer.toString().trim();
+    public void destroy() {
+        client.close();
     }
 
+    public List<Integer> getIdList(String index, String type, String title, Integer pageNumber, Integer pageSize) {
+
+        List<Integer> idList = new LinkedList<>();
+
+        SearchResponse searchResponse = client.prepareSearch(index)
+                .setTypes(type)
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                .setQuery(QueryBuilders.matchPhraseQuery("title", title))
+                .setFrom(pageNumber).setSize(pageSize).setExplain(true)
+                .execute()
+                .actionGet();
+
+        SearchHits hits = searchResponse.getHits();
+        logger.debug("response", JSON.toJSONString(searchResponse));
+        for (SearchHit hit : hits) {
+            Map<String, Object> source = hit.getSource();
+            Integer id = Integer.parseInt(source.get("id").toString());
+            idList.add(id);
+        }
+
+        return idList;
+
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
 }
