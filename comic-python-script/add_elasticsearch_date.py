@@ -6,7 +6,7 @@ import json
 
 def get_comic():
     conn = comic_hentai_data_source.get_conn()
-    find_comic_simple_info = "select id, title from Comic limit 0, 50"
+    find_comic_simple_info = "select id, title from Comic"
     cursor = conn.cursor()
     cursor.execute(find_comic_simple_info)
     result = cursor.fetchall()
@@ -20,9 +20,10 @@ def get_comic():
             "id": id,
             "title": title
         })
-        url = r"'http://127.0.0.1:9200/comichentai/comic/" + id + r"'"
+        url = r"'http://db.hope6537.com:9200/comichentai/comic/" + id + r"'"
         tmp = operator + url + " -d \'" + data + '\''
         print(tmp)
         commands.getstatusoutput(tmp)
+
 
 get_comic()
