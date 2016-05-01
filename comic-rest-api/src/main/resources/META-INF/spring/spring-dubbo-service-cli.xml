@@ -10,6 +10,8 @@
 
     <context:component-scan base-package="com.comichentai.controller.*"/>
 
+    <import resource="classpath*:/redis/spring-redis.xml"/>
+
     <!-- 默认消费者域名 -->
     <dubbo:protocol host="www.hope6537.com"/>
 
