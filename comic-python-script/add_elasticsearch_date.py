@@ -1,0 +1,28 @@
+# encoding:UTF-8
+import comic_hentai_data_source
+import commands
+import json
+
+
+def get_comic():
+    conn = comic_hentai_data_source.get_conn()
+    find_comic_simple_info = "select id, title from Comic limit 0, 50"
+    cursor = conn.cursor()
+    cursor.execute(find_comic_simple_info)
+    result = cursor.fetchall()
+    operator = "curl -XPUT "
+
+    for r in result:
+        id = str(r[0])
+        title = str(r[1])
+        title = title.replace("'", "&#39")
+        data = json.dumps({
+            "id": id,
+            "title": title
+        })
+        url = r"'http://127.0.0.1:9200/comichentai/comic/" + id + r"'"
+        tmp = operator + url + " -d \'" + data + '\''
+        print(tmp)
+        commands.getstatusoutput(tmp)
+
+get_comic()
