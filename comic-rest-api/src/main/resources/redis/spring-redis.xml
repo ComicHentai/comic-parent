@@ -9,10 +9,10 @@
                <set>
                    <value>hope6537.com:7000</value>
                    <value>hope6537.com:7001</value>
-                   <value>ding.hope6537.com:7002</value>
-                   <value>ding.hope6537.com:7003</value>
-                   <value>db.hope6537.com:7004</value>
-                   <value>db.hope6537.com:7005</value>
+                   <value>ding.hope6537.com:7000</value>
+                   <value>ding.hope6537.com:7001</value>
+                   <value>db.hope6537.com:7000</value>
+                   <value>db.hope6537.com:7001</value>
                </set>
            </constructor-arg>
        </bean>
