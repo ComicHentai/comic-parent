@@ -3,16 +3,14 @@ package com.comichentai.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.comichentai.bo.ComicBusiness;
-import com.comichentai.dto.CategoryDto;
 import com.comichentai.dto.ComicDto;
 import com.comichentai.entity.Response;
 import com.comichentai.entity.ResultSupport;
+import com.comichentai.rest.utils.ElasticSearchUtil;
 import com.comichentai.rest.utils.PageMapUtil;
-import com.comichentai.rest.utils.TokenCheckUtil;
 import com.comichentai.security.AESLocker;
+import com.comichentai.service.ComicService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +33,12 @@ public class SearchController {
 
     private static final String IILEGAL_REQUEST = "非法请求";
 
-    @Resource(name = "comicBusiness")
-    private ComicBusiness comicBusiness;
+
+    @Resource(name = "comicService")
+    private ComicService comicService;
+
+    @Resource(name = "elasticSearchUtil")
+    private ElasticSearchUtil elasticSearchUtil;
 
     @RequestMapping(value = "result", method = RequestMethod.GET)
     @ResponseBody
@@ -53,13 +55,13 @@ public class SearchController {
             }
             paramMap = JSON.parseObject(data);
             ComicDto query = PageMapUtil.getQuery(paramMap.getString("pageMap"), ComicDto.class);
-            String name = paramMap.getString("keyWord");
-            query.setTitle(name);
-            query.setAuthor(name);
-            ResultSupport<List<ComicDto>> comicListByName = comicBusiness.getComicListByName(query);
-            return Response.getInstance(comicListByName.isSuccess())
-                    .addAttribute("data", comicListByName.getModule())
-                    .addAttribute("isEnd", comicListByName.getTotalCount() < query.getPageSize() * query.getCurrentPage())
+            //在这里,我们获取到了我们需要进行查询的部分.
+            String keyWord = paramMap.getString("keyWord");
+            List<Integer> idList = elasticSearchUtil.getIdList("comichentai", "comic", keyWord, query.getCurrentPage(), query.getPageSize());
+            ResultSupport<List<ComicDto>> comicListByIdList = comicService.getComicListByIdList(idList);
+            return Response.getInstance(comicListByIdList.isSuccess())
+                    .addAttribute("data", comicListByIdList.getModule())
+                    .addAttribute("isEnd", comicListByIdList.getTotalCount() < query.getPageSize() * query.getCurrentPage())
                     .addAttribute("pageMap", PageMapUtil.sendNextPage(query));
         } catch (JSONException jsonException) {
             return Response.getInstance(false).setReturnMsg("参数非法");
