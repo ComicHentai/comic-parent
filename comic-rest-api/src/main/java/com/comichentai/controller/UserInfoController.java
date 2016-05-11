@@ -8,15 +8,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.comichentai.dto.UserInfoDto;
 import com.comichentai.entity.Response;
 import com.comichentai.entity.ResultSupport;
-import com.comichentai.rest.utils.JSONUtil;
 
-import com.comichentai.rest.utils.TokenCheckUtil;
+import com.comichentai.security.TokenCheckUtil;
 import com.comichentai.security.AESLocker;
 import com.comichentai.service.UserInfoService;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

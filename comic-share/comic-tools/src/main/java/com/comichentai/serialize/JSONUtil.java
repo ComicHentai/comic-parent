@@ -1,4 +1,4 @@
-package com.comichentai.rest.utils;
+package com.comichentai.serialize;
 
 
 import com.alibaba.fastjson.JSON;

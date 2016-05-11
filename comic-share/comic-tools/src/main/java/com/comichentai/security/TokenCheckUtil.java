@@ -1,14 +1,12 @@
-package com.comichentai.rest.utils;
+package com.comichentai.security;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
-import com.comichentai.security.AESLocker;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.UUID;
 
-import static com.comichentai.rest.utils.TimeUtils.getUnixTime;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -60,7 +58,7 @@ public class TokenCheckUtil {
             checkArgument(request.getSession().getAttribute(tokenObject.getTokenId()).equals(tokenObject.getUserInfoId()), NOT_THIS_USER);
             //TODO:检查REDIS关联
             int availableUnixTime = Integer.parseInt(tokenObject.getAvailableUnixTime());
-            checkArgument(availableUnixTime > getUnixTime(), OUT_OF_DATE);
+            checkArgument(availableUnixTime > TimeUtils.getUnixTime(), OUT_OF_DATE);
             if (!"debug".equals(mode)) {
                 checkArgument(tokenObject.deviceId.equals(deviceId), NOT_THIS_DEVICE);
             }

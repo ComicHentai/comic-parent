@@ -1,4 +1,4 @@
-package com.comichentai.rest.utils;
+package com.comichentai.security;
 
 /**
  * Created by hope6537 on 16/3/17.

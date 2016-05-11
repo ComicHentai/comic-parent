@@ -9,14 +9,11 @@ import com.comichentai.dto.CategoryDto;
 import com.comichentai.dto.ComicDto;
 import com.comichentai.entity.Response;
 import com.comichentai.entity.ResultSupport;
-import com.comichentai.rest.utils.JSONUtil;
-import com.comichentai.rest.utils.PageMapUtil;
-import com.comichentai.rest.utils.TokenCheckUtil;
+import com.comichentai.page.PageMapUtil;
+import com.comichentai.security.TokenCheckUtil;
 import com.comichentai.security.AESLocker;
-import com.comichentai.service.CategoryService;
 import com.comichentai.service.ComicService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

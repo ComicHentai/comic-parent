@@ -1,4 +1,4 @@
-package com.comichentai.rest.utils;
+package com.comichentai.page;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;

@@ -7,7 +7,7 @@ import com.comichentai.dto.ComicDto;
 import com.comichentai.entity.Response;
 import com.comichentai.entity.ResultSupport;
 import com.comichentai.rest.utils.ElasticSearchUtil;
-import com.comichentai.rest.utils.PageMapUtil;
+import com.comichentai.page.PageMapUtil;
 import com.comichentai.security.AESLocker;
 import com.comichentai.service.ComicService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
