@@ -31,6 +31,5 @@
     <dubbo:service ref="jumpBusiness" interface="com.comichentai.bo.JumpBusiness"/>
     <dubbo:service ref="favoriteBusiness" interface="com.comichentai.bo.FavoriteBusiness"/>
     <dubbo:service ref="categoryBusiness" interface="com.comichentai.bo.CategoryBusiness"/>
-    <dubbo:service ref="comicBusiness" interface="com.comichentai.bo.ComicBusiness"/>
 
 </beans>
