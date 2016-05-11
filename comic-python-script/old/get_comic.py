@@ -2,13 +2,13 @@
 import json
 import os
 import platform
+import requests
 import sys
 import time
 from Queue import Queue
 from threading import Thread
 from time import sleep
 
-import requests
 # 首先获取漫画的基本信息
 from pyquery import PyQuery as pq
 from requests.exceptions import ConnectionError, ReadTimeout, TooManyRedirects, RequestException

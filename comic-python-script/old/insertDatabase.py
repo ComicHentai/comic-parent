@@ -1,6 +1,8 @@
 # encoding:utf-8
-import comic_hentai_data_source
 import random
+
+import comic_hentai_data_source
+
 
 def get_comic_id_with_status():
     find_comic_id_list = "select id from Comic where status = 0"

@@ -1,7 +1,8 @@
 # encoding:UTF-8
-import comic_hentai_data_source
 import commands
 import json
+
+import comic_hentai_data_source
 
 
 def get_comic():
