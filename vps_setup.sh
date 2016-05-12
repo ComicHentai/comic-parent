@@ -210,3 +210,8 @@ echo "alias nginx.start='usr/local/share/redis-3.0.4/src/redis-server stop'" >> 
 
 #MYSQL读写分离
 
+#ElasticSearch
+
+#测试
+
+#启动
